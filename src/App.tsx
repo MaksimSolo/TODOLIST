@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid"
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -62,22 +63,27 @@ function App() {
     function changeFilter(todolistID: string, val: FilterType) {
         setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, filter: val} : tl))
     }
-
+    function changeTodoTitle(todolistID: string, title: string) {
+        setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, title: title} : tl))
+    }
     function changeStatus(todolistID: string, taskID: string, isDone: boolean) {
         const copyState = {...tasks}
         copyState[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, isDone: isDone} : t)
         setTasks(copyState)
     }
-
+    function changeTaskTitle(todolistID: string, taskID: string, title: string) {
+        const copyState = {...tasks}
+        copyState[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, title: title} : t)
+        setTasks(copyState)
+    }
     const removeTodolist = (todolistID: string) => {
         setTodolists(todolists.filter(tl => tl.id !== todolistID))
         delete tasks[todolistID]
     }
-
-    const addTodo = () => {
+    const addTodo = (newTodoTitle: string) => {
         const newTodo: TodolistsType = {
             id: v1(),
-            title: "New",
+            title: newTodoTitle,
             filter: 'all'
         }
         setTodolists([...todolists, newTodo])
@@ -109,13 +115,15 @@ function App() {
                 changeTaskStatus={changeStatus}
                 filter={tl.filter}
                 removeTodolist={removeTodolist}
+                changeTaskTitle={changeTaskTitle}
+                changeTodoTitle={changeTodoTitle}
             />
         )
     })
     return (
         <div className="App">
             {todolistForRender}
-            <button onClick={addTodo}>+</button>
+            <AddItemForm addItem={addTodo}/>
         </div>
     )
 }
