@@ -3,6 +3,7 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid"
 import {AddItemForm} from "./AddItemForm";
+import {Paper} from "@mui/material";
 
 export type TaskType = {
     id: string
@@ -104,6 +105,9 @@ function App() {
     const todolistForRender = todolists.map(tl => {
         const tasksForRender = getTasksForRender(tl);
         return (
+            <Paper elevation={10}
+                   //style={padding}
+            >
             < Todolist
                 key={tl.id}
                 todolistID={tl.id}
@@ -118,6 +122,7 @@ function App() {
                 changeTaskTitle={changeTaskTitle}
                 changeTodoTitle={changeTodoTitle}
             />
+            </Paper>
         )
     })
     return (

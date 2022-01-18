@@ -2,6 +2,8 @@ import React, {ChangeEvent, MouseEventHandler} from "react";
 import {FilterType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Button, ButtonGroup, IconButton} from "@mui/material";
+import {Delete, DeleteForever} from "@mui/icons-material";
 
 
 type PropsType = {
@@ -48,8 +50,12 @@ export function Todolist(props: PropsType) {
                        checked={t.isDone}
                 />
                 <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-                <button onClick={removeTask}>x
-                </button>
+                <IconButton onClick={removeTask}>
+                    <Delete/>
+
+                </IconButton>
+                {/*<button onClick={removeTask}>x*/}
+                {/*</button>*/}
             </li>
         )
     })
@@ -59,22 +65,36 @@ export function Todolist(props: PropsType) {
         <div>
             <h3>
                 <EditableSpan title={props.title} changeTitle={changeTodoTitle}/>
-                <button onClick={() => props.removeTodolist(props.todolistID)}>x</button>
+                <IconButton onClick={() => props.removeTodolist(props.todolistID)}>
+                    <Delete/>
+
+                </IconButton>
+                {/*<button >x</button>*/}
             </h3>
             <AddItemForm addItem={addTaskTDL}/>
             <ul>
                 {tasksJSX}
             </ul>
             <div>
-                <button className={getBtnClass('all')}
+                <ButtonGroup>
+                <Button
+                    variant="contained"
+                    color ={props.filter === "all" ? 'secondary' : "primary"}
+                    // className={getBtnClass('all')}
                         onClick={onAllFilter}>All
-                </button>
-                <button className={getBtnClass('active')}
+                </Button>
+                <Button
+                    variant="contained"
+                    color ={props.filter === "active" ? 'secondary' : "primary"}
+                    // className={getBtnClass('active')}
                         onClick={onActiveFilter}>Active
-                </button>
-                <button className={getBtnClass('completed')}
+                </Button>
+                <Button variant="contained"
+                        color ={props.filter === "completed" ? 'secondary' : "primary"}
+                    // className={getBtnClass('completed')}
                         onClick={onCompletedFilter}>Completed
-                </button>
+                </Button>
+                </ButtonGroup>
             </div>
         </div>
     )

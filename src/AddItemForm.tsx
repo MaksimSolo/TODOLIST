@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Fab, Icon} from "@mui/material";
+import {green} from "@mui/material/colors";
 
 export interface AddItemFormType {
     addItem: (title: string) => void
@@ -37,7 +39,10 @@ export const AddItemForm = (props: AddItemFormType) => {
                 onKeyPress={onKeyPressAddItem}
                 className={errorClass}
             />
-            <button onClick={addItem}>+</button>
+            <Icon
+                onClick={addItem} sx={{color: green[500]}}>+</Icon>
+            {/*<Icon onClick={addItem} baseClassName="fas" className="fa-plus-circle" color="primary"/>*/}
+            {/*<button onClick={addItem}>+</button>*/}
             <div className='error-message'>{errorMessage}</div>
         </div>
     );
