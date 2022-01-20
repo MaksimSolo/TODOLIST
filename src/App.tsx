@@ -105,7 +105,7 @@ function App() {
     const todolistForRender = todolists.map(tl => {
         const tasksForRender = getTasksForRender(tl);
         return (
-            <Paper elevation={10}
+            <Paper elevation={20}
                    //style={padding}
             >
             < Todolist
