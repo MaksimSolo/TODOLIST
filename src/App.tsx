@@ -48,7 +48,7 @@ function App() {
             {id: v1(), title: "Bread", isDone: false},
         ]
     });
-
+    //tasks
     const removeTask = (todolistID: string, id: string) => {
         const copyTasks = {...tasks}
         copyTasks[todolistID] = tasks[todolistID].filter(t => t.id !== id)
@@ -70,7 +70,7 @@ function App() {
         copyTasks[todolistID] = tasks[todolistID].map(t => t.id === taskID ? {...t, title: title} : t)
         setTasks(copyTasks)
     }
-
+    //todolists
     const changeTodoFilter = (todolistID: string, val: FilterType) => {
         setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, filter: val} : tl))
     }
