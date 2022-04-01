@@ -7,7 +7,8 @@ export interface AddItemFormType {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = (props: AddItemFormType) => {
+export const AddItemForm = React.memo((props: AddItemFormType) => {
+    console.log('AddItemForm rendering')
     const [newTitle, setNewTitle] = useState("")
     const [error, setError] = useState<boolean>(false)
 
@@ -28,12 +29,8 @@ export const AddItemForm = (props: AddItemFormType) => {
             addItem()
         }
     }
-
-    //const errorClass = error ? 'error' : "";
-    //const errorMessage = error ? 'Error! Typing is expected' : '';
-
     return (
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign: 'center'}}>
             <TextField
                 variant={'outlined'}
                 size={'small'}
@@ -49,5 +46,5 @@ export const AddItemForm = (props: AddItemFormType) => {
             {/*<div className='error-message'>{errorMessage}</div>*/}
         </div>
     );
-};
+});
 

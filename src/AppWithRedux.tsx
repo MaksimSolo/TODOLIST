@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Menu, Paper, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {AddTodolist} from "./store/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./store/store";
 import {TodolistsType} from "./App";
 import {Todolist10} from "./Todolist#10";
+import {Menu} from "@mui/icons-material";
 
 export type TaskType = {
     id: string
@@ -17,15 +18,15 @@ export type FilterType = "all" | "active" | "completed";
 
 //C-R-U-D
 function AppWithRedux() {
-
+    console.log("App rendering")
     const dispatch = useDispatch();
     const todolists = useSelector<AppStateType, Array<TodolistsType>>(state => state.todolists)
 
-    const addTodolist = (newTodoTitle: string) => {
+    const addTodolist = useCallback((newTodoTitle: string) => {
         dispatch(AddTodolist(newTodoTitle))
-    }
+    }, [dispatch]);
 
-    const todolistForRender = todolists.map(tl => {
+    const todolistForRender = useMemo(()=>todolists.map(tl => {
 
         return (
             <Grid item
@@ -39,14 +40,14 @@ function AppWithRedux() {
                 </Paper>
             </Grid>
         )
-    })
+    }),[todolists]);
     //UI:
     return (
         <div className="App">
             <AppBar position={'static'}>
                 <Toolbar style={{justifyContent: 'space-between'}}>
                     <IconButton edge='start' color='inherit' aria-label='menu'>
-                        <Menu open={false}/>
+                        <Menu/>
                     </IconButton>
                     <Typography variant='h6'>
                         Todolists
