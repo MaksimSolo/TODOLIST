@@ -1,14 +1,14 @@
 import React, {useCallback, useMemo} from "react";
-import {FilterType, TaskType, TodolistsType} from "./App";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {FilterType, TaskType, TodolistsType} from "../../App";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, ButtonGroup, IconButton, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "./store/store";
-import {addTaskAC} from "./store/tasks-reducer";
-import {ChangeTodolistFilter, ChangeTodolistTitle, RemoveTodolist} from "./store/todolists-reducer";
-import {Task} from "./Task";
+import {Provider, useDispatch, useSelector} from "react-redux";
+import {AppStateType, store} from "../../store/store";
+import {addTaskAC} from "../../store/tasks-reducer";
+import {ChangeTodolistFilter, ChangeTodolistTitle, RemoveTodolist} from "../../store/todolists-reducer";
+import {Task} from "../Task/Task";
 
 
 type PropsType = {

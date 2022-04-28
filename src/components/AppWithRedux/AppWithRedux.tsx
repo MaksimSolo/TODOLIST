@@ -1,12 +1,12 @@
 import React, {useCallback, useMemo} from 'react';
-import './App.css';
-import {AddItemForm} from "./AddItemForm";
+import '../../App.css';
+import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
-import {AddTodolist} from "./store/todolists-reducer";
+import {AddTodolist} from "../../store/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "./store/store";
-import {TodolistsType} from "./App";
-import {Todolist10} from "./Todolist#10";
+import {AppStateType} from "../../store/store";
+import {TodolistsType} from "../../App";
+import {Todolist10} from "../Todolist/Todolist#10";
 import {Menu} from "@mui/icons-material";
 
 export type TaskType = {

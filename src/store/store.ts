@@ -1,4 +1,4 @@
-import {combineReducers, createStore} from "redux";
+import {combineReducers,  legacy_createStore as createStore} from "redux";
 import {todolistsReducer} from "./todolists-reducer";
 import {tasksReducer} from "./tasks-reducer";
 
@@ -15,3 +15,23 @@ export const store = createStore(rootReducers);
 
 // @ts-ignore
 window.store = store
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useCallback} from 'react';
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../../store/tasks-reducer";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "./store/store";
-import {TaskType} from "./App";
+import {AppStateType} from "../../store/store";
+import {TaskType} from "../../App";
 
 export type TaskPropsType ={
     todolistID: string

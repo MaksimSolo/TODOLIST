@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from "react";
-import {FilterType, TaskType} from "./App";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {FilterType, TaskType} from "../../App";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, ListItem, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 

@@ -8,7 +8,7 @@ export interface AddItemFormType {
 }
 
 export const AddItemForm = React.memo((props: AddItemFormType) => {
-    console.log('AddItemForm rendering')
+
     const [newTitle, setNewTitle] = useState("")
     const [error, setError] = useState<boolean>(false)
 
