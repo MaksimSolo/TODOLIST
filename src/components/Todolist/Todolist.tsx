@@ -1,9 +1,11 @@
 import React, {ChangeEvent} from "react";
-import {FilterType, TaskType} from "../../App";
+
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, ListItem, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {TaskStatuses, TaskType} from "../../api/task-api";
+import {FilterType} from "../../store/todolists-reducer";
 
 
 type PropsType = {
@@ -12,7 +14,7 @@ type PropsType = {
     removeTask: (todolistID: string, id: string) => void
     changeFilter: (todolistID: string, val: FilterType) => void
     addTask: (todolistID: string, title: string) => void
-    changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
+    changeTaskStatus: (todolistID: string, taskID: string, status: TaskStatuses) => void
     filter: FilterType
     todolistID: string
     removeTodolist: (todolistID: string) => void
@@ -24,9 +26,9 @@ export function Todolist(props: PropsType) {
 
     const itemFontStyles = {fontWeight: 'bold'}
     const tasksJSX = props.tasks.map(t => {
-        const getClasses = () => t.isDone ? "is-done" : ''
+        const getClasses = () => t.status === TaskStatuses.Completed ? "is-done" : ''
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            props.changeTaskStatus(props.todolistID, t.id, e.currentTarget.checked)
+            if (e.currentTarget.checked) {props.changeTaskStatus(props.todolistID, t.id, TaskStatuses.Completed)}
         }
         const changeTaskTitle = (title: string) => {
             props.changeTaskTitle(props.todolistID, t.id, title)
@@ -46,10 +48,10 @@ export function Todolist(props: PropsType) {
                         size={'small'}
                         color={'primary'}
                         onChange={changeStatus}
-                        checked={t.isDone}
+                        checked={t.status === TaskStatuses.Completed}
                         style={{marginRight: '15px'}}
                     />
-                    {t.isDone
+                    {t.status === TaskStatuses.Completed
                         ? <span>{t.title}</span>
                         : <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>}
                 </div>
@@ -71,9 +73,9 @@ export function Todolist(props: PropsType) {
     return (
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'}}>
             <Typography
-            variant={'h5'}
-            align={'center'}
-            style={{fontWeight:'bold'}}>
+                variant={'h5'}
+                align={'center'}
+                style={{fontWeight: 'bold'}}>
                 <EditableSpan title={props.title} changeTitle={changeTodoTitle}/>
                 <IconButton onClick={() => props.removeTodolist(props.todolistID)}>
                     <Delete/>

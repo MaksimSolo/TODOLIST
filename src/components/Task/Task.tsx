@@ -5,7 +5,8 @@ import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../store/store";
-import {TaskType} from "../../App";
+import {TaskStatuses, TaskType} from "../../api/task-api";
+
 
 export type TaskPropsType ={
     todolistID: string
@@ -17,10 +18,10 @@ export const Task = React.memo(({todolistID,taskID}: TaskPropsType) => {
     const task = useSelector<AppStateType, TaskType>(state => state.tasks[todolistID].filter(t=>t.id===taskID)[0])
     const dispatch = useDispatch();
 
-    const getClasses = () => task.isDone ? "is-done" : ''
+    const getClasses = () => task.status === TaskStatuses.Completed ? "is-done" : ''
     const itemFontStyles = {fontWeight: 'bold'}
     const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(todolistID, taskID, e.currentTarget.checked));
+        if (e.currentTarget.checked) {dispatch(changeTaskStatusAC(todolistID, taskID, TaskStatuses.Completed))} ;
     },[dispatch,todolistID, taskID]);
     const changeTaskTitle = useCallback((title: string) => {
         dispatch(changeTaskTitleAC(todolistID, taskID, title))
@@ -40,10 +41,10 @@ export const Task = React.memo(({todolistID,taskID}: TaskPropsType) => {
                     size={'small'}
                     color={'primary'}
                     onChange={changeStatus}
-                    checked={task.isDone}
+                    checked={task.status === TaskStatuses.Completed}
                     style={{marginRight: '15px'}}
                 />
-                {task.isDone
+                {task.status === TaskStatuses.Completed
                     ? <span>{task.title}</span>
                     : <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>}
             </div>

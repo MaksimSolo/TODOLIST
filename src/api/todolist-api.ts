@@ -1,6 +1,6 @@
 import axios from "axios";
 
-type TodoType = {
+export type TodoType = {
     addedDate: string
     id: string
     order: number

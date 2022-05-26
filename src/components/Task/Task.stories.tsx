@@ -2,7 +2,7 @@ import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task, TaskPropsType} from "./Task";
 import {action} from "@storybook/addon-actions";
-import {ReduxStoreProviderDecorator, storyBookStore} from "../../stories/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../../stories/ReduxStoreProviderDecorator";
 
 export default  {
     title: 'Todolist/Task',
@@ -29,6 +29,6 @@ TaskIsDone.args = {
 export const TaskIsNotDone = Template.bind({});
 TaskIsNotDone.args = {
     todolistID: 'todolistID2',
-    taskID: '8',
+    taskID: '6',
 };
 
