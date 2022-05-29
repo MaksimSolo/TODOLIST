@@ -1,8 +1,8 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import '../../App.css';
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
-import {AddTodolist, TodolistBLLType} from "../../store/todolists-reducer";
+import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "../../store/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../store/store";
 import {Todolist10} from "../Todolist/Todolist#10";
@@ -13,10 +13,16 @@ import {Menu} from "@mui/icons-material";
 function AppWithRedux() {
     console.log("App rendering")
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [dispatch])
+
+
     const todolists = useSelector<AppStateType, Array<TodolistBLLType>>(state => state.todolists)
 
     const addTodolist = useCallback((newTodoTitle: string) => {
-        dispatch(AddTodolist(newTodoTitle))
+        dispatch(createTodolistTC(newTodoTitle))
     }, [dispatch]);
 
     const todolistForRender = useMemo(() => todolists.map(tl => {
@@ -25,7 +31,7 @@ function AppWithRedux() {
             <Grid item
                   key={tl.id}>
                 <Paper elevation={20}
-                       style={{padding: '15px', width: '300px', height: '400px'}}>
+                       style={{padding: '15px', minWidth: '300px', minHeight: '100px'}}>
                     < Todolist10
                         key={tl.id}
                         todolistID={tl.id}

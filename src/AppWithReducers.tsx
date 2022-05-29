@@ -12,7 +12,7 @@ import {
     RemoveTodolist,
     todolistsReducer
 } from "./store/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./store/tasks-reducer";
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "./store/tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "./api/task-api";
 
 
@@ -83,13 +83,24 @@ function AppWithReducers() {
         dispatchInTasksReducer(removeTaskAC(id, todolistID))
     }
     const addTask = (title: string, todolistID: string,) => {
-        dispatchInTasksReducer(addTaskAC(title, todolistID,))
+        dispatchInTasksReducer(addTaskAC({
+            addedDate: '',
+            deadline: '',
+            description: '',
+            id: 'bla',
+            order: 0,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            status: TaskStatuses.New,
+            title: title,
+            todoListId: todolistID
+        }))
     }
-    const changeTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses) => {
-        dispatchInTasksReducer(changeTaskStatusAC(todolistID, taskID, status,))
+    const changeTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses,) => {
+        dispatchInTasksReducer(updateTaskAC(todolistID, taskID, {status},))
     }
     const changeTaskTitle = (taskID: string, title: string, todolistID: string) => {
-        dispatchInTasksReducer(changeTaskTitleAC(taskID, title, todolistID))
+        dispatchInTasksReducer(updateTaskAC(todolistID, taskID, {title}, ))
     }
     //todolists
     const changeTodoFilter = (todolistID: string, val: FilterType) => {
@@ -103,8 +114,18 @@ function AppWithReducers() {
         dispatchInTasksReducer(RemoveTodolist(todolistID))
     }
     const addTodolist = (newTodoTitle: string) => {
-        dispatchInTodoReducer(AddTodolist(newTodoTitle))
-        dispatchInTasksReducer(AddTodolist(newTodoTitle))
+        dispatchInTodoReducer(AddTodolist({
+            addedDate: '',
+            id: '',
+            order: 0,
+            title: newTodoTitle,
+        }))
+        dispatchInTasksReducer(AddTodolist({
+            addedDate: '',
+            id: '',
+            order: 0,
+            title: newTodoTitle,
+        }))
     }
 
     const getTasksForRender = (filter: FilterType, tasks: Array<TaskType>) => {
