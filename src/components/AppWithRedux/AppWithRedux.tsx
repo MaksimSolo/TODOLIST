@@ -42,7 +42,7 @@ function AppWithRedux() {
     }), [todolists]);
     //UI:
     return (
-        <div className="App">
+        <div className="App" >
             <AppBar position={'static'}>
                 <Toolbar style={{justifyContent: 'space-between'}}>
                     <IconButton edge='start' color='inherit' aria-label='menu'>

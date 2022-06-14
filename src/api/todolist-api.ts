@@ -41,3 +41,4 @@ export const todolistAPI = {
         return instance.put<BaseResponseType>(`${id}`, {title});
     },
 }
+
