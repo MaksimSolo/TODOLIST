@@ -1,5 +1,6 @@
 import {todolistAPI, TodoType} from "../api/todolist-api";
 import {AppThunk} from "./store";
+import {setAppStatusAC} from "./app-reducer";
 
 const initialState: Array<TodolistBLLType> = [];
 
@@ -33,7 +34,9 @@ export const SetTodolists = (todolists: Array<TodoType>) => ({type: 'SET_TODOLIS
 //thunk-creators
 export const fetchTodolistsTC = (): AppThunk => async dispatch => {
     try {
+        dispatch(setAppStatusAC('loading'))
         dispatch(SetTodolists((await todolistAPI.getTodolists()).data))
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         console.log(e)
     }

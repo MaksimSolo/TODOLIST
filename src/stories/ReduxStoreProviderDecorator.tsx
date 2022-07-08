@@ -4,6 +4,7 @@ import {combineReducers, legacy_createStore as createStore} from "redux";
 import {todolistsReducer} from "../store/todolists-reducer";
 import {tasksReducer} from "../store/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/task-api";
+import {appReducer} from "../store/app-reducer";
 
 
 type ReducersType = typeof rootReducers;
@@ -11,7 +12,8 @@ export type AppStateType = ReturnType<ReducersType>;
 
 const rootReducers = combineReducers({
     todolists: todolistsReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    app: appReducer
 })
 
 const initialGlobalState: AppStateType = {
@@ -61,6 +63,9 @@ const initialGlobalState: AppStateType = {
             {id: '10', title: "Bread", status: TaskStatuses.New, addedDate:'', deadline:'',
                 description:'', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId:''},
         ]
+    },
+    app: {
+        status: 'idle'
     }
 }
 

@@ -54,7 +54,13 @@ export const Todolist10 = React.memo((props: PropsType) => {
     const onCompletedFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "completed")), [dispatch, props.todolistID]);
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
+            wordBreak: 'break-all', alignItems:'center'
+        }}>
             <Typography
                 variant={'h5'}
                 align={'center'}
@@ -71,9 +77,7 @@ export const Todolist10 = React.memo((props: PropsType) => {
             <div>
                 <ButtonGroup
                     variant={"contained"}
-                    size={'small'}
-                    fullWidth
-                >
+                    size={'small'}>
                     <Button
                         color={todolist.filter === "all" ? 'secondary' : "primary"}
                         onClick={onAllFilter}>All
