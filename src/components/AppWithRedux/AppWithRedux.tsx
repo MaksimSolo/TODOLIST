@@ -9,6 +9,7 @@ import {Todolist10} from "../Todolist/Todolist#10";
 import {Menu} from "@mui/icons-material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {RequestStatusType} from "../../store/app-reducer";
+import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
 
 
 //C-R-U-D
@@ -46,6 +47,7 @@ function AppWithRedux() {
     //UI:
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position={'static'}>
                 <Toolbar style={{justifyContent: 'space-between'}}>
                     <IconButton edge='start' color='inherit' aria-label='menu'>

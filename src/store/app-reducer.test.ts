@@ -1,4 +1,4 @@
-import {appReducer, LinearProgressStateType, RequestStatusType, setAppStatusAC} from "./app-reducer";
+import {appReducer, LinearProgressStateType, RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
 
 let startState: LinearProgressStateType;
@@ -6,7 +6,8 @@ let startState: LinearProgressStateType;
 
 beforeEach(()=>{
     startState ={
-        status: 'idle' as RequestStatusType
+        status: 'idle' as RequestStatusType,
+        error: null
     }
 })
 
@@ -19,5 +20,14 @@ test('correct status should be installed', ()=>{
     expect(startState.status).toBe('idle')
     expect(endState.status).not.toEqual(startState.status)
 
+})
+
+test('error message should be shown', ()=>{
+    let errorMessage = 'some megaerror!!!!!!'
+
+    const endState = appReducer(startState,setAppErrorAC(errorMessage))
+
+    expect(endState.error).not.toEqual(startState.error)
+    expect(endState.error).toBe('some megaerror!!!!!!')
 })
 
