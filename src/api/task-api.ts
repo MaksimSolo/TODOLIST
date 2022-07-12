@@ -65,7 +65,7 @@ export type UpdateTaskApiModel = {
     status: TaskStatuses,
     title: string,
 }
-type BaseTasksRespType<D = { item: TaskType }> = {
+export type BaseTasksRespType<D = { item: TaskType }> = {
     resultCode: number
     messages: string[]
     data: D

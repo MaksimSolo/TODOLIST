@@ -1,10 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Icon, TextField} from "@mui/material";
+import {IconButton, TextField} from "@mui/material";
 import {green} from "@mui/material/colors";
 import {AddBox} from "@mui/icons-material";
 
 export interface AddItemFormType {
     addItem: (title: string) => void
+    disabled: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemFormType) => {
@@ -32,6 +33,7 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
     return (
         <div style={{textAlign: 'center'}}>
             <TextField
+                disabled={props.disabled}
                 variant={'outlined'}
                 size={'small'}
                 label={'enter item title'}
@@ -41,8 +43,9 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
                 onKeyPress={onKeyPressAddItem}
                 error={error}
             />
-            <Icon
-                onClick={addItem} sx={{color: green[500]}}><AddBox/></Icon>
+            <IconButton
+                disabled={props.disabled}
+                onClick={addItem} sx={{color: green[500]}}><AddBox/></IconButton>
             {/*<div className='error-message'>{errorMessage}</div>*/}
         </div>
     );

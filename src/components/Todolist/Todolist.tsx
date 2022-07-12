@@ -6,9 +6,11 @@ import {Button, ButtonGroup, Checkbox, IconButton, ListItem, Typography} from "@
 import {Delete} from "@mui/icons-material";
 import {TaskStatuses, TaskType} from "../../api/task-api";
 import {FilterType} from "../../store/todolists-reducer";
+import {RequestStatusType} from "../../store/app-reducer";
 
 
 type PropsType = {
+    entityStatus: RequestStatusType
     title: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, id: string) => void
@@ -28,7 +30,9 @@ export function Todolist(props: PropsType) {
     const tasksJSX = props.tasks.map(t => {
         const getClasses = () => t.status === TaskStatuses.Completed ? "is-done" : ''
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-            if (e.currentTarget.checked) {props.changeTaskStatus(props.todolistID, t.id, TaskStatuses.Completed)}
+            if (e.currentTarget.checked) {
+                props.changeTaskStatus(props.todolistID, t.id, TaskStatuses.Completed)
+            }
         }
         const changeTaskTitle = (title: string) => {
             props.changeTaskTitle(props.todolistID, t.id, title)
@@ -81,7 +85,7 @@ export function Todolist(props: PropsType) {
                     <Delete/>
                 </IconButton>
             </Typography>
-            <AddItemForm addItem={addTaskTDL}/>
+            <AddItemForm addItem={addTaskTDL} disabled={props.entityStatus === 'loading'}/>
             <ul>
                 {tasksJSX}
             </ul>
@@ -89,8 +93,7 @@ export function Todolist(props: PropsType) {
                 <ButtonGroup
                     variant={"contained"}
                     size={'small'}
-                    fullWidth
-                >
+                    fullWidth>
                     <Button
                         color={props.filter === "all" ? 'secondary' : "primary"}
                         onClick={onAllFilter}>All

@@ -4,12 +4,13 @@ import {Todolist} from "./components/Todolist/Todolist";
 import {v1} from "uuid"
 import {AddItemForm} from "./components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Menu, Paper, Toolbar, Typography} from "@mui/material";
-import {TaskPriorities, TaskStatuses, TaskType} from "./api/task-api";
+import {TaskPriorities, TaskStatuses} from "./api/task-api";
 import {FilterType, TodolistBLLType} from "./store/todolists-reducer";
+import {TaskBLLType} from "./store/tasks-reducer";
 
 
 export type TasksStateType = {
-    [key: string]: Array<TaskType>
+    [key: string]: Array<TaskBLLType>
 }
 
 //C-R-U-D
@@ -20,11 +21,11 @@ function App() {
 
     let [todolists, setTodolists] = useState<Array<TodolistBLLType>>([
         {
-            id: todolistID1, title: 'What to learn', filter: 'all', addedDate: '',
+            id: todolistID1, title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: '',
             order: 0
         },
         {
-            id: todolistID2, title: 'What to buy', filter: 'all', addedDate: '',
+            id: todolistID2, title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: '',
             order: 0
         },
     ])
@@ -32,45 +33,55 @@ function App() {
         [todolistID1]: [
             {
                 id: v1(), title: "HTML&CSS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "JS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "ReactJS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "Rest API", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "GraphQL", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
         ],
         [todolistID2]: [
             {
                 id: v1(), title: "Milk", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "Beer", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "Fish", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "Book", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
                 id: v1(), title: "Bread", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '',
+                taskItemStatus: 'idle',
             },
         ]
     });
@@ -81,9 +92,9 @@ function App() {
         setTasks(copyTasks)
     }
     const addTask = (todolistID: string, title: string) => {
-        let newTask = {
+        let newTask: TaskBLLType = {
             id: v1(), title: title, status: TaskStatuses.New, addedDate: '', deadline: '',
-            description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+            description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle',
         }
         const copyTasks = {...tasks}
         copyTasks[todolistID] = [newTask, ...tasks[todolistID]]
@@ -118,13 +129,14 @@ function App() {
             title: newTodoTitle,
             filter: 'all',
             addedDate: '',
+            entityStatus: 'idle',
             order: 0,
         }
         setTodolists([...todolists, newTodo])
         setTasks({...tasks, [newTodo.id]: []})
     }
 
-    const getTasksForRender = (filter: FilterType, tasks: Array<TaskType>) => {
+    const getTasksForRender = (filter: FilterType, tasks: Array<TaskBLLType>) => {
         switch (filter) {
             case "completed":
                 return tasks.filter(t => t.status === TaskStatuses.Completed)
@@ -143,6 +155,7 @@ function App() {
                 <Paper elevation={20}
                        style={{padding: '15px', width: '300px', height: '400px'}}>
                     < Todolist
+                        entityStatus={tl.entityStatus}
                         key={tl.id}
                         todolistID={tl.id}
                         title={tl.title}
@@ -177,7 +190,7 @@ function App() {
             <Container fixed>
                 <Grid container justifyContent={'center'} style={{padding: '15px'}}>
                     <Grid item>
-                        <AddItemForm addItem={addTodolist}/>
+                        <AddItemForm addItem={addTodolist} disabled={false}/>
                     </Grid>
                 </Grid>
                 <Grid container spacing={5} justifyContent={'center'}>

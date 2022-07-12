@@ -22,7 +22,6 @@ type PropsType = {
 }
 
 export const Todolist10 = React.memo((props: PropsType) => {
-    console.log('Todolist rendering')
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -31,6 +30,7 @@ export const Todolist10 = React.memo((props: PropsType) => {
 
     const todolist = useSelector<AppStateType, TodolistBLLType>(state => state.todolists.filter(tl => tl.id === props.todolistID)[0])
     const tasks = useSelector<AppStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
+
     const tasksForRender = (filter: FilterType, tasks: Array<TaskType>) => {
         switch (filter) {
             case "completed":
@@ -41,13 +41,16 @@ export const Todolist10 = React.memo((props: PropsType) => {
                 return tasks
         }
     }
-    const tasksJSX = useMemo(() => tasksForRender(todolist.filter, tasks).map(t => <Task key={t.id}
-                                                                                         todolistID={props.todolistID}
-                                                                                         taskID={t.id}/>), [props.todolistID, tasks, todolist.filter]);
+    const tasksJSX = useMemo(() => tasksForRender(todolist.filter, tasks)
+        .map(t => <Task
+            key={t.id}
+            todolistID={props.todolistID}
+            taskID={t.id}/>), [props.todolistID, tasks, todolist.filter]);
     const addTaskTDL = useCallback((newTaskTitle: string) => dispatch(addTaskTC(props.todolistID, newTaskTitle)), [dispatch, props.todolistID]);
     const changeTodoTitle = useCallback((title: string) => {
         dispatch(updateTodolistTitleTC(title, props.todolistID,));
     }, [dispatch, props.todolistID,]);
+    const removeTodolist = useCallback(() => dispatch(removeTodolistTC(props.todolistID)), [dispatch, props.todolistID]);
 
     const onAllFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "all")), [dispatch, props.todolistID]);
     const onActiveFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "active")), [dispatch, props.todolistID]);
@@ -59,18 +62,19 @@ export const Todolist10 = React.memo((props: PropsType) => {
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: '100%',
-            wordBreak: 'break-all', alignItems:'center'
+            wordBreak: 'break-all', alignItems: 'center'
         }}>
             <Typography
                 variant={'h5'}
                 align={'center'}
                 style={{fontWeight: 'bold'}}>
-                <EditableSpan title={todolist.title} changeTitle={changeTodoTitle}/>
-                <IconButton onClick={() => dispatch(removeTodolistTC(props.todolistID))}>
+                <EditableSpan title={todolist.title} changeTitle={changeTodoTitle}
+                              disabled={todolist.entityStatus === 'loading'}/>
+                <IconButton onClick={removeTodolist} disabled={todolist.entityStatus === 'loading'}>
                     <Delete/>
                 </IconButton>
             </Typography>
-            <AddItemForm addItem={addTaskTDL}/>
+            <AddItemForm addItem={addTaskTDL} disabled={todolist.entityStatus === 'loading'}/>
             <ul>
                 {tasksJSX}
             </ul>

@@ -1,21 +1,23 @@
 import {AddTodolist, RemoveTodolist, SetTodolists} from "./todolists-reducer";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "../api/task-api";
 import {AppStateType, AppThunk} from "./store";
-import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {RequestStatusType, setAppStatusAC} from "./app-reducer";
+import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 const initialState: TasksStateType = {};
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'SET_TASKS':
-            return {...state, [action.todolistID]: action.tasks}
+            return {...state, [action.todolistID]: action.tasks.map(t => ({...t, taskItemStatus: 'idle'}))}
         case 'REMOVE-TASK':
             return {...state, [action.todolistID]: state[action.todolistID].filter(t => t.id !== action.id)}
         case 'ADD-TASK': {
             const copyState = {...state}
             let tasks = {...state}[action.task.todoListId]
-            const newTasks = [action.task, ...tasks]
-            copyState[action.task.todoListId] = newTasks
+            const newBLLTypeTask: TaskBLLType= {...action.task, taskItemStatus: 'idle'}
+            copyState[action.task.todoListId] = [newBLLTypeTask, ...tasks]
             return copyState;
         }
         case "UPDATE_TASK":
@@ -24,6 +26,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskID ? {
                     ...t,
                     ...action.changesForApiModel
+                } : t)
+            }
+        case "CHANGE-TASK-ITEM-STATUS":
+            return {
+                ...state,
+                [action.todolistID]: state[action.todolistID].map(t => t.id === action.taskID ? {
+                    ...t,
+                    taskItemStatus: action.taskItemStatus
                 } : t)
             }
         case "ADD-TODOLIST":
@@ -53,17 +63,35 @@ export const updateTaskAC = (todolistID: string, taskID: string, changesForApiMo
     ({type: 'UPDATE_TASK', taskID, todolistID, changesForApiModel,} as const)
 export const setTasksAC = (todolistID: string, tasks: TaskType[]) =>
     ({type: 'SET_TASKS', todolistID, tasks} as const)
+export const changeTaskItemStatus = (todolistID: string, taskID: string, taskItemStatus: RequestStatusType) =>
+    ({type: 'CHANGE-TASK-ITEM-STATUS', todolistID, taskID, taskItemStatus} as const)
 
 //thunk-creators
 export const fetchTasksTC = (todolistID: string): AppThunk => dispatch => {
     dispatch(setAppStatusAC('loading'))
-    tasksAPI.getTasks(todolistID).then(resp => dispatch(setTasksAC(todolistID, resp.data.items)))
-    dispatch(setAppStatusAC('succeeded'))
+    tasksAPI.getTasks(todolistID)
+        .then(resp => {
+            dispatch(setTasksAC(todolistID, resp.data.items))
+            dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch(err => {
+            const error = err as AxiosError
+            handleServerNetworkError(dispatch, error.message)
+        })
 }
 export const removeTaskTC = (todolistID: string, taskID: string,): AppThunk => dispatch => {
+    dispatch(changeTaskItemStatus(todolistID,taskID,'loading'))
     dispatch(setAppStatusAC('loading'))
-    tasksAPI.deleteTask(todolistID, taskID).then(() => dispatch(removeTaskAC(todolistID, taskID)))
-    dispatch(setAppStatusAC('succeeded'))
+    tasksAPI.deleteTask(todolistID, taskID)
+        .then(() => {
+            dispatch(removeTaskAC(todolistID, taskID))
+            dispatch(setAppStatusAC('succeeded'))
+            dispatch(changeTaskItemStatus(todolistID,taskID,'succeeded'))
+        })
+        .catch(err => {
+            const error = err as AxiosError
+            handleServerNetworkError(dispatch, error.message)
+        })
 }
 export const addTaskTC = (todolistID: string, title: string): AppThunk => async dispatch => {
     try {
@@ -73,11 +101,11 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
             dispatch(addTaskAC(resp.data.data.item))
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppErrorAC(resp.data.messages[0]))
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(dispatch, resp.data)
         }
-    } catch (e) {
-        console.log(e)
+    } catch (err) {
+        const error = err as AxiosError
+        handleServerNetworkError(dispatch, error.message)
     }
 }
 export const updateTaskTC = (todolistID: string, taskID: string, changesForApiModel: UpdateTaskUIModel): AppThunk =>
@@ -107,16 +135,19 @@ export const updateTaskTC = (todolistID: string, taskID: string, changesForApiMo
                 dispatch(updateTaskAC(todolistID, taskID, changesForApiModel))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                dispatch(setAppErrorAC(resp.data.messages[0]))
-                dispatch(setAppStatusAC('failed'))
+                handleServerAppError(dispatch, resp.data)
             }
-        } catch (e) {
-            console.log(e)
+        } catch (err) {
+            const error = err as AxiosError
+            handleServerNetworkError(dispatch, error.message)
         }
     }
 
 //types
-export type TasksStateType = { [key: string]: Array<TaskType> }
+export type TasksStateType = { [key: string]: Array<TaskBLLType> }
+export type TaskBLLType = TaskType & {
+    taskItemStatus: RequestStatusType
+}
 export type ActionsType =
     ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
@@ -124,7 +155,8 @@ export type ActionsType =
     | ReturnType<typeof RemoveTodolist>
     | ReturnType<typeof AddTodolist>
     | ReturnType<typeof SetTodolists>
-    | ReturnType<typeof setTasksAC>;
+    | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeTaskItemStatus>;
 
 export type UpdateTaskUIModel = {
     deadline?: string,

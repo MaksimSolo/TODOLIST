@@ -7,7 +7,7 @@ export type TodoType = {
     title: string
 }
 
-export type BaseResponseType<T = {} > = {
+export type BaseResponseType<T = {}> = {
     resultCode: number
     messages: string[],
     data: T

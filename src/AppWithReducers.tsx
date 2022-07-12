@@ -12,8 +12,8 @@ import {
     RemoveTodolist,
     todolistsReducer
 } from "./store/todolists-reducer";
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "./store/tasks-reducer";
-import {TaskPriorities, TaskStatuses, TaskType} from "./api/task-api";
+import {addTaskAC, removeTaskAC, TaskBLLType, tasksReducer, updateTaskAC} from "./store/tasks-reducer";
+import {TaskPriorities, TaskStatuses} from "./api/task-api";
 
 
 //C-R-U-D
@@ -24,57 +24,147 @@ function AppWithReducers() {
 
     let [todolists, dispatchInTodoReducer] = useReducer(todolistsReducer, [
         {
-            id: todolistID1, title: 'What to learn', filter: 'all', addedDate: '',
+            id: todolistID1, title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: '',
             order: 0
         },
         {
-            id: todolistID2, title: 'What to buy', filter: 'all', addedDate: '',
+            id: todolistID2, title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: '',
             order: 0
         },
     ])
     let [tasks, dispatchInTasksReducer] = useReducer(tasksReducer, {
         [todolistID1]: [
             {
-                id: v1(), title: "HTML&CSS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "HTML&CSS",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "JS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "JS",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "ReactJS", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "ReactJS",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "Rest API", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Rest API",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "GraphQL", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "GraphQL",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
         ],
         [todolistID2]: [
             {
-                id: v1(), title: "Milk", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Milk",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "Beer", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Beer",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "Fish", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Fish",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "Book", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Book",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
             {
-                id: v1(), title: "Bread", status: TaskStatuses.New, addedDate: '', deadline: '',
-                description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+                id: v1(),
+                title: "Bread",
+                status: TaskStatuses.New,
+                addedDate: '',
+                deadline: '',
+                description: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                todoListId: '',
+                taskItemStatus: 'idle',
             },
         ]
     });
@@ -93,14 +183,14 @@ function AppWithReducers() {
             startDate: '',
             status: TaskStatuses.New,
             title: title,
-            todoListId: todolistID
+            todoListId: todolistID,
         }))
     }
     const changeTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses,) => {
         dispatchInTasksReducer(updateTaskAC(todolistID, taskID, {status},))
     }
     const changeTaskTitle = (taskID: string, title: string, todolistID: string) => {
-        dispatchInTasksReducer(updateTaskAC(todolistID, taskID, {title}, ))
+        dispatchInTasksReducer(updateTaskAC(todolistID, taskID, {title},))
     }
     //todolists
     const changeTodoFilter = (todolistID: string, val: FilterType) => {
@@ -128,7 +218,7 @@ function AppWithReducers() {
         }))
     }
 
-    const getTasksForRender = (filter: FilterType, tasks: Array<TaskType>) => {
+    const getTasksForRender = (filter: FilterType, tasks: Array<TaskBLLType>) => {
         switch (filter) {
             case "completed":
                 return tasks.filter(t => t.status === TaskStatuses.Completed)
@@ -147,6 +237,7 @@ function AppWithReducers() {
                 <Paper elevation={20}
                        style={{padding: '15px', width: '300px', height: '400px'}}>
                     < Todolist
+                        entityStatus={tl.entityStatus}
                         key={tl.id}
                         todolistID={tl.id}
                         title={tl.title}
@@ -181,7 +272,7 @@ function AppWithReducers() {
             <Container fixed>
                 <Grid container justifyContent={'center'} style={{padding: '15px'}}>
                     <Grid item>
-                        <AddItemForm addItem={addTodolist}/>
+                        <AddItemForm addItem={addTodolist} disabled={false}/>
                     </Grid>
                 </Grid>
                 <Grid container spacing={5} justifyContent={'center'}>

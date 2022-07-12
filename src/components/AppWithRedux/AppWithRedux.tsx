@@ -14,7 +14,7 @@ import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
 
 //C-R-U-D
 function AppWithRedux() {
-    console.log("App rendering")
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -59,11 +59,11 @@ function AppWithRedux() {
                     <Button color='inherit' variant={'outlined'}>Login</Button>
                 </Toolbar>
             </AppBar>
-            {appStatuses==='loading' && < LinearProgress color="secondary"/>}
+            {appStatuses === 'loading' && < LinearProgress color="secondary"/>}
             <Container fixed>
                 <Grid container justifyContent={'center'} style={{padding: '15px'}}>
                     <Grid item>
-                        <AddItemForm addItem={addTodolist}/>
+                        <AddItemForm addItem={addTodolist} disabled={false}/>
                     </Grid>
                 </Grid>
                 <Grid container spacing={5} justifyContent={'center'}>

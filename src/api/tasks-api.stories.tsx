@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {tasksAPI} from "./task-api";
 
 export default {
@@ -89,8 +89,9 @@ export const DeleteTask = () => {
 }
 export const UpdateTask = () => {
     const [state, setState] = useState<any>(null)
-    let taskId = "1a948a07-f811-4d9a-bb64-4322cbe6a750"
-    let todolistId = "93ab309b-2cdd-46d8-8434-2d1609f95194"
+    const [taskId, setTaskId] = useState<string>('')
+    const [todolistId, setTodolistId] = useState<string>('')
+
     const model = {
         deadline: '',
         description: "Changed",
@@ -100,12 +101,20 @@ export const UpdateTask = () => {
         status: 0,
         title: "Changed TASK comes!!!",
     }
-    useEffect(() => {
+    const updateTask = () => {
         tasksAPI.updateTask(todolistId, taskId, model)
             .then(res => setState(res.data.data.item))
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        <div>
+            <input type="text" placeholder={'todolistId'} value={todolistId}
+                   onChange={(e) => setTodolistId(e.currentTarget.value)}/>
+            <input type="text" placeholder={'taskId'} value={taskId}
+                   onChange={(e) => setTaskId(e.currentTarget.value)}/>
+            <button onClick={updateTask}>Update task</button>
+        </div>
+    </div>
 }
 
 
