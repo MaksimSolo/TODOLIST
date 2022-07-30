@@ -1,49 +1,19 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React from 'react';
 import '../../App.css';
-import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
-import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "../../store/todolists-reducer";
-import {useDispatch} from "react-redux";
+import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import {useAppSelector} from "../../store/store";
-import {Todolist10} from "../Todolist/Todolist#10";
-import {Menu} from "@mui/icons-material";
+import {Menu,} from "@mui/icons-material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {RequestStatusType} from "../../store/app-reducer";
 import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
-
+import {Route, Routes, Navigate} from 'react-router-dom'
+import {Login} from "../Login/Login";
+import {TodosList} from "../Todolist/TodosList";
 
 //C-R-U-D
 function AppWithRedux() {
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchTodolistsTC())
-    }, [dispatch])
-
-
-    const todolists = useAppSelector<Array<TodolistBLLType>>(state => state.todolists) //нужен только возвращаемый тип
-    const addTodolist = useCallback((newTodoTitle: string) => {
-        dispatch(createTodolistTC(newTodoTitle))
-    }, [dispatch]);
-
     const appStatuses = useAppSelector<RequestStatusType>(state => state.app.status)
-
-    const todolistForRender = useMemo(() => todolists.map(tl => {
-
-        return (
-            <Grid item
-                  key={tl.id}>
-                <Paper elevation={20}
-                       style={{padding: '15px', minWidth: '300px', maxWidth: '300px', minHeight: '100px'}}>
-                    < Todolist10
-                        key={tl.id}
-                        todolistID={tl.id}
-                    />
-                </Paper>
-            </Grid>
-        )
-    }), [todolists]);
     //UI:
     return (
         <div className="App">
@@ -61,14 +31,25 @@ function AppWithRedux() {
             </AppBar>
             {appStatuses === 'loading' && < LinearProgress color="secondary"/>}
             <Container fixed>
-                <Grid container justifyContent={'center'} style={{padding: '15px'}}>
-                    <Grid item>
-                        <AddItemForm addItem={addTodolist} disabled={false}/>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={5} justifyContent={'center'}>
-                    {todolistForRender}
-                </Grid>
+                <Routes>
+                    <Route path='/' element={<TodosList/>}/>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/404' element={
+                        <article>
+                            <h1>ERROR 404</h1>
+                            <h4 style={{textAlign: 'justify'}}>Ошибка 404 или Not Found («не найдено») — стандартный код ответа HTTP о том, что клиент
+                                был в состоянии общаться с сервером, но сервер не может найти данные согласно запросу.
+                                Ошибку 404 не следует путать с ошибкой «Сервер не найден» или иными ошибками,
+                                указывающими на ограничение доступа к серверу. Ошибка 404 означает, что запрашиваемый
+                                ресурс может быть доступен в будущем, что однако не гарантирует наличие прежнего
+                                содержания.
+                                Пользователи наиболее часто сталкиваются с ошибкой 404 при посещении так называемых
+                                «битых» или «мёртвых ссылок», что делает, таким образом, ошибку 404 одной из наиболее
+                                узнаваемых ошибок в сети Интернет</h4>
+                        </article>
+                    }/>
+                    <Route path='*' element={<Navigate to='/404'/>}/>
+                </Routes>
             </Container>
         </div>
     )
