@@ -13,6 +13,13 @@ export type BaseResponseType<T = {}> = {
     data: T
     fieldsErrors: string[]
 }
+export type LoginParamsType = {
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+    captcha?: boolean,
+}
+
 
 const settings = {
     withCredentials: true,
@@ -23,6 +30,10 @@ const settings = {
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
+    ...settings,
+})
+const authInstance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/auth',
     ...settings,
 })
 
@@ -42,3 +53,8 @@ export const todolistAPI = {
     },
 }
 
+export const authAPI = {
+    login: (loginParams: LoginParamsType) => {
+        return authInstance.post<BaseResponseType<{ userId: number }>>('login', loginParams);
+    }
+}

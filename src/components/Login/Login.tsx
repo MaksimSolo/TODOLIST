@@ -1,13 +1,15 @@
 import React from 'react';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
 import {useFormik,} from "formik";
+import {loginTC} from "../../store/auth-reducer";
+import {useDispatch} from "react-redux";
 
 type FormikErrorType = {
     email?: string,
     password?: string,
 }
 export const Login = () => {
-
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -24,13 +26,13 @@ export const Login = () => {
 
             if (!values.password) {
                 errors.password = '🤣 Dumb! You even forgot your password';
-            } else if (values.password.length > 10 || values.password.length < 6) {
-                errors.password = '🤣 must be more than 6 characters but less than 10';
+            } else if (values.password.length > 10 || values.password.length < 4) {
+                errors.password = '🤣 must be more than 4 characters but less than 10';
             }
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values))
+            dispatch(loginTC(values));
             formik.resetForm();
         }
     })
