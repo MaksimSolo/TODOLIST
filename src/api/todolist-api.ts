@@ -16,7 +16,7 @@ export type BaseResponseType<T = {}> = {
 export type LoginParamsType = {
     email: string,
     password: string,
-    rememberMe?: boolean,
+    rememberMe: boolean,
     captcha?: boolean,
 }
 
@@ -24,7 +24,7 @@ export type LoginParamsType = {
 const settings = {
     withCredentials: true,
     headers: {
-        'api-key': 'e8f5aac1-49b6-4991-ad14-5794e579a911'
+        'api-key': 'b42e249f-81b0-486e-a39f-c56668ce792c'
     }
 }
 
@@ -56,5 +56,11 @@ export const todolistAPI = {
 export const authAPI = {
     login: (loginParams: LoginParamsType) => {
         return authInstance.post<BaseResponseType<{ userId: number }>>('login', loginParams);
+    },
+    me: ()=>{
+      return authInstance.get<BaseResponseType>('me',)
+    },
+    logout: ()=>{
+        return authInstance.delete<BaseResponseType>('login')
     }
 }

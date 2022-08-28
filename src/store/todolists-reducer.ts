@@ -3,6 +3,7 @@ import {AppThunk} from "./store";
 import {RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {fetchTasksTC} from "./tasks-reducer";
 
 const initialState: Array<TodolistBLLType> = [];
 
@@ -22,6 +23,8 @@ export const todolistsReducer = (state: Array<TodolistBLLType> = initialState, a
             return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
         case 'CHANGE-TODOLIST-ENTITY-STATUS':
             return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
+        case 'CLEAR-STATE-DATA':
+            return []
         default:
             return state
     }
@@ -39,12 +42,17 @@ export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestSt
     id,
     entityStatus
 } as const)
+export const clearStateData = () => ({type: 'CLEAR-STATE-DATA',} as const)
 
 //thunk-creators
 export const fetchTodolistsTC = (): AppThunk => async dispatch => {
     try {
         dispatch(setAppStatusAC('loading'))
-        dispatch(SetTodolists((await todolistAPI.getTodolists()).data))
+        const resp =await todolistAPI.getTodolists()
+        dispatch(SetTodolists(resp.data))
+        resp.data.forEach(tl=>{
+            dispatch(fetchTasksTC(tl.id))
+        })
         dispatch(setAppStatusAC('succeeded'))
     } catch (err) {
         const error = err as AxiosError
@@ -107,4 +115,5 @@ export type ActionType =
     | ReturnType<typeof ChangeTodolistTitle>
     | ReturnType<typeof ChangeTodolistFilter>
     | ReturnType<typeof SetTodolists>
-    | ReturnType<typeof changeTodolistEntityStatusAC>;
+    | ReturnType<typeof changeTodolistEntityStatusAC>
+    | ReturnType<typeof clearStateData>;

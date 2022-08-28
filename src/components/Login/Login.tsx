@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
 import {useFormik,} from "formik";
 import {loginTC} from "../../store/auth-reducer";
 import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../store/store";
+import {useNavigate} from "react-router-dom";
+import {LoginParamsType} from "../../api/todolist-api";
 
-type FormikErrorType = {
-    email?: string,
-    password?: string,
-}
 export const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -17,17 +18,17 @@ export const Login = () => {
             rememberMe: false
         },
         validate: values => {
-            const errors: FormikErrorType = {};
+            const errors: Partial<Omit<LoginParamsType,'captcha'>> = {}; //Partial говорит о том что мы применяем здесь элементы типа LoginParams, а не отдельный тип
             if (!values.email) {
-                errors.email = '🤣 Dumb! E-mail required';
+                errors.email = '😎 E-mail required!';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = '🤣 Invalid email address';
+                errors.email = '😎 Invalid email address';
             }
 
             if (!values.password) {
-                errors.password = '🤣 Dumb! You even forgot your password';
+                errors.password = '😎 Enter your password!';
             } else if (values.password.length > 10 || values.password.length < 4) {
-                errors.password = '🤣 must be more than 4 characters but less than 10';
+                errors.password = '😎 must be more than 4 characters but less than 10';
             }
             return errors;
         },
@@ -37,6 +38,9 @@ export const Login = () => {
         }
     })
 
+    useEffect(()=>{
+        isLoggedIn && navigate('/')
+    },[isLoggedIn, navigate])
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>

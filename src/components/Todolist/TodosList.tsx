@@ -5,13 +5,18 @@ import {useAppSelector} from "../../store/store";
 import {Grid, Paper} from "@mui/material";
 import {Todolist10} from "./Todolist#10";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {Navigate} from "react-router-dom";
 
 export const TodosList = () => {
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
+    const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn)
     useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
         dispatch(fetchTodolistsTC())
-    }, [dispatch])
+    }, [dispatch, isLoggedIn])
 
     const todolists = useAppSelector<Array<TodolistBLLType>>(state => state.todolists) //нужен только возвращаемый тип
     const addTodolist = useCallback((newTodoTitle: string) => {
@@ -33,6 +38,11 @@ export const TodosList = () => {
             </Grid>
         )
     }), [todolists]);
+
+
+    if (!isLoggedIn) {
+        return <Navigate to='/login'/>
+    }
 
     return <>
         <Grid container justifyContent={'center'} style={{padding: '15px'}}>

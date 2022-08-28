@@ -168,6 +168,7 @@ const initialGlobalState: AppStateType = {
     app: {
         status: 'idle',
         error: null,
+        isInitialized: false,
     }
 }
 

@@ -1,4 +1,4 @@
-import {AddTodolist, RemoveTodolist, SetTodolists} from "./todolists-reducer";
+import {AddTodolist, clearStateData, RemoveTodolist, SetTodolists} from "./todolists-reducer";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "../api/task-api";
 import {AppStateType, AppThunk} from "./store";
 import {RequestStatusType, setAppStatusAC} from "./app-reducer";
@@ -16,7 +16,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'ADD-TASK': {
             const copyState = {...state}
             let tasks = {...state}[action.task.todoListId]
-            const newBLLTypeTask: TaskBLLType= {...action.task, taskItemStatus: 'idle'}
+            const newBLLTypeTask: TaskBLLType = {...action.task, taskItemStatus: 'idle'}
             copyState[action.task.todoListId] = [newBLLTypeTask, ...tasks]
             return copyState;
         }
@@ -51,6 +51,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 copyState[tl.id] = []
             })
             return copyState
+        case 'CLEAR-STATE-DATA':
+            return {}
         default:
             return state
     }
@@ -80,13 +82,13 @@ export const fetchTasksTC = (todolistID: string): AppThunk => dispatch => {
         })
 }
 export const removeTaskTC = (todolistID: string, taskID: string,): AppThunk => dispatch => {
-    dispatch(changeTaskItemStatus(todolistID,taskID,'loading'))
+    dispatch(changeTaskItemStatus(todolistID, taskID, 'loading'))
     dispatch(setAppStatusAC('loading'))
     tasksAPI.deleteTask(todolistID, taskID)
         .then(() => {
             dispatch(removeTaskAC(todolistID, taskID))
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(changeTaskItemStatus(todolistID,taskID,'succeeded'))
+            dispatch(changeTaskItemStatus(todolistID, taskID, 'succeeded'))
         })
         .catch(err => {
             const error = err as AxiosError
@@ -156,7 +158,8 @@ export type ActionsType =
     | ReturnType<typeof AddTodolist>
     | ReturnType<typeof SetTodolists>
     | ReturnType<typeof setTasksAC>
-    | ReturnType<typeof changeTaskItemStatus>;
+    | ReturnType<typeof changeTaskItemStatus>
+    | ReturnType<typeof clearStateData>;
 
 export type UpdateTaskUIModel = {
     deadline?: string,

@@ -1,19 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../../App.css';
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import {useAppSelector} from "../../store/store";
 import {Menu,} from "@mui/icons-material";
 import LinearProgress from '@mui/material/LinearProgress';
-import {RequestStatusType} from "../../store/app-reducer";
+import {initializeApp, RequestStatusType} from "../../store/app-reducer";
 import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
 import {Route, Routes, Navigate} from 'react-router-dom'
 import {Login} from "../Login/Login";
 import {TodosList} from "../Todolist/TodosList";
+import {useDispatch} from "react-redux";
+import {logoutTC} from "../../store/auth-reducer";
 
 //C-R-U-D
 function AppWithRedux() {
 
+    const dispatch=useDispatch();
     const appStatuses = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn)
+    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+
+    useEffect(()=>{
+        dispatch(initializeApp())
+    },[dispatch])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
     //UI:
     return (
         <div className="App">
@@ -26,7 +43,8 @@ function AppWithRedux() {
                     <Typography variant='h6'>
                         Todolists
                     </Typography>
-                    <Button color='inherit' variant={'outlined'}>Login</Button>
+                    {isLoggedIn&& <Button onClick={()=>{dispatch(logoutTC())}} color='inherit' variant={'outlined'}>Logout</Button>}
+
                 </Toolbar>
             </AppBar>
             {appStatuses === 'loading' && < LinearProgress color="secondary"/>}
