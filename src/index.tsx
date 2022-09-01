@@ -5,15 +5,15 @@ import reportWebVitals from './reportWebVitals';
 import AppWithRedux from "./components/AppWithRedux/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./store/store";
-import {BrowserRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 
 
 ReactDOM.render(
-    <BrowserRouter basename={'TODOLIST'}>
+    <HashRouter basename={'TODOLIST'}>
         <Provider store={store}>
             <AppWithRedux/>
         </Provider>
-    </BrowserRouter>,
+    </HashRouter>,
     document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
