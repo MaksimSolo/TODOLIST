@@ -9,7 +9,7 @@ import {HashRouter} from "react-router-dom";
 
 
 ReactDOM.render(
-    <HashRouter basename={'/TODOLIST'}>
+    <HashRouter>
         <Provider store={store}>
             <AppWithRedux/>
         </Provider>
