@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const PageNotFound = () => {
+export const PageNotFound = (): JSX.Element => {
   return (
     <article>
       <h1>ERROR 404</h1>
