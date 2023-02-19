@@ -91,7 +91,7 @@ export function sumFirstNumbers(N: number): number {
         return num
     }*/
 
-    return ((0+N)*(N+1)/2)
+    return ((N)*(N+1)/2)
 }
 
 

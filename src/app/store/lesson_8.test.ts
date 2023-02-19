@@ -15,7 +15,7 @@ test("get Triangle Type", ()=> {
     expect(getTriangleType(10, 2, 2)).toBe("00")
 })
 
-test("get Sum ", ()=> {
+test("get Sum", ()=> {
     expect(getSum(1000)).toBe(1)
     expect(getSum(0)).toBe(0)
     expect(getSum(1234)).toBe(10)

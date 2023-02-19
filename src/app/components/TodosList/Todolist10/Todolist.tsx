@@ -1,12 +1,12 @@
 import React, {ChangeEvent} from "react";
 
-import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {AddItemForm} from "../../AddItemForm/AddItemForm";
+import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, ListItem, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {TaskStatuses, TaskType} from "../../api/task-api";
-import {FilterType} from "../../store/todolists-reducer";
-import {RequestStatusType} from "../../store/app-reducer";
+import {TaskStatuses, TaskType} from "../../../api/task-api";
+import {FilterType} from "../../../store/todolists-reducer";
+import {RequestStatusType} from "../../../store/app-reducer";
 
 
 type PropsType = {
