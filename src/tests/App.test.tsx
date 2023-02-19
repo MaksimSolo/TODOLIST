@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import AppWithRedux from "./app/AppWithRedux/AppWithRedux";
+import AppWithRedux from "../app/AppWithRedux";
 
 test.skip('renders learn react link', () => {
   render(<AppWithRedux />);

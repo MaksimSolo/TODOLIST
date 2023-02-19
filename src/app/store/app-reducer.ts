@@ -1,8 +1,9 @@
 import {AppThunk} from "./store";
 import {AxiosError} from "axios";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
 import {authAPI} from "../api/todolist-api";
 import {setIsLoggedIn} from "./auth-reducer";
+import {ResponseResultCode} from "../../common/types/types";
 
 const initialState = {
     status: 'idle' as RequestStatusType,
@@ -34,15 +35,17 @@ export const setIsInitializedAC = (value: boolean) => ({type: 'APP/SET-INITIALIZ
 export const initializeApp = (): AppThunk => async dispatch => {
     try {
         const resp = await authAPI.me()
-        dispatch(setIsInitializedAC(true));
-        if (resp.data.resultCode === 0) {
+        if (resp.data.resultCode === ResponseResultCode.OK) {
             dispatch(setIsLoggedIn(true))
+            dispatch(setAppStatusAC('succeeded'))
         } else {
             handleServerAppError(dispatch, resp.data)
         }
     } catch (err) {
         const error = err as AxiosError
-        handleServerNetworkError(dispatch, error.message)
+        handleServerNetworkError(dispatch, error)
+    } finally {
+        dispatch(setIsInitializedAC(true))
     }
 }
 

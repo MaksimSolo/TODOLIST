@@ -1,12 +1,12 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 
-import {AddItemForm, AddItemFormType} from './AddItemForm';
+import {AddItemForm, AddItemFormType} from '../app/components/AddItemForm/AddItemForm';
 import {action} from "@storybook/addon-actions";
 
 
 export default {
-    title: 'Todolist/AddItemForm',
+    title: 'Todolist10/AddItemForm',
     component: AddItemForm,
     argTypes: {
         addItem: {

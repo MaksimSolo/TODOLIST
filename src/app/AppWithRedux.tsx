@@ -1,25 +1,25 @@
 import React, {useEffect} from 'react';
-import '../../App.css';
+import '../styles/App.css';
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
-import {useAppSelector} from "../../store/store";
+import {useAppSelector} from "./store/store";
 import {Menu,} from "@mui/icons-material";
 import LinearProgress from '@mui/material/LinearProgress';
-import {initializeApp, RequestStatusType} from "../../store/app-reducer";
-import {ErrorSnackbar} from "../../components/ErrorSnackbar/ErrorSnackbar";
+import {initializeApp, RequestStatusType} from "./store/app-reducer";
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from 'react-router-dom'
-import {Login} from "../../components/Login/Login";
-import {TodosList} from "../../components/Todolist/TodosList";
+import {Login} from "./components/Login/Login";
+import {TodosList} from "./components/TodosList/TodosList";
 import {useDispatch} from "react-redux";
-import {logoutTC} from "../../store/auth-reducer";
-import {PageNotFound} from "../../components/PageNotFound/PageNotFound";
+import {logoutTC} from "./store/auth-reducer";
+import {PageNotFound} from "./components/PageNotFound/PageNotFound";
 
 //C-R-U-D
 function AppWithRedux() {
 
   const dispatch = useDispatch();
-  const appStatuses = useAppSelector<RequestStatusType>(state => state.app.status)
-  const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn)
-  const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+  const appStatuses = useAppSelector<RequestStatusType>(({app}) => app.status)
+  const isLoggedIn = useAppSelector<boolean>(({login}) => login.isLoggedIn)
+  const isInitialized = useAppSelector<boolean>(({app}) => app.isInitialized)
 
   useEffect(() => {
     dispatch(initializeApp())
