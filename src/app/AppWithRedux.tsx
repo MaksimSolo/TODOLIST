@@ -9,9 +9,9 @@ import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from 'react-router-dom'
 import {Login} from "./components/Login/Login";
 import {TodosList} from "./components/TodosList/TodosList";
-import {useDispatch} from "react-redux";
 import {logoutTC} from "./store/auth-reducer";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
+import {useDispatch} from "react-redux";
 
 //C-R-U-D
 function AppWithRedux() {
