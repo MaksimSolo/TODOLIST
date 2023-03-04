@@ -6,12 +6,6 @@ import {useAppSelector} from "../../store/store";
 import {setAppErrorAC} from "../../store/app-reducer";
 import {useDispatch} from "react-redux";
 
-function TransitionDown(props: any,) {
-  return (
-    <Slide direction="down" children={props}/>
-  )
-}
-
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
   ref,
@@ -32,10 +26,12 @@ export function ErrorSnackbar() {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={10000} onClose={handleClose} TransitionComponent={TransitionDown}>
-      <Alert onClose={handleClose} severity='error' sx={{width: '100%'}}>
-        {error}
-      </Alert>
+    <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
+      <Slide direction="down">
+        <Alert onClose={handleClose} severity='error' sx={{width: '100%'}}>
+          {error}
+        </Alert>
+      </Slide>
     </Snackbar>
   );
 }
