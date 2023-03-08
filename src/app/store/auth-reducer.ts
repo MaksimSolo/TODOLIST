@@ -1,7 +1,7 @@
 import {AppThunk} from "./store";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
-import {setAppStatusAC} from "./app-reducer";
+import {setAppStatus} from "./app-reducer";
 import {authAPI} from "../api/todolist-api";
 import {clearStateData} from "./todolists-reducer";
 import {LoginParamsType, ResponseResultCode} from "../../common/types/types";
@@ -28,11 +28,11 @@ export const {setIsLoggedIn} = authSlice.actions
 //thunk -creator
 export const loginTC = (loginParams: LoginParamsType): AppThunk => async dispatch => {
   try {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatus('loading'))
     const resp = await authAPI.login(loginParams)
     if (resp.data.resultCode === ResponseResultCode.OK) {
       dispatch(setIsLoggedIn(true))
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatus('succeeded'))
     } else {
       handleServerAppError(dispatch, resp.data)
     }
@@ -44,12 +44,12 @@ export const loginTC = (loginParams: LoginParamsType): AppThunk => async dispatc
 
 export const logoutTC = (): AppThunk => async dispatch => {
   try {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatus('loading'))
     const resp = await authAPI.logout()
     if (resp.data.resultCode === ResponseResultCode.OK) {
       dispatch(setIsLoggedIn(false))
       dispatch(clearStateData())
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatus('succeeded'))
     } else {
       handleServerAppError(dispatch, resp.data)
     }

@@ -9,10 +9,10 @@ import {configureStore} from "@reduxjs/toolkit";
 
 
 const rootReducers = combineReducers({
-    todolists: todolistsReducer,
-    tasks: tasksReducer,
-    app: appReducer,
-    login: authReducer,
+  todolists: todolistsReducer,
+  tasks: tasksReducer,
+  app: appReducer,
+  login: authReducer,
 })
 
 export const store = configureStore({

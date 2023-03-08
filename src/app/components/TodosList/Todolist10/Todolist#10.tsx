@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../../store/store";
 import {addTaskTC} from "../../../store/tasks-reducer";
 import {
-    ChangeTodolistFilter,
+    changeTodolistFilter,
     FilterType,
     removeTodolistTC,
     TodolistBLLType,
@@ -49,9 +49,9 @@ export const Todolist10 = React.memo((props: PropsType) => {
     }, [dispatch, props.todolistID,]);
     const removeTodolist = useCallback(() => dispatch(removeTodolistTC(props.todolistID)), [dispatch, props.todolistID]);
 
-    const onAllFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "all")), [dispatch, props.todolistID]);
-    const onActiveFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "active")), [dispatch, props.todolistID]);
-    const onCompletedFilter = useCallback(() => dispatch(ChangeTodolistFilter(props.todolistID, "completed")), [dispatch, props.todolistID]);
+    const onAllFilter = useCallback(() => dispatch(changeTodolistFilter(props.todolistID, "all")), [dispatch, props.todolistID]);
+    const onActiveFilter = useCallback(() => dispatch(changeTodolistFilter(props.todolistID, "active")), [dispatch, props.todolistID]);
+    const onCompletedFilter = useCallback(() => dispatch(changeTodolistFilter(props.todolistID, "completed")), [dispatch, props.todolistID]);
 
     return (
         <div style={{
