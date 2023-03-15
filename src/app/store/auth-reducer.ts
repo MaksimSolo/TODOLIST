@@ -48,7 +48,7 @@ export const logoutTC = (): AppThunk => async dispatch => {
     const resp = await authAPI.logout()
     if (resp.data.resultCode === ResponseResultCode.OK) {
       dispatch(setIsLoggedIn(false))
-      dispatch(clearStateData())
+      dispatch(clearStateData({}))
       dispatch(setAppStatus('succeeded'))
     } else {
       handleServerAppError(dispatch, resp.data)

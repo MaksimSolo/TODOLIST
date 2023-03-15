@@ -13,28 +13,34 @@ const todolistSlice = createSlice({
   initialState: initialState,
   reducers: {
     removeTodolist: (state: TodolistBLLType[], action: PayloadAction<string>) => {
-      state.filter(({id})=>id !== action.payload)
+      state.filter(({id}) => id !== action.payload)
     },
     addTodolist: (state: TodolistBLLType[], action: PayloadAction<TodoType>) => {
       state.unshift({...action.payload, filter: 'all', entityStatus: 'idle'})
     },
     changeTodolistTitle: (state: TodolistBLLType[], action: PayloadAction<{ id: string, title: string }>) => {
-      state.find(tl=>tl.id === action.payload.id ? {...tl, title: action.payload.title}:'')
+      // state.find(tl=>tl.id === action.payload.id ? {...tl, title: action.payload.title}:'')
+      const index = state.findIndex(({id}) => id === action.payload.id)
+      state[index].title = action.payload.title
     },
     changeTodolistFilter: (state: TodolistBLLType[], action: PayloadAction<{ id: string, filter: FilterType }>) => {
-      state.find(tl=>tl.id === action.payload.id ? {...tl, filter: action.payload.filter}:'')
+      // state.find(tl => tl.id === action.payload.id ? {...tl, filter: action.payload.filter} : '')
+      const index = state.findIndex(({id}) => id === action.payload.id)
+      state[index].filter = action.payload.filter
     },
     setTodolists: (state: TodolistBLLType[], action: PayloadAction<TodoType[]>) => {
-      action.payload.forEach(tl=>({...tl, filter: 'all', entityStatus: 'idle'}))
+      return action.payload.forEach(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     },
     changeTodolistEntityStatus: (
       state: TodolistBLLType[],
       action: PayloadAction<{ id: string, entityStatus: RequestStatusType }>
     ) => {
-      state.find(tl=>tl.id === action.payload.id ? {...tl, entityStatus: action.payload.entityStatus}:'')
+      // state.find(tl => tl.id === action.payload.id ? {...tl, entityStatus: action.payload.entityStatus} : '')
+      const index = state.findIndex(({id}) => id === action.payload.id)
+      state[index].entityStatus = action.payload.entityStatus
     },
-    clearStateData: (state: TodolistBLLType[]) => {
-      state.length = 0
+    clearStateData: (state: TodolistBLLType[], action: PayloadAction<{}>) => {
+      return initialState
     },
   }
 })
