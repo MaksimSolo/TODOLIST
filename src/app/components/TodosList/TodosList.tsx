@@ -8,18 +8,18 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 export const TodosList = () => {
-
+debugger
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(({login}) => login.isLoggedIn)
-  const todolists = useAppSelector<Array<TodolistBLLType>>(({todolists}) => todolists) //нужен только возвращаемый тип
+  const todolists = useAppSelector<TodolistBLLType[]>(({todolists}) => todolists) //нужен только возвращаемый тип
 
   const addTodolist = useCallback((newTodoTitle: string) => {
     dispatch(createTodolistTC(newTodoTitle))
   }, [dispatch]);
 
   const todolistForRender = useMemo(() => todolists.map(({id}) => {
-
+    console.log("todolistForRender")
     return (
       <Grid item
             key={id}>
@@ -37,9 +37,8 @@ export const TodosList = () => {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/login')
-    } else {
-      dispatch(fetchTodolistsTC())
     }
+    dispatch(fetchTodolistsTC())
   }, [isLoggedIn, dispatch, navigate])
 
   return <>

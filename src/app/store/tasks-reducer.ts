@@ -5,6 +5,7 @@ import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
 import {TodoType} from "../api/todolist-api";
+import {addTodolist, clearStateData, removeTodolist, setTodolists} from "./todolists-reducer";
 
 const initialState: TasksStateType = {};
 
@@ -13,10 +14,16 @@ const taskSlice = createSlice({
   initialState: initialState,
   reducers: {
     setTasks: (state: TasksStateType, action: PayloadAction<{ todolistID: string, tasks: TaskType[] }>) => {
-      state[action.payload.todolistID].forEach(task => task.taskItemStatus = 'idle')
+      state[action.payload.todolistID] = action.payload.tasks.map(t => ({
+        ...t,
+        taskItemStatus: 'idle' as RequestStatusType
+      }))
     },
     removeTask: (state: TasksStateType, action: PayloadAction<{ todolistID: string, id: string }>) => {
-      state[action.payload.todolistID].filter(({id}) => id !== action.payload.id)
+      const index = state[action.payload.todolistID].findIndex(({id}) => id === action.payload.id)
+      if (index > -1) {
+        state[action.payload.todolistID].splice(index, 1)
+      }
     },
     addTask: (state: TasksStateType, action: PayloadAction<TaskType>) => {
       state[action.payload.todoListId].unshift({...action.payload, taskItemStatus: 'idle'})
@@ -25,7 +32,12 @@ const taskSlice = createSlice({
       state: TasksStateType,
       action: PayloadAction<{ todolistID: string, taskID: string, changesForApiModel: UpdateTaskUIModel }>
     ) => {
-      state[action.payload.todolistID].find(t => t.id === action.payload.taskID ? {...t, ...action.payload.changesForApiModel} : '')
+      // state[action.payload.todolistID].find(t => t.id === action.payload.taskID ? {...t, ...action.payload.changesForApiModel} : '')
+      const tasks = state[action.payload.todolistID]
+      const index = tasks.findIndex(({id}) => id === action.payload.taskID)
+      if (index > -1) {
+        tasks[index] = {...tasks[index], ...action.payload.changesForApiModel}
+      }
     },
     changeTaskItemStatus: (
       state: TasksStateType,
@@ -36,19 +48,23 @@ const taskSlice = createSlice({
         taskItemStatus: action.payload.taskItemStatus
       } : t)
     },
-    addTodolist: (state: TasksStateType, action: PayloadAction<TodoType>) => ({
-      ...state, [action.payload.id]: []
-    }),
-    removeTodolist: (state: TasksStateType, action: PayloadAction<string>) => {
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addTodolist, (state, action) => {
+      state[action.payload.id] = []
+    });
+    builder.addCase(removeTodolist, (state, action) => {
       delete state[action.payload]
-    },
-    setTodolists: (state: TasksStateType, action: PayloadAction<TodoType[]>) => {
-      action.payload.forEach(tl => {
-        state[tl.id] = []
+    });
+    builder.addCase(setTodolists, (state, action) => {
+      action.payload.forEach(({id}) => {
+        state[id] = []
       })
-    },
-    clearStateData: (state: TasksStateType,) => ({}),
-  }
+    });
+    builder.addCase(clearStateData, () => {
+      return initialState
+    });
+  },
 })
 
 export const tasksReducer: Reducer<TasksStateType, ActionsType> = taskSlice.reducer
@@ -163,22 +179,3 @@ export type UpdateTaskUIModel = {
   status?: TaskStatuses,
   title?: string,
 }
-
-
-// case "ADD-TODOLIST":
-// return {...state, [action.todolist.id]: []}
-// case "REMOVE_TODOLIST":
-// const copyTasks = {...state}
-// delete copyTasks[action.id]
-// return (copyTasks)
-// //также с помощью Рест-оператора
-// //const {[action.id]:[], ... rest}={...tasks}
-// //return rest
-// case "SET_TODOLISTS":
-// const copyState = {...state}
-// action.todolists.forEach(tl => {
-//   copyState[tl.id] = []
-// })
-// return copyState
-// case 'CLEAR-STATE-DATA':
-// return {}

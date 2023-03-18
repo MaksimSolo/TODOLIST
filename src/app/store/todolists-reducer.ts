@@ -29,7 +29,7 @@ const todolistSlice = createSlice({
       state[index].filter = action.payload.filter
     },
     setTodolists: (state: TodolistBLLType[], action: PayloadAction<TodoType[]>) => {
-      return action.payload.forEach(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+      return action.payload.map(tl => ({...tl, filter: 'all' as FilterType, entityStatus: 'idle' as RequestStatusType}))
     },
     changeTodolistEntityStatus: (
       state: TodolistBLLType[],
@@ -39,7 +39,7 @@ const todolistSlice = createSlice({
       const index = state.findIndex(({id}) => id === action.payload.id)
       state[index].entityStatus = action.payload.entityStatus
     },
-    clearStateData: (state: TodolistBLLType[], action: PayloadAction<{}>) => {
+    clearStateData: () => {
       return initialState
     },
   }
@@ -61,6 +61,7 @@ export const {
 
 //thunk-creators
 export const fetchTodolistsTC = (): AppThunk => async dispatch => {
+  debugger
   try {
     dispatch(setAppStatus('loading'))
     const resp = await todolistAPI.getTodolists()
