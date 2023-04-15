@@ -12,8 +12,10 @@ const todolistSlice = createSlice({
   name: 'TODOLIST',
   initialState: initialState,
   reducers: {
-    removeTodolist: (state: TodolistBLLType[], action: PayloadAction<string>) => {
-      state.filter(({id}) => id !== action.payload)
+    removeTodolist: (state: TodolistBLLType[], action: PayloadAction<{ id: string }>) => {
+      const index = state.findIndex(({id}) => id === action.payload.id)
+      // state.filter(({id}) => id !== action.payload.id)
+      state.splice(index,1)
     },
     addTodolist: (state: TodolistBLLType[], action: PayloadAction<TodoType>) => {
       state.unshift({...action.payload, filter: 'all', entityStatus: 'idle'})
@@ -80,7 +82,7 @@ export const removeTodolistTC = (id: string): AppThunk => async dispatch => {
     dispatch(changeTodolistEntityStatus({id, entityStatus: 'loading'}))
     dispatch(setAppStatus('loading'))
     await todolistAPI.deleteTodolist(id)
-    dispatch(removeTodolist(id))
+    dispatch(removeTodolist({id}))
     dispatch(setAppStatus('succeeded'))
     dispatch(changeTodolistEntityStatus({id, entityStatus: 'succeeded'}))
   } catch (err) {
@@ -126,7 +128,7 @@ export type TodolistBLLType = TodoType & {
 }
 export type FilterType = "all" | "active" | "completed";
 export type ActionType =
-  PayloadAction<string>
+  PayloadAction<{ id: string }>
   | PayloadAction<TodoType>
   | PayloadAction<{ id: string, title: string }>
   | PayloadAction<{ id: string, filter: FilterType }>

@@ -1,5 +1,4 @@
-import {ActionsType, addTask, removeTask, setTasks, tasksReducer, updateTask} from '../tasks-reducer';
-import {TasksStateType} from '../../App';
+import {ActionsType, addTask, removeTask, setTasks, tasksReducer, TasksStateType, updateTask} from '../tasks-reducer';
 import {addTodolist, removeTodolist, setTodolists} from "../todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/task-api";
 
@@ -49,7 +48,7 @@ beforeEach(() => {
 test('correct task should be deleted from correct array', () => {
 
 
-  const action: ActionsType = removeTask("todolistId2", "2");
+  const action: ActionsType = removeTask({todolistID: "todolistId2", id: "2"});
 
   const endState = tasksReducer(startState, action)
 
@@ -57,25 +56,25 @@ test('correct task should be deleted from correct array', () => {
     "todolistId1": [
       {
         id: "1", title: "CSS", status: TaskStatuses.New, addedDate: '', deadline: '',
-        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle'
       },
       {
         id: "2", title: "JS", status: TaskStatuses.New, addedDate: '', deadline: '',
-        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle'
       },
       {
         id: "3", title: "React", status: TaskStatuses.New, addedDate: '', deadline: '',
-        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle'
       }
     ],
     "todolistId2": [
       {
         id: "1", title: "bread", status: TaskStatuses.New, addedDate: '', deadline: '',
-        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle'
       },
       {
         id: "3", title: "tea", status: TaskStatuses.New, addedDate: '', deadline: '',
-        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: ''
+        description: '', order: 0, priority: TaskPriorities.Low, startDate: '', todoListId: '', taskItemStatus: 'idle'
       }
     ]
   });
@@ -112,7 +111,7 @@ test('status of specified task should be changed', () => {
 
   const status = TaskStatuses.Completed
 
-  const action = updateTask("todolistId2", '2', {status},);
+  const action = updateTask({todolistID: "todolistId2",taskID: '2', changesForApiModel: {status},});
 
   const endState = tasksReducer(startState, action)
 
@@ -124,7 +123,7 @@ test('status of specified task should be changed', () => {
 test('title of specified task should be changed', () => {
 
   let title = 'Barabulya of Crimea'
-  const action = updateTask("todolistId1", "3", {title});
+  const action = updateTask({todolistID: "todolistId1",taskID: '3', changesForApiModel: {title},});
 
   const endState = tasksReducer(startState, action)
 
@@ -190,7 +189,7 @@ test('empty arrays should be added when we set todolists', () => {
 
 test('tasks should be setted to state', () => {
 
-  const action: ActionsType = setTasks("todolistId1", startState["todolistId1"]);
+  const action: ActionsType = setTasks({ todolistID: "todolistId1", tasks: startState["todolistId1"] });
 
   const endState = tasksReducer({}, action);
 
