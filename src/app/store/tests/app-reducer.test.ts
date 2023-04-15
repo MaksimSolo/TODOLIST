@@ -1,4 +1,4 @@
-import {appReducer, LinearProgressStateType, RequestStatusType, setAppError, setAppStatus} from "./app-reducer";
+import {appReducer, LinearProgressStateType, RequestStatusType, setAppError, setAppStatus} from "../app-reducer";
 
 
 let startState: LinearProgressStateType;

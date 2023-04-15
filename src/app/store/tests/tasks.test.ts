@@ -6,7 +6,7 @@ import {
     divSalary, DivSalaryActionType,
     multSalary, MultSalaryActionType,
     salaryReducer
-} from "./tasks";
+} from "../tasks";
 
 test('addSalary', () => {
     //1-data

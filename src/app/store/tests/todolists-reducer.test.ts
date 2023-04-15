@@ -8,7 +8,7 @@ import {
     setTodolists,
     TodolistBLLType,
     todolistsReducer
-} from './todolists-reducer';
+} from '../todolists-reducer';
 
 
 let startState: Array<TodolistBLLType>;
