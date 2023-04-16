@@ -3,7 +3,7 @@ import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
 import {setAppStatus} from "./app-reducer";
 import {authAPI} from "../api/todolist-api";
-import {clearStateData} from "./todolists-reducer";
+// import {clearStateData} from "./todolists-reducer";
 import {LoginParamsType, ResponseResultCode} from "../../common/types/types";
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
 
@@ -48,7 +48,7 @@ export const logoutTC = (): AppThunk => async dispatch => {
     const resp = await authAPI.logout()
     if (resp.data.resultCode === ResponseResultCode.OK) {
       dispatch(setIsLoggedIn(false))
-      dispatch(clearStateData({}))
+      // dispatch(clearStateData())
       dispatch(setAppStatus('succeeded'))
     } else {
       handleServerAppError(dispatch, resp.data)

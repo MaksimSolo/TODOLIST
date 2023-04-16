@@ -63,7 +63,6 @@ export const {
 
 //thunk-creators
 export const fetchTodolistsTC = (): AppThunk => async dispatch => {
-  debugger
   try {
     dispatch(setAppStatus('loading'))
     const resp = await todolistAPI.getTodolists()

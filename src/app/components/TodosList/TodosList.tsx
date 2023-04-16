@@ -8,7 +8,6 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 export const TodosList = () => {
-debugger
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(({login}) => login.isLoggedIn)
@@ -19,7 +18,6 @@ debugger
   }, [dispatch]);
 
   const todolistForRender = useMemo(() => todolists.map(({id}) => {
-    console.log("todolistForRender")
     return (
       <Grid item
             key={id}>
