@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import '../styles/App.css';
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
-import {useAppSelector} from "./store/store";
+import {useAppDispatch, useAppSelector} from "./store/store";
 import {Menu,} from "@mui/icons-material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {initializeApp, RequestStatusType} from "./store/app-reducer";
@@ -11,12 +11,11 @@ import {Login} from "./components/Login/Login";
 import {TodosList} from "./components/TodosList/TodosList";
 import {logoutTC} from "./store/auth-reducer";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
-import {useDispatch} from "react-redux";
 
 //C-R-U-D
 function AppWithRedux() {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const appStatuses = useAppSelector<RequestStatusType>(({app}) => app.status)
   const isLoggedIn = useAppSelector<boolean>(({login}) => login.isLoggedIn)
   const isInitialized = useAppSelector<boolean>(({app}) => app.isInitialized)

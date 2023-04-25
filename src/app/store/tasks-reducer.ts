@@ -54,7 +54,7 @@ const taskSlice = createSlice({
       state[action.payload.id] = []
     });
     builder.addCase(removeTodolist, (state, action) => {
-      delete state[action.payload]
+      delete state[action.payload.id]
     });
     builder.addCase(setTodolists, (state, action) => {
       action.payload.forEach(({id}) => {
