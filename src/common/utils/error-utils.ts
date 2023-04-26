@@ -1,19 +1,19 @@
-import {AppStatusActionType, setAppError, setAppStatus} from "../../app/store/app-reducer";
-import {Dispatch} from "redux";
-import {BaseResponseType} from "../../app/api/todolist-api";
-import {BaseTasksRespType} from "../../app/api/task-api";
+import {BaseTasksRespType} from "app/api/task-api";
+import {BaseResponseType} from "app/api/todolist-api";
+import {appActions, AppStatusActionType} from "app/store/app-reducer";
 import {AxiosError} from "axios";
+import {Dispatch} from "redux";
 
 export const handleServerNetworkError = (dispatch: Dispatch<AppStatusActionType>, error: AxiosError) => {
-  dispatch(setAppError(error.message ? error.message : 'SOME ERROR OCCURRED'))
-  dispatch(setAppStatus('failed'))
+  dispatch(appActions.setAppError({error: error.message ? error.message : 'SOME ERROR OCCURRED'}))
+  dispatch(appActions.setAppStatus({status: 'failed'}))
 }
 
 export const handleServerAppError = <T, D>(dispatch: Dispatch<AppStatusActionType>, data: BaseResponseType<T> | BaseTasksRespType<D>) => {
   if (data.messages.length) {
-    dispatch(setAppError(data.messages[0]))
+    dispatch(appActions.setAppError({error: data.messages[0]}))
   } else {
-    dispatch(setAppError('SOME ERROR OCCURRED'))
+    dispatch(appActions.setAppError({error: 'SOME ERROR OCCURRED'}))
   }
-  dispatch(setAppStatus('failed'))
+  dispatch(appActions.setAppStatus({status: 'failed'}))
 }

@@ -1,10 +1,10 @@
-import {AppThunk} from "./store";
-import {AxiosError} from "axios";
-import {handleServerAppError, handleServerNetworkError} from "../../common/utils/error-utils";
-import {authAPI} from "../api/todolist-api";
-import {setIsLoggedIn} from "./auth-reducer";
-import {ResponseResultCode} from "../../common/types/types";
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
+import {AxiosError} from "axios";
+import {ResponseResultCode} from "common/types/types";
+import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
+import {authAPI} from "../api/todolist-api";
+import {authActions} from "./auth-reducer";
+import {AppThunk} from "./store";
 
 const initialState = {
   status: 'idle' as RequestStatusType,
@@ -12,25 +12,25 @@ const initialState = {
   isInitialized: false,
 }
 
-const appSlice = createSlice({
-  name: 'APP',
-  initialState: initialState,
+const slice = createSlice({
+  name: 'app',
+  initialState,
   reducers: {
-    setAppStatus: (state: LinearProgressStateType, action: PayloadAction<RequestStatusType>) => {
-      state.status = action.payload
+    setAppStatus: (state: LinearProgressStateType, action: PayloadAction<{ status: RequestStatusType }>) => {
+      state.status = action.payload.status
     },
-    setAppError: (state: LinearProgressStateType, action: PayloadAction<string | null>) => {
-      state.error = action.payload
+    setAppError: (state: LinearProgressStateType, action: PayloadAction<{ error: string | null }>) => {
+      state.error = action.payload.error
     },
-    setIsInitialized: (state: LinearProgressStateType, action: PayloadAction<boolean>) => {
-      state.isInitialized = action.payload
+    setIsInitialized: (state: LinearProgressStateType, action: PayloadAction<{ isInitialized: boolean }>) => {
+      state.isInitialized = action.payload.isInitialized
     }
   }
 })
 
-export const appReducer: Reducer<LinearProgressStateType, AppStatusActionType> = appSlice.reducer
+export const appReducer: Reducer<LinearProgressStateType, AppStatusActionType> = slice.reducer
 
-export const {setAppStatus, setAppError, setIsInitialized} = appSlice.actions
+export const appActions = slice.actions
 
 
 //thunk-creators
@@ -38,8 +38,8 @@ export const initializeApp = (): AppThunk => async dispatch => {
   try {
     const resp = await authAPI.me()
     if (resp.data.resultCode === ResponseResultCode.OK) {
-      dispatch(setIsLoggedIn(true))
-      dispatch(setAppStatus('succeeded'))
+      dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
+      dispatch(appActions.setAppStatus({status: 'succeeded'}))
     } else {
       handleServerAppError(dispatch, resp.data)
     }
@@ -47,7 +47,7 @@ export const initializeApp = (): AppThunk => async dispatch => {
     const error = err as AxiosError
     handleServerNetworkError(dispatch, error)
   } finally {
-    dispatch(setIsInitialized(true))
+    dispatch(appActions.setIsInitialized({isInitialized: true}))
   }
 }
 
@@ -56,6 +56,6 @@ export const initializeApp = (): AppThunk => async dispatch => {
 export type LinearProgressStateType = typeof initialState;
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppStatusActionType =
-  PayloadAction<RequestStatusType>
-  | PayloadAction<string | null>
-  | PayloadAction<boolean>
+  PayloadAction<{ status: RequestStatusType }>
+  | PayloadAction<{ error: string | null }>
+  | PayloadAction<{ isInitialized: boolean }>

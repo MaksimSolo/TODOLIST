@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
-import '../styles/App.css';
-import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "./store/store";
 import {Menu,} from "@mui/icons-material";
+import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
-import {initializeApp, RequestStatusType} from "./store/app-reducer";
-import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
+import '../styles/App.css';
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "./components/Login/Login";
-import {TodosList} from "./components/TodosList/TodosList";
-import {logoutTC} from "./store/auth-reducer";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
+import {TodosList} from "./components/TodosList/TodosList";
+import {initializeApp, RequestStatusType} from "./store/app-reducer";
+import {logoutTC} from "./store/auth-reducer";
+import {useAppDispatch, useAppSelector} from "./store/store";
 
 //C-R-U-D
 function AppWithRedux() {

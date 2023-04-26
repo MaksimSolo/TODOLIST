@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useMemo} from "react";
-import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "../../store/todolists-reducer";
-import {useAppSelector} from "../../store/store";
 import {Grid, Paper} from "@mui/material";
-import {Todolist10} from "./Todolist10/Todolist#10";
-import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "app/store/store";
+import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "app/store/todolists-reducer";
+import React, {useCallback, useEffect, useMemo} from "react";
 import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {Todolist10} from "./Todolist10/Todolist#10";
 
 export const TodosList = () => {
   const dispatch = useDispatch();

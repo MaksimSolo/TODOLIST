@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
+import {loginTC} from "app/store/auth-reducer";
+import {useAppSelector} from "app/store/store";
+import {LoginParamsType} from "common/types/types";
 import {useFormik,} from "formik";
-import {loginTC} from "../../store/auth-reducer";
-import {useAppSelector} from "../../store/store";
-import {useNavigate} from "react-router-dom";
-import {LoginParamsType} from "../../../common/types/types";
+import React, {useEffect} from 'react';
 import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 
 export const Login = () => {
