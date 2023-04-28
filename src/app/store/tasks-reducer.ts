@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
+import {authActions} from "app/store/auth-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "../api/task-api";
@@ -32,7 +33,6 @@ const slice = createSlice({
       state: TasksStateType,
       action: PayloadAction<{ todolistID: string, taskID: string, changesForApiModel: UpdateTaskUIModel }>
     ) => {
-      // state[action.payload.todolistID].find(t => t.id === action.payload.taskID ? {...t, ...action.payload.changesForApiModel} : '')
       const tasks = state[action.payload.todolistID]
       const index = tasks.findIndex(({id}) => id === action.payload.taskID)
       if (index > -1) {
@@ -49,18 +49,20 @@ const slice = createSlice({
       } : t)
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(todosActions.addTodolist, (state, action) => {
-      state[action.payload.todolist.id] = []
-    });
-    builder.addCase(todosActions.removeTodolist, (state, action) => {
-      delete state[action.payload.id]
-    });
-    builder.addCase(todosActions.setTodolists, (state, action) => {
-      action.payload.todolists.forEach(({id}) => {
-        state[id] = []
+  extraReducers: builder => {
+    builder
+      .addCase(todosActions.addTodolist, (state, action) => {
+        state[action.payload.todolist.id] = []
       })
-    });
+      .addCase(todosActions.removeTodolist, (state, action) => {
+        delete state[action.payload.id]
+      })
+      .addCase(todosActions.setTodolists, (state, action) => {
+        action.payload.todolists.forEach(({id}) => {
+          state[id] = []
+        })
+      })
+      .addCase(authActions.clearStateData, () => initialState);
   },
 })
 
@@ -156,9 +158,9 @@ export type ActionsType =
   PayloadAction<{ todolistID: string, id: string }>
   | PayloadAction<{ task: TaskType }>
   | PayloadAction<{ todolistID: string, taskID: string, changesForApiModel: UpdateTaskUIModel }>
-  | PayloadAction<{ id: string}>
+  | PayloadAction<{ id: string }>
   | PayloadAction<{ todolist: TodoType }>
-  | PayloadAction<{ todolists: TodoType[]}>
+  | PayloadAction<{ todolists: TodoType[] }>
   | PayloadAction<{ todolistID: string, tasks: TaskType[] }>
   | PayloadAction<{ todolistID: string, taskID: string, taskItemStatus: RequestStatusType }>
   | PayloadAction<{}>

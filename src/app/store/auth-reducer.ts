@@ -17,9 +17,7 @@ const slice = createSlice({
     setIsLoggedIn: (state: AuthStateType, action: LoggedInActionType) => {
       state.isLoggedIn = action.payload.isLoggedIn
     },
-    clearStateData: (state) => {
-      state.isLoggedIn = initialState.isLoggedIn
-    }
+    clearStateData: () => initialState
   },
 })
 

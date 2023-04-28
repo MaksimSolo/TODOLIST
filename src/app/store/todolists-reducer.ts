@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
+import {authActions} from "app/store/auth-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
 import {todolistAPI, TodoType} from "../api/todolist-api";
@@ -14,38 +15,35 @@ const slice = createSlice({
   reducers: {
     removeTodolist: (state: TodolistBLLType[], action: PayloadAction<{ id: string }>) => {
       const index = state.findIndex(({id}) => id === action.payload.id)
-      // state.filter(({id}) => id !== action.payload.id)
-      state.splice(index, 1)
+      if (index !== -1) state.splice(index, 1)
     },
     addTodolist: (state: TodolistBLLType[], action: PayloadAction<{ todolist: TodoType }>) => {
       state.unshift({...action.payload.todolist, filter: 'all', entityStatus: 'idle'})
     },
     changeTodolistTitle: (state: TodolistBLLType[], action: PayloadAction<{ id: string, title: string }>) => {
-      // state.find(tl=>tl.id === action.payload.id ? {...tl, title: action.payload.title}:'')
       const index = state.findIndex(({id}) => id === action.payload.id)
       state[index].title = action.payload.title
     },
     changeTodolistFilter: (state: TodolistBLLType[], action: PayloadAction<{ id: string, filter: FilterType }>) => {
-      // state.find(tl => tl.id === action.payload.id ? {...tl, filter: action.payload.filter} : '')
       const index = state.findIndex(({id}) => id === action.payload.id)
       state[index].filter = action.payload.filter
     },
-    setTodolists: (state: TodolistBLLType[], action: PayloadAction<{ todolists: TodoType[] }>) => {
-      return action.payload.todolists.map(tl => ({
+    setTodolists: (state: TodolistBLLType[], action: PayloadAction<{ todolists: TodoType[] }>) =>
+      action.payload.todolists.map(tl => ({
         ...tl,
         filter: 'all' as FilterType,
         entityStatus: 'idle' as RequestStatusType
-      }))
-    },
+      })),
     changeTodolistEntityStatus: (
       state: TodolistBLLType[],
       action: PayloadAction<{ id: string, entityStatus: RequestStatusType }>
     ) => {
-      // state.find(tl => tl.id === action.payload.id ? {...tl, entityStatus: action.payload.entityStatus} : '')
       const index = state.findIndex(({id}) => id === action.payload.id)
       state[index].entityStatus = action.payload.entityStatus
     },
-  }
+  },
+  extraReducers: builder =>
+    builder.addCase(authActions.clearStateData, () => initialState)
 })
 
 
