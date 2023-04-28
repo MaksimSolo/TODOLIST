@@ -2,9 +2,9 @@ import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 import {LoginParamsType, ResponseResultCode} from "common/types/types";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
-import {authAPI} from "../api/todolist-api";
-import {appActions} from "./app-reducer";
-import {AppThunk} from "./store";
+import {authAPI} from "app/api/todolist-api";
+import {appActions} from "app/store/reducers/app-reducer";
+import {AppThunk} from "app/store/store";
 
 const initialState: AuthStateType = {
   isLoggedIn: false

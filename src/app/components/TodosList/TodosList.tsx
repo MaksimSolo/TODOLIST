@@ -1,6 +1,6 @@
 import {Grid, Paper} from "@mui/material";
 import {useAppSelector} from "app/store/store";
-import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "app/store/todolists-reducer";
+import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "app/store/reducers/todolists-reducer";
 import React, {useCallback, useEffect, useMemo} from "react";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";

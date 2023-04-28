@@ -1,7 +1,7 @@
 import {Slide} from "@mui/material";
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import {appActions} from "app/store/app-reducer";
+import {appActions} from "app/store/reducers/app-reducer";
 import {useAppSelector} from "app/store/store";
 import * as React from 'react';
 import {useDispatch} from "react-redux";

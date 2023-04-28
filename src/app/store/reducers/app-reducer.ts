@@ -2,9 +2,9 @@ import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 import {ResponseResultCode} from "common/types/types";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
-import {authAPI} from "../api/todolist-api";
-import {authActions} from "./auth-reducer";
-import {AppThunk} from "./store";
+import {authAPI} from "app/api/todolist-api";
+import {authActions} from "app/store/reducers/auth-reducer";
+import {AppThunk} from "app/store/store";
 
 const initialState = {
   status: 'idle' as RequestStatusType,

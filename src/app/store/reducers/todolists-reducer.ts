@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {authActions} from "app/store/auth-reducer";
+import {authActions} from "app/store/reducers/auth-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
-import {todolistAPI, TodoType} from "../api/todolist-api";
-import {appActions, RequestStatusType} from "./app-reducer";
-import {AppThunk} from "./store";
-import {fetchTasksTC} from "./tasks-reducer";
+import {todolistAPI, TodoType} from "app/api/todolist-api";
+import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
+import {AppThunk} from "app/store/store";
+import {fetchTasksTC} from "app/store/reducers/tasks-reducer";
 
 const initialState: TodolistBLLType[] = [];
 

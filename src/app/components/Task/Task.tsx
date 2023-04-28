@@ -2,7 +2,7 @@ import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/task-api";
 import {AppStateType} from "app/store/store";
-import {removeTaskTC, TaskBLLType, updateTaskTC} from "app/store/tasks-reducer";
+import {removeTaskTC, TaskBLLType, updateTaskTC} from "app/store/reducers/tasks-reducer";
 import React, {ChangeEvent, useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {EditableSpan} from "../EditableSpan/EditableSpan";

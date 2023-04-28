@@ -1,13 +1,13 @@
-import {Provider} from "react-redux";
-import React from "react";
-import {combineReducers} from "redux";
-import {todolistsReducer} from "../app/store/todolists-reducer";
-import {tasksReducer} from "../app/store/tasks-reducer";
-import {TaskPriorities, TaskStatuses} from "../app/api/task-api";
-import {appReducer} from "../app/store/app-reducer";
-import thunk from "redux-thunk";
-import {authReducer} from "../app/store/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
+import {TaskPriorities, TaskStatuses} from "app/api/task-api";
+import {appReducer} from "app/store/reducers/app-reducer";
+import {authReducer} from "app/store/reducers/auth-reducer";
+import {tasksReducer} from "app/store/reducers/tasks-reducer";
+import {todolistsReducer} from "app/store/reducers/todolists-reducer";
+import React from "react";
+import {Provider} from "react-redux";
+import {combineReducers} from "redux";
+import thunk from "redux-thunk";
 
 
 type ReducersType = typeof rootReducers;

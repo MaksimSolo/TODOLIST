@@ -1,4 +1,4 @@
-import {ActionType, FilterType, TodolistBLLType, todolistsReducer, todosActions} from '../todolists-reducer';
+import {ActionType, FilterType, TodolistBLLType, todolistsReducer, todosActions} from 'app/store/reducers/todolists-reducer';
 
 
 let startState: Array<TodolistBLLType>;

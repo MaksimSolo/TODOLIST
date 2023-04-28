@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {authActions} from "app/store/auth-reducer";
+import {authActions} from "app/store/reducers/auth-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
-import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "../api/task-api";
-import {TodoType} from "../api/todolist-api";
-import {appActions, RequestStatusType} from "./app-reducer";
-import {AppStateType, AppThunk} from "./store";
-import {todosActions} from "./todolists-reducer";
+import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "app/api/task-api";
+import {TodoType} from "app/api/todolist-api";
+import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
+import {AppStateType, AppThunk} from "app/store/store";
+import {todosActions} from "app/store/reducers/todolists-reducer";
 
 const initialState: TasksStateType = {};
 

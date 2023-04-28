@@ -2,14 +2,14 @@ import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup, IconButton, Typography} from "@mui/material";
 import {TaskStatuses, TaskType} from "app/api/task-api";
 import {AppStateType} from "app/store/store";
-import {addTaskTC} from "app/store/tasks-reducer";
+import {addTaskTC} from "app/store/reducers/tasks-reducer";
 import {
   FilterType,
   removeTodolistTC,
   TodolistBLLType,
   todosActions,
   updateTodolistTitleTC
-} from "app/store/todolists-reducer";
+} from "app/store/reducers/todolists-reducer";
 import React, {useCallback, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";

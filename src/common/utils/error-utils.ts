@@ -1,6 +1,6 @@
 import {BaseTasksRespType} from "app/api/task-api";
 import {BaseResponseType} from "app/api/todolist-api";
-import {appActions, AppStatusActionType} from "app/store/app-reducer";
+import {appActions, AppStatusActionType} from "app/store/reducers/app-reducer";
 import {AxiosError} from "axios";
 import {Dispatch} from "redux";
 

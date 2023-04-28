@@ -1,5 +1,5 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
-import {loginTC} from "app/store/auth-reducer";
+import {loginTC} from "app/store/reducers/auth-reducer";
 import {useAppSelector} from "app/store/store";
 import {LoginParamsType} from "common/types/types";
 import {useFormik,} from "formik";
