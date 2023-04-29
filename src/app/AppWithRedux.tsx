@@ -1,6 +1,7 @@
 import {Menu,} from "@mui/icons-material";
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
+import {selectAppIsInitialized, selectAppStatus} from "app/store/selectors/app.selector";
 import {selectIsLoggedIn} from "app/store/selectors/auth.selector";
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
@@ -17,9 +18,9 @@ import {useAppDispatch, useAppSelector} from "./store/store";
 function AppWithRedux() {
 
   const dispatch = useAppDispatch();
-  const appStatuses = useAppSelector<RequestStatusType>(({app}) => app.status)
+  const appStatus = useAppSelector<RequestStatusType>(selectAppStatus)
   const isLoggedIn = useAppSelector<boolean>(selectIsLoggedIn)
-  const isInitialized = useAppSelector<boolean>(({app}) => app.isInitialized)
+  const isInitialized = useAppSelector<boolean>(selectAppIsInitialized)
 
   useEffect(() => {
     dispatch(initializeApp())
@@ -50,7 +51,7 @@ function AppWithRedux() {
 
         </Toolbar>
       </AppBar>
-      {appStatuses === 'loading' && < LinearProgress color="secondary"/>}
+      {appStatus === 'loading' && < LinearProgress color="secondary"/>}
       <Container fixed>
         <Routes>
           <Route path='/' element={<TodosList/>}/>

@@ -1,7 +1,6 @@
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup, IconButton, Typography} from "@mui/material";
 import {TaskStatuses, TaskType} from "app/api/task-api";
-import {AppStateType} from "app/store/store";
 import {addTaskTC} from "app/store/reducers/tasks-reducer";
 import {
   FilterType,
@@ -10,8 +9,9 @@ import {
   todosActions,
   updateTodolistTitleTC
 } from "app/store/reducers/todolists-reducer";
+import {useAppSelector} from "app/store/store";
 import React, {useCallback, useMemo} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Task} from "../../Task/Task";
@@ -24,10 +24,10 @@ type PropsType = {
 export const Todolist10 = React.memo((props: PropsType) => {
 
   const dispatch = useDispatch();
-  const todolist = useSelector<AppStateType, TodolistBLLType>(state => state.todolists.filter(tl => tl.id === props.todolistID)[0])
-  const tasks = useSelector<AppStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
+  const todolist = useAppSelector<TodolistBLLType>(({todolists})=>todolists.filter(({id}) => id === props.todolistID)[0])
+  const tasks = useAppSelector<TaskType[]>(state => state.tasks[props.todolistID])
 
-  const tasksForRender = (filter: FilterType, tasks: Array<TaskType>) => {
+  const tasksForRender = (filter: FilterType, tasks: TaskType[]) => {
     switch (filter) {
       case "completed":
         return tasks.filter(t => t.status === TaskStatuses.Completed)

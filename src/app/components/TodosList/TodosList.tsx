@@ -1,4 +1,6 @@
 import {Grid, Paper} from "@mui/material";
+import {selectIsLoggedIn} from "app/store/selectors/auth.selector";
+import {selectTodolists} from "app/store/selectors/todolist.selector";
 import {useAppSelector} from "app/store/store";
 import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "app/store/reducers/todolists-reducer";
 import React, {useCallback, useEffect, useMemo} from "react";
@@ -10,8 +12,8 @@ import {Todolist10} from "./Todolist10/Todolist#10";
 export const TodosList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLoggedIn = useAppSelector<boolean>(({login}) => login.isLoggedIn)
-  const todolists = useAppSelector<TodolistBLLType[]>(({todolists}) => todolists) //нужен только возвращаемый тип
+  const isLoggedIn = useAppSelector<boolean>(selectIsLoggedIn)
+  const todolists = useAppSelector<TodolistBLLType[]>(selectTodolists) //нужен только возвращаемый тип
 
   const addTodolist = useCallback((newTodoTitle: string) => {
     dispatch(createTodolistTC(newTodoTitle))
