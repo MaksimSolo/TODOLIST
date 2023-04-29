@@ -149,7 +149,6 @@ export const updateTaskTC = (todolistID: string, taskID: string, changesForApiMo
   }
 
 //types
-// export type TasksStateType = { [key: string]: Array<TaskBLLType> }
 export type TasksStateType = Record<string, TaskBLLType[]>
 export type TaskBLLType = TaskType & {
   taskItemStatus: RequestStatusType
@@ -163,7 +162,7 @@ export type ActionsType =
   | PayloadAction<{ todolists: TodoType[] }>
   | PayloadAction<{ todolistID: string, tasks: TaskType[] }>
   | PayloadAction<{ todolistID: string, taskID: string, taskItemStatus: RequestStatusType }>
-  | PayloadAction<{}>
+  | ReturnType<typeof authActions.clearStateData>
 
 export type UpdateTaskUIModel = {
   deadline?: string,

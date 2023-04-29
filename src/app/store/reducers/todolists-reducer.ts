@@ -123,3 +123,4 @@ export type ActionType =
   | PayloadAction<{ id: string, filter: FilterType }>
   | PayloadAction<{ todolists: TodoType[] }>
   | PayloadAction<{ id: string, entityStatus: RequestStatusType }>
+  | ReturnType<typeof authActions.clearStateData>

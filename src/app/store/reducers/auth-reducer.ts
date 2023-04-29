@@ -14,7 +14,7 @@ const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setIsLoggedIn: (state: AuthStateType, action: LoggedInActionType) => {
+    setIsLoggedIn: (state: AuthStateType, action: PayloadAction<{ isLoggedIn: boolean }>) => {
       state.isLoggedIn = action.payload.isLoggedIn
     },
     clearStateData: () => initialState
@@ -48,7 +48,7 @@ export const logoutTC = (): AppThunk => async dispatch => {
     const resp = await authAPI.logout()
     if (resp.data.resultCode === ResponseResultCode.OK) {
       dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
-      // dispatch(authActions.clearStateData())
+      dispatch(authActions.clearStateData())
       dispatch(appActions.setAppStatus({status:'succeeded'}))
     } else {
       handleServerAppError(dispatch, resp.data)
@@ -64,4 +64,4 @@ export const logoutTC = (): AppThunk => async dispatch => {
 export type AuthStateType = {
   isLoggedIn: boolean
 }
-export type LoggedInActionType = PayloadAction<{ isLoggedIn: boolean }>
+export type LoggedInActionType = PayloadAction<{ isLoggedIn: boolean }> | ReturnType<typeof authActions.clearStateData>
