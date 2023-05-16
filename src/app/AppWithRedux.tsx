@@ -1,8 +1,8 @@
 import {Menu,} from "@mui/icons-material";
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
-import {selectAppIsInitialized, selectAppStatus} from "app/store/selectors/app.selector";
-import {selectIsLoggedIn} from "app/store/selectors/auth.selector";
+import {initializeApp, RequestStatusType} from "app/store/reducers/app-reducer";
+import {logoutTC} from "app/store/reducers/auth-reducer";
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
 import '../styles/App.css';
@@ -10,17 +10,17 @@ import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "./components/Login/Login";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
 import {TodosList} from "./components/TodosList/TodosList";
-import {initializeApp, RequestStatusType} from "app/store/reducers/app-reducer";
-import {logoutTC} from "app/store/reducers/auth-reducer";
 import {useAppDispatch, useAppSelector} from "./store/store";
+import * as appSelectors from "./store/selectors/app.selectors"
+import * as authSelectors from "./store/selectors/auth.selectors"
 
 //C-R-U-D
 function AppWithRedux() {
 
   const dispatch = useAppDispatch();
-  const appStatus = useAppSelector<RequestStatusType>(selectAppStatus)
-  const isLoggedIn = useAppSelector<boolean>(selectIsLoggedIn)
-  const isInitialized = useAppSelector<boolean>(selectAppIsInitialized)
+  const appStatus = useAppSelector<RequestStatusType>(appSelectors.status)
+  const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
+  const isInitialized = useAppSelector<boolean>(appSelectors.isInitialized)
 
   useEffect(() => {
     dispatch(initializeApp())

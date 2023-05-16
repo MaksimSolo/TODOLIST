@@ -9,23 +9,20 @@ import {
   todosActions,
   updateTodolistTitleTC
 } from "app/store/reducers/todolists-reducer";
-import {useAppSelector} from "app/store/store";
 import React, {useCallback, useMemo} from "react";
 import {useDispatch} from "react-redux";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Task} from "../../Task/Task";
 
-
 type PropsType = {
-  todolistID: string
+  todolist: TodolistBLLType
+  tasks: TaskType[]
 }
 
-export const Todolist10 = React.memo((props: PropsType) => {
+export const Todolist10 = React.memo(({todolist, tasks}: PropsType) => {
 
   const dispatch = useDispatch();
-  const todolist = useAppSelector<TodolistBLLType>(({todolists})=>todolists.filter(({id}) => id === props.todolistID)[0])
-  const tasks = useAppSelector<TaskType[]>(state => state.tasks[props.todolistID])
 
   const tasksForRender = (filter: FilterType, tasks: TaskType[]) => {
     switch (filter) {
@@ -40,27 +37,27 @@ export const Todolist10 = React.memo((props: PropsType) => {
   const tasksJSX = useMemo(() => tasksForRender(todolist.filter, tasks)
     .map(t => <Task
       key={t.id}
-      todolistID={props.todolistID}
-      taskID={t.id}/>), [props.todolistID, tasks, todolist.filter]);
+      todolistID={t.todoListId}
+      taskID={t.id}/>), [tasks, todolist.filter]);
 
-  const addTaskTDL = useCallback((newTaskTitle: string) => dispatch(addTaskTC(props.todolistID, newTaskTitle)), [dispatch, props.todolistID]);
+  const addTaskTDL = useCallback((newTaskTitle: string) => dispatch(addTaskTC(todolist.id, newTaskTitle)), [dispatch, todolist.id]);
   const changeTodoTitle = useCallback((title: string) => {
-    dispatch(updateTodolistTitleTC(title, props.todolistID,));
-  }, [dispatch, props.todolistID,]);
-  const removeTodolist = useCallback(() => dispatch(removeTodolistTC(props.todolistID)), [dispatch, props.todolistID]);
+    dispatch(updateTodolistTitleTC(title, todolist.id,));
+  }, [dispatch, todolist.id,]);
+  const removeTodolist = useCallback(() => dispatch(removeTodolistTC(todolist.id)), [dispatch, todolist.id]);
 
   const onAllFilter = useCallback(() => dispatch(todosActions.changeTodolistFilter({
-    id: props.todolistID,
+    id: todolist.id,
     filter: "all"
-  })), [dispatch, props.todolistID]);
+  })), [dispatch, todolist.id]);
   const onActiveFilter = useCallback(() => dispatch(todosActions.changeTodolistFilter({
-    id: props.todolistID,
+    id: todolist.id,
     filter: "active"
-  })), [dispatch, props.todolistID]);
+  })), [dispatch, todolist.id]);
   const onCompletedFilter = useCallback(() => dispatch(todosActions.changeTodolistFilter({
-    id: props.todolistID,
+    id: todolist.id,
     filter: "completed"
-  })), [dispatch, props.todolistID]);
+  })), [dispatch, todolist.id]);
 
   return (
     <div style={{

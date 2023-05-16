@@ -1,10 +1,10 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/task-api";
-import {AppStateType} from "app/store/store";
 import {removeTaskTC, TaskBLLType, updateTaskTC} from "app/store/reducers/tasks-reducer";
-import React, {ChangeEvent, useCallback} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useAppSelector} from "app/store/store";
+import React, {ChangeEvent, memo, useCallback} from 'react';
+import {useDispatch} from "react-redux";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 
 
@@ -13,9 +13,9 @@ export type TaskPropsType = {
   taskID: string
 }
 
-export const Task = React.memo(({todolistID, taskID,}: TaskPropsType) => {
+export const Task = memo(({todolistID, taskID,}: TaskPropsType) => {
 
-  const task = useSelector<AppStateType, TaskBLLType>(({tasks}) => tasks[todolistID].filter(({id}) => id === taskID)[0])
+  const task = useAppSelector<TaskBLLType>(({tasks}) => tasks[todolistID].filter(({id}) => id === taskID)[0])
   const dispatch = useDispatch();
 
   const getClasses = () => task.status === TaskStatuses.Completed ? "is-done" : ''

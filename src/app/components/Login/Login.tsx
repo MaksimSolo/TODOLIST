@@ -1,18 +1,18 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
 import {loginTC} from "app/store/reducers/auth-reducer";
-import {selectIsLoggedIn} from "app/store/selectors/auth.selector";
 import {useAppSelector} from "app/store/store";
 import {LoginParamsType} from "common/types/types";
 import {useFormik,} from "formik";
 import React, {useEffect} from 'react';
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import * as authSelectors from "./../../store/selectors/auth.selectors"
 
 
 export const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLoggedIn = useAppSelector<boolean>(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
 
   const formik = useFormik({
     initialValues: {
