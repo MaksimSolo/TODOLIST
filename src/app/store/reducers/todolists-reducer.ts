@@ -73,7 +73,6 @@ export const removeTodolistTC = (id: string): AppThunk => async dispatch => {
     await todolistAPI.deleteTodolist(id)
     dispatch(todosActions.removeTodolist({id}))
     dispatch(appActions.setAppStatus({status: 'succeeded'}))
-    dispatch(todosActions.changeTodolistEntityStatus({id, entityStatus: 'succeeded'}))
   } catch (err) {
     const error = err as AxiosError
     handleServerNetworkError(dispatch, error)
