@@ -9,8 +9,8 @@ import {
   todosActions,
   updateTodolistTitleTC
 } from "app/store/reducers/todolists-reducer";
+import {useAppDispatch} from "app/store/store";
 import React, {useCallback, useMemo} from "react";
-import {useDispatch} from "react-redux";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 import {Task} from "../../Task/Task";
@@ -22,7 +22,11 @@ type PropsType = {
 
 export const Todolist10 = React.memo(({todolist, tasks}: PropsType) => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(tasksThunks.fetchTasks(todolist.id))
+  // }, [])
 
   const tasksForRender = (filter: FilterType, tasks: TaskType[]) => {
     switch (filter) {

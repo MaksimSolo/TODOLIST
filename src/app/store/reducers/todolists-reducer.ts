@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {authActions} from "app/store/reducers/auth-reducer";
-import {AxiosError} from "axios";
-import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
 import {todolistAPI, TodoType} from "app/api/todolist-api";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
+import {authActions} from "app/store/reducers/auth-reducer";
+import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {AppThunk} from "app/store/store";
-import {fetchTasksTC} from "app/store/reducers/tasks-reducer";
+import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
 
 const initialState: TodolistBLLType[] = [];
 
@@ -58,7 +58,7 @@ export const fetchTodolistsTC = (): AppThunk => async dispatch => {
     const resp = await todolistAPI.getTodolists()
     dispatch(todosActions.setTodolists({todolists: resp.data}))
     resp.data.forEach(tl => {
-      dispatch(fetchTasksTC(tl.id))
+      dispatch(tasksThunks.fetchTasks(tl.id))
     })
     dispatch(appActions.setAppStatus({status: 'succeeded'}))
   } catch (err) {
