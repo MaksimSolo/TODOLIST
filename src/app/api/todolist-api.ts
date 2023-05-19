@@ -1,48 +1,31 @@
-import axios from "axios";
-import {LoginParamsType} from "../../common/types/types";
-
-
-const settings = {
-  withCredentials: true,
-  headers: {
-    'api-key': 'b42e249f-81b0-486e-a39f-c56668ce792c'
-  }
-}
-
-const instance = axios.create({
-  baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
-  ...settings,
-})
-const authInstance = axios.create({
-  baseURL: 'https://social-network.samuraijs.com/api/1.1/auth',
-  ...settings,
-})
+import {instance} from "app/api/config/config";
+import {LoginParamsType} from "common/types/types";
 
 
 export const todolistAPI = {
   getTodolists: () => {
-    return instance.get<Array<TodoType>>('');
+    return instance.get<Array<TodoType>>('/todo-lists/');
   },
   createTodolist: (title: string) => {
-    return instance.post<BaseResponseType<{ item: TodoType }>>('', {title});
+    return instance.post<BaseResponseType<{ item: TodoType }>>('/todo-lists/', {title});
   },
   deleteTodolist: (id: string) => {
-    return instance.delete<BaseResponseType>(`${id}`);
+    return instance.delete<BaseResponseType>(`/todo-lists/${id}`);
   },
   updateTodolistTitle: (title: string, id: string) => {
-    return instance.put<BaseResponseType>(`${id}`, {title});
+    return instance.put<BaseResponseType>(`/todo-lists/${id}`, {title});
   },
 }
 
 export const authAPI = {
   login: (loginParams: LoginParamsType) => {
-    return authInstance.post<BaseResponseType<{ userId: number }>>('login', loginParams);
+    return instance.post<BaseResponseType<{ userId: number }>>('/auth/login', loginParams);
   },
   me: () => {
-    return authInstance.get<BaseResponseType>('me',)
+    return instance.get<BaseResponseType>('/auth/me',)
   },
   logout: () => {
-    return authInstance.delete<BaseResponseType>('login')
+    return instance.delete<BaseResponseType>('/auth/login')
   }
 }
 
