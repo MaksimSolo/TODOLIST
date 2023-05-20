@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskApiModel} from "app/api/task-api";
 import {TodoType} from "app/api/todolist-api";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
@@ -6,21 +6,26 @@ import {authActions} from "app/store/reducers/auth-reducer";
 import {todosActions} from "app/store/reducers/todolists-reducer";
 import {AppStateType, AppThunk} from "app/store/store";
 import {AxiosError} from "axios";
+import {createAppAsyncThunk} from "common/utils/app-async-thunk";
 import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils";
 
-const fetchTasks = createAsyncThunk('TASK/fetchTasks', async (todolistID: string, thunkAPI) => {
-  const {dispatch} = thunkAPI
-  dispatch(appActions.setAppStatus({status: 'loading'}))
-  const resp = await tasksAPI.getTasks(todolistID)
-  try {
-    return {todolistID, tasks: resp.data.items}
-  } catch (err) {
-    const error = err as AxiosError
-    handleServerNetworkError(dispatch, error)
-  } finally {
-    dispatch(appActions.setAppStatus({status: 'succeeded'}))
-  }
-})
+const fetchTasks = createAppAsyncThunk<{ todolistID: string, tasks: TaskType[] }, string>(
+  'TASK/fetchTasks', async (todolistID, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+
+    try {
+      dispatch(appActions.setAppStatus({status: 'loading'}))
+      const resp = await tasksAPI.getTasks(todolistID)
+      return {todolistID, tasks: resp.data.items}
+    }
+    catch (error) {
+      handleServerNetworkError(dispatch, error)
+      return rejectWithValue(null)
+    }
+    finally {
+      dispatch(appActions.setAppStatus({status: 'succeeded'}))
+    }
+  })
 
 const initialState: TasksStateType = {};
 
@@ -60,7 +65,7 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        state[action.payload!.todolistID] = action.payload!.tasks.map(t => ({
+        state[action.payload.todolistID] = action.payload.tasks.map(t => ({
           ...t,
           taskItemStatus: 'idle' as RequestStatusType
         }))
@@ -113,7 +118,8 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
     } else {
       handleServerAppError(dispatch, resp.data)
     }
-  } catch (err) {
+  }
+  catch (err) {
     const error = err as AxiosError
     handleServerNetworkError(dispatch, error)
   }
@@ -147,7 +153,8 @@ export const updateTaskTC = (todolistID: string, taskID: string, changesForApiMo
       } else {
         handleServerAppError(dispatch, resp.data)
       }
-    } catch (err) {
+    }
+    catch (err) {
       const error = err as AxiosError
       handleServerNetworkError(dispatch, error)
     }
