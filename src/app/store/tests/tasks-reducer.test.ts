@@ -114,7 +114,10 @@ test('status of specified task should be changed', () => {
 
   const status = TaskStatuses.Completed
 
-  const action = tasksActions.updateTask({todolistID: "todolistId2", taskID: '2', changesForApiModel: {status},});
+  const action = tasksThunks.updateTask.fulfilled(
+    {todolistID: "todolistId2", taskID: '2', changesForApiModel: {status}}, '',
+    {todolistID: "todolistId2", taskID: '2', changesForApiModel: {status}}
+  );
 
   const endState = tasksReducer(startState, action)
 
@@ -126,7 +129,10 @@ test('status of specified task should be changed', () => {
 test('title of specified task should be changed', () => {
 
   let title = 'Barabulya of Crimea'
-  const action = tasksActions.updateTask({todolistID: "todolistId1", taskID: '3', changesForApiModel: {title},});
+  const action = tasksThunks.updateTask.fulfilled(
+    {todolistID: "todolistId1", taskID: '3', changesForApiModel: {title}}, '',
+    {todolistID: "todolistId1", taskID: '3', changesForApiModel: {title}}
+  );
 
   const endState = tasksReducer(startState, action)
 

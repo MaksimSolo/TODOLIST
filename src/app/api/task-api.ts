@@ -1,11 +1,12 @@
 import {instance} from "app/api/config/config";
+import {UpdateTaskUIModel} from "app/store/reducers/tasks-reducer";
 
 //api
 export const tasksAPI = {
   getTasks: (todolistId: string) => {
     return instance.get<GetTaskResponseType>(`/todo-lists/${todolistId}/tasks`,);
   },
-  createTask: (arg: AddTaskArgType) => {
+  createTask: (arg: AddTask) => {
     return instance.post<BaseTasksRespType>(`/todo-lists/${arg.todolistId}/tasks`, {title: arg.title});
   },
   deleteTask: (todolistId: string, id: string) => {
@@ -17,9 +18,15 @@ export const tasksAPI = {
 }
 
 //types
-export type AddTaskArgType = {
-  todolistId: string
+export interface AddTask {
+  todolistId: string,
   title: string
+}
+
+export interface UpdateTask {
+  todolistID: string,
+  taskID: string,
+  changesForApiModel: UpdateTaskUIModel
 }
 
 export enum TaskStatuses {

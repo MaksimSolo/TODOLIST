@@ -1,7 +1,7 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/task-api";
-import {removeTaskTC, TaskBLLType, updateTaskTC} from "app/store/reducers/tasks-reducer";
+import {removeTaskTC, TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
 import {useAppSelector} from "app/store/store";
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {useDispatch} from "react-redux";
@@ -22,10 +22,10 @@ export const Task = memo(({todolistID, taskID,}: TaskPropsType) => {
   const itemFontStyles = {fontWeight: 'bold'}
   const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
-    dispatch(updateTaskTC(todolistID, taskID, {status}));
+    dispatch(tasksThunks.updateTask({todolistID, taskID, changesForApiModel: {status}}));
   }, [dispatch, todolistID, taskID,]);
   const changeTaskTitle = useCallback(title => {
-    dispatch(updateTaskTC(todolistID, taskID, {title}))
+    dispatch(tasksThunks.updateTask({todolistID, taskID, changesForApiModel: {title}}))
   }, [dispatch, todolistID, taskID,]);
   const removeTask = useCallback(() => {
     dispatch(removeTaskTC(todolistID, taskID,));
