@@ -5,8 +5,8 @@ export const tasksAPI = {
   getTasks: (todolistId: string) => {
     return instance.get<GetTaskResponseType>(`/todo-lists/${todolistId}/tasks`,);
   },
-  createTask: (todolistId: string, title: string) => {
-    return instance.post<BaseTasksRespType>(`/todo-lists/${todolistId}/tasks`, {title});
+  createTask: (arg: AddTaskArgType) => {
+    return instance.post<BaseTasksRespType>(`/todo-lists/${arg.todolistId}/tasks`, {title: arg.title});
   },
   deleteTask: (todolistId: string, id: string) => {
     return instance.delete<BaseTasksRespType<{}>>(`/todo-lists/${todolistId}/tasks/${id}`);
@@ -17,6 +17,11 @@ export const tasksAPI = {
 }
 
 //types
+export type AddTaskArgType = {
+  todolistId: string
+  title: string
+}
+
 export enum TaskStatuses {
   New,
   InProgress,

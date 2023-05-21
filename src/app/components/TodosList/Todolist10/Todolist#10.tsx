@@ -1,7 +1,7 @@
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup, IconButton, Typography} from "@mui/material";
 import {TaskStatuses, TaskType} from "app/api/task-api";
-import {addTaskTC} from "app/store/reducers/tasks-reducer";
+import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {
   FilterType,
   removeTodolistTC,
@@ -44,7 +44,10 @@ export const Todolist10 = React.memo(({todolist, tasks}: PropsType) => {
       todolistID={t.todoListId}
       taskID={t.id}/>), [tasks, todolist.filter]);
 
-  const addTaskTDL = useCallback((newTaskTitle: string) => dispatch(addTaskTC(todolist.id, newTaskTitle)), [dispatch, todolist.id]);
+  const addTaskTDL = useCallback(
+    (newTaskTitle: string) => dispatch(tasksThunks.addTask({todolistId: todolist.id, title: newTaskTitle})),
+    [dispatch, todolist.id]
+  );
   const changeTodoTitle = useCallback((title: string) => {
     dispatch(updateTodolistTitleTC(title, todolist.id,));
   }, [dispatch, todolist.id,]);

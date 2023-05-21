@@ -82,23 +82,22 @@ test('correct task should be deleted from correct array', () => {
 
 
 test('correct task should be added to correct array', () => {
-
-
-  // const action = addTaskAC("todolistId2", "juice");
-  const action = tasksActions.addTask({
-    task:
-      {
-        addedDate: '',
-        deadline: '',
-        description: '',
-        id: 'bla',
-        order: 0,
-        priority: TaskPriorities.Low,
-        startDate: '',
-        status: TaskStatuses.New,
-        title: "juice",
-        todoListId: "todolistId2"
-      }
+  const action = tasksThunks.addTask.fulfilled({
+    task: {
+      addedDate: '',
+      deadline: '',
+      description: '',
+      id: 'bla',
+      order: 0,
+      priority: TaskPriorities.Low,
+      startDate: '',
+      status: TaskStatuses.New,
+      title: 'juice',
+      todoListId: "todolistId2"
+    }
+  }, 'someRequestId', {
+    todolistId: 'todolistId2',
+    title: 'juice'
   });
 
   const endState = tasksReducer(startState, action)
@@ -107,6 +106,7 @@ test('correct task should be added to correct array', () => {
   expect(endState["todolistId2"].length).toBe(4);
   expect(endState["todolistId2"][0].id).toBeDefined();
   expect(endState["todolistId2"][0].title).toBe('juice');
+  expect(endState["todolistId2"][0].taskItemStatus).toBe('idle');
 
 })
 
