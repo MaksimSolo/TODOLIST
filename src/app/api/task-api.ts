@@ -9,8 +9,8 @@ export const tasksAPI = {
   createTask: (arg: AddTask) => {
     return instance.post<BaseTasksRespType>(`/todo-lists/${arg.todolistId}/tasks`, {title: arg.title});
   },
-  deleteTask: (todolistId: string, id: string) => {
-    return instance.delete<BaseTasksRespType<{}>>(`/todo-lists/${todolistId}/tasks/${id}`);
+  deleteTask: (arg: RemoveTask) => {
+    return instance.delete<BaseTasksRespType<{}>>(`/todo-lists/${arg.todolistID}/tasks/${arg.taskID}`);
   },
   updateTask: (todolistId: string, id: string, model: UpdateTaskApiModel) => {
     return instance.put<BaseTasksRespType>(`/todo-lists/${todolistId}/tasks/${id}`, model);
@@ -27,6 +27,11 @@ export interface UpdateTask {
   todolistID: string,
   taskID: string,
   changesForApiModel: UpdateTaskUIModel
+}
+
+export interface RemoveTask {
+  todolistID: string,
+  taskID: string
 }
 
 export enum TaskStatuses {

@@ -1,10 +1,9 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/task-api";
-import {removeTaskTC, TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
-import {useAppSelector} from "app/store/store";
+import {TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
+import {useAppDispatch, useAppSelector} from "app/store/store";
 import React, {ChangeEvent, memo, useCallback} from 'react';
-import {useDispatch} from "react-redux";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 
 
@@ -16,7 +15,7 @@ export type TaskPropsType = {
 export const Task = memo(({todolistID, taskID,}: TaskPropsType) => {
 
   const task = useAppSelector<TaskBLLType>(({tasks}) => tasks[todolistID].filter(({id}) => id === taskID)[0])
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const getClasses = () => task.status === TaskStatuses.Completed ? "is-done" : ''
   const itemFontStyles = {fontWeight: 'bold'}
@@ -28,7 +27,7 @@ export const Task = memo(({todolistID, taskID,}: TaskPropsType) => {
     dispatch(tasksThunks.updateTask({todolistID, taskID, changesForApiModel: {title}}))
   }, [dispatch, todolistID, taskID,]);
   const removeTask = useCallback(() => {
-    dispatch(removeTaskTC(todolistID, taskID,));
+    dispatch(tasksThunks.removeTask({todolistID, taskID}));
   }, [dispatch, todolistID, taskID]);
   return (
     <ListItem
