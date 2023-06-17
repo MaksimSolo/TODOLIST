@@ -1,8 +1,8 @@
 import {Menu,} from "@mui/icons-material";
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
-import {initializeApp, RequestStatusType} from "app/store/reducers/app-reducer";
-import {logoutTC} from "app/store/reducers/auth-reducer";
+import {RequestStatusType} from "app/store/reducers/app-reducer";
+import {authThunk} from "app/store/reducers/auth-reducer";
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
 import '../styles/App.css';
@@ -10,9 +10,9 @@ import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "./components/Login/Login";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
 import {TodosList} from "./components/TodosList/TodosList";
-import {useAppDispatch, useAppSelector} from "./store/store";
 import * as appSelectors from "./store/selectors/app.selectors"
 import * as authSelectors from "./store/selectors/auth.selectors"
+import {useAppDispatch, useAppSelector} from "./store/store";
 
 //C-R-U-D
 function AppWithRedux() {
@@ -23,7 +23,7 @@ function AppWithRedux() {
   const isInitialized = useAppSelector<boolean>(appSelectors.isInitialized)
 
   useEffect(() => {
-    dispatch(initializeApp())
+    dispatch(authThunk.initializeApp())
   }, [dispatch])
 
   if (!isInitialized) {
@@ -46,7 +46,7 @@ function AppWithRedux() {
             Todolists
           </Typography>
           {isLoggedIn && <Button onClick={() => {
-            dispatch(logoutTC())
+            dispatch(authThunk.logout())
           }} color='inherit' variant={'outlined'}>Logout</Button>}
 
         </Toolbar>
