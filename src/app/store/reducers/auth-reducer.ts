@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {authAPI} from "app/api/todolist-api";
+import {authAPI} from "app/api/auth-api";
 import {appActions} from "app/store/reducers/app-reducer";
 import {LoginParamsType, ResponseResultCode} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'

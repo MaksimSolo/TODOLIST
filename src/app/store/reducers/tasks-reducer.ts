@@ -9,7 +9,7 @@ import {
   UpdateTask,
   UpdateTaskApiModel
 } from "app/api/task-api";
-import {TodoType} from "app/api/todolist-api";
+import {TodoType} from 'common/types/types'
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {todosActions} from "app/store/reducers/todolists-reducer";
