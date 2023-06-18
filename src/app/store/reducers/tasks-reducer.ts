@@ -9,11 +9,10 @@ import {
   UpdateTask,
   UpdateTaskApiModel
 } from "app/api/task-api";
-import {TodoType} from 'common/types/types'
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
-import {todosActions} from "app/store/reducers/todolists-reducer";
-import {ResponseResultCode} from "common/types/types";
+import {todosThunks} from "app/store/reducers/todolists-reducer";
+import {ResponseResultCode, TodoType} from 'common/types/types'
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
@@ -160,13 +159,13 @@ const slice = createSlice({
           state[action.payload.todolistID].splice(index, 1)
         }
       })
-      .addCase(todosActions.addTodolist, (state, action) => {
+      .addCase(todosThunks.createTodolist.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = []
       })
-      .addCase(todosActions.removeTodolist, (state, action) => {
+      .addCase(todosThunks.removeTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id]
       })
-      .addCase(todosActions.setTodolists, (state, action) => {
+      .addCase(todosThunks.fetchTodolists.fulfilled, (state, action) => {
         action.payload.todolists.forEach(({id}) => {
           state[id] = []
         })

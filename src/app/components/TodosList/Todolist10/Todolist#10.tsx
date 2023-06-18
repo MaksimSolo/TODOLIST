@@ -4,10 +4,9 @@ import {TaskStatuses, TaskType} from "app/api/task-api";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {
   FilterType,
-  removeTodolistTC,
   TodolistBLLType,
   todosActions,
-  updateTodolistTitleTC
+  todosThunks
 } from "app/store/reducers/todolists-reducer";
 import {useAppDispatch} from "app/store/store";
 import React, {useCallback, useMemo} from "react";
@@ -49,9 +48,9 @@ export const Todolist10 = React.memo(({todolist, tasks}: PropsType) => {
     [dispatch, todolist.id]
   );
   const changeTodoTitle = useCallback((title: string) => {
-    dispatch(updateTodolistTitleTC(title, todolist.id,));
+    dispatch(todosThunks.updateTodolistTitle({id: todolist.id, title}));
   }, [dispatch, todolist.id,]);
-  const removeTodolist = useCallback(() => dispatch(removeTodolistTC(todolist.id)), [dispatch, todolist.id]);
+  const removeTodolist = useCallback(() => dispatch(todosThunks.removeTodolist(todolist.id)), [dispatch, todolist.id]);
 
   const onAllFilter = useCallback(() => dispatch(todosActions.changeTodolistFilter({
     id: todolist.id,

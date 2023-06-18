@@ -1,6 +1,6 @@
 import {Grid, Paper} from "@mui/material";
 import {TasksStateType} from "app/store/reducers/tasks-reducer";
-import {createTodolistTC, fetchTodolistsTC, TodolistBLLType} from "app/store/reducers/todolists-reducer";
+import {TodolistBLLType, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useAppSelector} from "app/store/store";
 import React, {useCallback, useEffect, useMemo} from "react";
 import {useDispatch} from "react-redux";
@@ -19,7 +19,7 @@ export const TodosList = () => {
   const tasks = useAppSelector<TasksStateType>(taskSelectors.tasks)
 
   const addTodolist = useCallback((newTodoTitle: string) => {
-    dispatch(createTodolistTC(newTodoTitle))
+    dispatch(todosThunks.createTodolist(newTodoTitle))
   }, [dispatch]);
 
   const todolistForRender = useMemo(() => todolists.map(tl => {
@@ -42,7 +42,7 @@ export const TodosList = () => {
     if (!isLoggedIn) {
       navigate('/login')
     } else {
-      dispatch(fetchTodolistsTC())
+      dispatch(todosThunks.fetchTodolists())
     }
   }, [isLoggedIn, dispatch, navigate])
 

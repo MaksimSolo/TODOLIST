@@ -1,11 +1,11 @@
 import {tasksReducer, TasksStateType} from "app/store/reducers/tasks-reducer";
-import {TodolistBLLType, todolistsReducer, todosActions} from "app/store/reducers/todolists-reducer";
+import {TodolistBLLType, todolistsReducer, todosThunks} from "app/store/reducers/todolists-reducer";
 
 test('ids should be equals', () => {
   const startTasksState: TasksStateType = {};
   const startTodolistsState: Array<TodolistBLLType> = [];
 
-  const action = todosActions.addTodolist({
+  const action = todosThunks.createTodolist.fulfilled({
     todolist:
       {
         addedDate: '',
@@ -13,7 +13,7 @@ test('ids should be equals', () => {
         order: 0,
         title: "new todolist",
       }
-  });
+  }, '', "new todolist");
 
   const endTasksState = tasksReducer(startTasksState, action)
   const endTodolistsState = todolistsReducer(startTodolistsState, action)

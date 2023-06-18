@@ -1,6 +1,7 @@
 import {TaskPriorities, TaskStatuses} from "app/api/task-api";
 import {tasksReducer, TasksStateType, tasksThunks} from 'app/store/reducers/tasks-reducer';
-import {todosActions} from "app/store/reducers/todolists-reducer";
+import {TodoType} from "common/types/types";
+import {todosThunks} from "app/store/reducers/todolists-reducer";
 
 
 let startState: TasksStateType = {};
@@ -144,14 +145,14 @@ test('title of specified task should be changed', () => {
 
 test('new array should be added when new todolist added', () => {
 
-  const action = todosActions.addTodolist({
+  const action = todosThunks.createTodolist.fulfilled({
     todolist: {
       addedDate: '',
       id: 'todolistId3',
       order: 0,
       title: "new todolist",
     }
-  });
+  }, '', "new todolist");
 
   const endState = tasksReducer(startState, action)
 
@@ -169,7 +170,7 @@ test('new array should be added when new todolist added', () => {
 
 test('property with todolistId should be deleted', () => {
 
-  const action = todosActions.removeTodolist({id: "todolistId2"});
+  const action = todosThunks.removeTodolist.fulfilled({id: "todolistId2"}, '', "todolistId2");
 
   const endState = tasksReducer(startState, action)
 
@@ -179,20 +180,19 @@ test('property with todolistId should be deleted', () => {
 });
 
 test('empty arrays should be added when we set todolists', () => {
-
-  const action = todosActions.setTodolists({
-    todolists:
-      [
-        {
-          id: 'todolistId1', title: 'What to learn', addedDate: '',
-          order: 0
-        },
-        {
-          id: 'todolistId2', title: 'What to buy', addedDate: '',
-          order: 0
-        },
-      ]
-  });
+  const todolists: TodoType[] = [
+    {
+      id: 'todolistId1', title: 'What to learn', addedDate: '',
+      order: 0
+    },
+    {
+      id: 'todolistId2', title: 'What to buy', addedDate: '',
+      order: 0
+    },
+  ]
+  const action = todosThunks.fetchTodolists.fulfilled({
+    todolists
+  }, '');
 
   const endState = tasksReducer({}, action)
 
