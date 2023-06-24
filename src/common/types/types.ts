@@ -20,5 +20,10 @@ export type BaseResponseType<T = {}> = {
   resultCode: number
   messages: string[],
   data: T
-  fieldsErrors: string[]
+  fieldsErrors: FieldError[]
+}
+
+type FieldError = {
+  field: string
+  error: string
 }

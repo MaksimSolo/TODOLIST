@@ -15,7 +15,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
       return {isLoggedIn: true}
     } else {
       errorUtils.handleServerAppError(dispatch, resp.data)
-      return rejectWithValue(null)
+      return rejectWithValue(resp.data)
     }
   }
   catch (error) {
@@ -94,7 +94,7 @@ export const authReducer: Reducer<AuthStateType, LoggedInActionType> = slice.red
 
 export const authActions = slice.actions
 
-export const authThunk = {login, logout, initializeApp}
+export const authThunks = {login, logout, initializeApp}
 
 //types
 export type AuthStateType = {

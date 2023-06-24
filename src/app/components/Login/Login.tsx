@@ -1,16 +1,15 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
-import {authThunk} from "app/store/reducers/auth-reducer";
-import {useAppSelector} from "app/store/store";
-import {LoginParamsType} from "common/types/types";
-import {useFormik,} from "formik";
+import {authThunks} from "app/store/reducers/auth-reducer";
+import {useAppDispatch, useAppSelector} from "app/store/store";
+import {BaseResponseType, LoginParamsType} from "common/types/types";
+import {FormikHelpers, useFormik,} from "formik";
 import React, {useEffect} from 'react';
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import * as authSelectors from "./../../store/selectors/auth.selectors"
 
 
 export const Login = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
 
@@ -21,23 +20,28 @@ export const Login = () => {
       rememberMe: false
     },
     validate: values => {
-      const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {}; //Partial говорит о том что мы применяем здесь элементы типа LoginParams, а не отдельный тип
-      if (!values.email) {
-        errors.email = '😎 E-mail required!';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = '😎 Invalid email address';
-      }
-
-      if (!values.password) {
-        errors.password = '😎 Enter your password!';
-      } else if (values.password.length > 10 || values.password.length < 4) {
-        errors.password = '😎 must be more than 4 characters but less than 10';
-      }
-      return errors;
+      // const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {}; //Partial говорит о том что мы применяем здесь элементы типа LoginParams, а не отдельный тип
+      // if (!values.email) {
+      //   errors.email = '😎 E-mail required!';
+      // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      //   errors.email = '😎 Invalid email address';
+      // }
+      //
+      // if (!values.password) {
+      //   errors.password = '😎 Enter your password!';
+      // } else if (values.password.length > 10 || values.password.length < 4) {
+      //   errors.password = '😎 must be more than 4 characters but less than 10';
+      // }
+      // return errors;
     },
-    onSubmit: values => {
-      dispatch(authThunk.login(values));
-      formik.resetForm();
+    onSubmit: (values: LoginParamsType, formikHelpers: FormikHelpers<LoginParamsType>) => {
+      dispatch(authThunks.login(values))
+        .unwrap()
+        .catch((reason: BaseResponseType) => {
+          const {fieldsErrors} = reason
+          fieldsErrors.map(
+            ({field, error}) => formikHelpers.setFieldError(field, error))
+        })
     }
   })
 
@@ -63,12 +67,12 @@ export const Login = () => {
             <TextField label="Email" margin="normal" {...formik.getFieldProps('email')}/>
             {formik.touched.email
               && formik.errors.email
-              && <div style={{color: 'purple'}}>{formik.errors.email}</div>}
+              && <div style={{color: 'fuchsia'}}>{formik.errors.email}</div>}
             <TextField type="password" label="Password"
                        margin="normal" {...formik.getFieldProps('password')}/>
             {formik.touched.password
               && formik.errors.password
-              && <div style={{color: 'purple'}}>{formik.errors.password}</div>}
+              && <div style={{color: 'fuchsia'}}>{formik.errors.password}</div>}
             <FormControlLabel
               label={'Remember me'}
               control={<Checkbox {...formik.getFieldProps('rememberMe')}

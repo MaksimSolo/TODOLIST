@@ -2,7 +2,7 @@ import {Menu,} from "@mui/icons-material";
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {RequestStatusType} from "app/store/reducers/app-reducer";
-import {authThunk} from "app/store/reducers/auth-reducer";
+import {authThunks} from "app/store/reducers/auth-reducer";
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
 import '../styles/App.css';
@@ -23,7 +23,7 @@ function AppWithRedux() {
   const isInitialized = useAppSelector<boolean>(appSelectors.isInitialized)
 
   useEffect(() => {
-    dispatch(authThunk.initializeApp())
+    dispatch(authThunks.initializeApp())
   }, [dispatch])
 
   if (!isInitialized) {
@@ -46,7 +46,7 @@ function AppWithRedux() {
             Todolists
           </Typography>
           {isLoggedIn && <Button onClick={() => {
-            dispatch(authThunk.logout())
+            dispatch(authThunks.logout())
           }} color='inherit' variant={'outlined'}>Logout</Button>}
 
         </Toolbar>
