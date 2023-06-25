@@ -39,7 +39,7 @@ export const Login = () => {
         .unwrap()
         .catch((reason: BaseResponseType) => {
           const {fieldsErrors} = reason
-          fieldsErrors.map(
+          !!fieldsErrors && fieldsErrors.map(
             ({field, error}) => formikHelpers.setFieldError(field, error))
         })
     }
