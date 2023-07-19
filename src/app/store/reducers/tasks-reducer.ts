@@ -12,7 +12,7 @@ import {
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {todosThunks} from "app/store/reducers/todolists-reducer";
-import {ResponseResultCode, TodoType} from 'common/types/types'
+import {ResultCode, TodoType} from 'common/types/types'
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
@@ -40,7 +40,7 @@ const addTask = createAppAsyncThunk<{ task: TaskType }, AddTask>(
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await tasksAPI.createTask(arg)
-      if (resp.data.resultCode === ResponseResultCode.OK) {
+      if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {task: resp.data.data.item}
       } else {
@@ -83,7 +83,7 @@ const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
 
       let resp = await tasksAPI.updateTask(arg.todolistID, arg.taskID, apiModel);
 
-      if (resp.data.resultCode === ResponseResultCode.OK) {
+      if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return arg
       } else {
@@ -105,7 +105,7 @@ const removeTask = createAppAsyncThunk<RemoveTask, RemoveTask>('TASK/removeTask'
       tasksActions.changeTaskItemStatus({todolistID: arg.todolistID, taskID: arg.taskID, taskItemStatus: 'loading'}))
     dispatch(appActions.setAppStatus({status: 'loading'}))
     const resp = await tasksAPI.deleteTask(arg)
-    if (resp.data.resultCode === ResponseResultCode.OK) {
+    if (resp.data.resultCode === ResultCode.OK) {
       dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return arg
     } else {

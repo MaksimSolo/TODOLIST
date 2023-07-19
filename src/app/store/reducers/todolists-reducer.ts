@@ -3,7 +3,7 @@ import {todolistAPI, UpdateTodoTitle} from "app/api/todolist-api";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
-import {ResponseResultCode, TodoType} from "common/types/types";
+import {ResultCode, TodoType} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
@@ -33,7 +33,7 @@ const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
       dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
       dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await todolistAPI.deleteTodolist(arg)
-      if (resp.data.resultCode === ResponseResultCode.OK) {
+      if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {id: arg}
       } else {
@@ -54,7 +54,7 @@ const createTodolist = createAppAsyncThunk<{ todolist: TodoType }, string>(
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await todolistAPI.createTodolist(arg);
-      if (resp.data.resultCode === ResponseResultCode.OK) {
+      if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {todolist: resp.data.data.item}
       } else {
@@ -75,7 +75,7 @@ const updateTodolistTitle = createAppAsyncThunk<UpdateTodoTitle, UpdateTodoTitle
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await todolistAPI.updateTodolistTitle(arg)
-      if (resp.data.resultCode === ResponseResultCode.OK) {
+      if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return arg
       } else {

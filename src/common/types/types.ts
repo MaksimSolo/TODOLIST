@@ -5,7 +5,7 @@ export type LoginParamsType = {
   captcha?: string,
 }
 
-export enum ResponseResultCode {
+export enum ResultCode {
   OK,
   ERROR = 10
 }
