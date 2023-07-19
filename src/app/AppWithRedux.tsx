@@ -3,6 +3,7 @@ import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typogr
 import LinearProgress from '@mui/material/LinearProgress';
 import {RequestStatusType} from "app/store/reducers/app-reducer";
 import {authThunks} from "app/store/reducers/auth-reducer";
+import {useActions} from "common/hooks/useActions";
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
 import '../styles/App.css';
@@ -12,19 +13,19 @@ import {PageNotFound} from "./components/PageNotFound/PageNotFound";
 import {TodosList} from "./components/TodosList/TodosList";
 import * as appSelectors from "./store/selectors/app.selectors"
 import * as authSelectors from "./store/selectors/auth.selectors"
-import {useAppDispatch, useAppSelector} from "./store/store";
+import {useAppSelector} from "./store/store";
 
 //C-R-U-D
 function AppWithRedux() {
 
-  const dispatch = useAppDispatch();
+  const {initializeApp, logout} = useActions(authThunks);
   const appStatus = useAppSelector<RequestStatusType>(appSelectors.status)
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
   const isInitialized = useAppSelector<boolean>(appSelectors.isInitialized)
 
   useEffect(() => {
-    dispatch(authThunks.initializeApp())
-  }, [dispatch])
+    initializeApp()
+  }, [initializeApp])
 
   if (!isInitialized) {
     return <div
@@ -39,16 +40,19 @@ function AppWithRedux() {
       <ErrorSnackbar/>
       <AppBar position={'static'}>
         <Toolbar style={{justifyContent: 'space-between'}}>
+
           <IconButton edge='start' color='inherit' aria-label='menu'>
             <Menu/>
           </IconButton>
+
           <Typography variant='h6'>
             Todolists
           </Typography>
-          {isLoggedIn && <Button onClick={() => {
-            dispatch(authThunks.logout())
-          }} color='inherit' variant={'outlined'}>Logout</Button>}
 
+          {isLoggedIn &&
+              <Button onClick={() => logout()} color='inherit' variant={'outlined'}>
+                  Logout
+              </Button>}
         </Toolbar>
       </AppBar>
       {appStatus === 'loading' && < LinearProgress color="secondary"/>}
