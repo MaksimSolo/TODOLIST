@@ -3,6 +3,12 @@ import {useAppDispatch} from "app/store/store";
 import {useMemo} from "react";
 import {bindActionCreators} from "redux";
 
+/**
+ * Hook that binds Redux action creators to the dispatch function, allowing them to be used within functional components.
+ * @template Actions - The type of the action creators object.
+ * @param {Actions} actions - The object containing Redux action creators.
+ * @returns {BoundActions<Actions>} The bound action creators.
+ */
 export const useActions = <Actions extends ActionCreatorsMapObject = ActionCreatorsMapObject>(
   actions: Actions
 ): BoundActions<Actions> => {
