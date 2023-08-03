@@ -1,30 +1,26 @@
-import {ActionCreator, ActionCreatorsMapObject, AsyncThunk} from "@reduxjs/toolkit";
+import {ActionCreatorsMapObject} from "@reduxjs/toolkit";
 import {useAppDispatch} from "app/store/store";
 import {useMemo} from "react";
 import {bindActionCreators} from "redux";
 
-/**
- * Hook that binds Redux action creators to the dispatch function, allowing them to be used within functional components.
- * @template Actions - The type of the action creators object.
- * @param {Actions} actions - The object containing Redux action creators.
- * @returns {BoundActions<Actions>} The bound action creators.
- */
-export const useActions = <Actions extends ActionCreatorsMapObject = ActionCreatorsMapObject>(
-  actions: Actions
-): BoundActions<Actions> => {
+
+export const useActions = <T extends ActionCreatorsMapObject>(
+  actions: T
+) => {
   const dispatch = useAppDispatch();
 
-  return useMemo(() => bindActionCreators(actions, dispatch), [actions, dispatch])
+  return useMemo(() => bindActionCreators<T, RemapActionCreators<T>>(actions, dispatch), [actions, dispatch])
 }
 
-// Types
-type BoundActions<Actions extends ActionCreatorsMapObject> = {
-  [key in keyof Actions]: Actions[key] extends AsyncThunk<any, any, any>
-    ? BoundAsyncThunk<Actions[key]>
-    : Actions[key]
+//Types
+type RemapActionCreators<T extends ActionCreatorsMapObject> = {
+  [K in keyof T]: ReplaceReturnType<T[K], ActionCreatorResponse<T[K]>>
 }
 
-type BoundAsyncThunk<Action extends ActionCreator<any>> = (
-  ...args: Parameters<Action>
-) => ReturnType<ReturnType<Action>>
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type ReplaceReturnType<T, TNewReturn> = T extends (a: infer A) => infer R ? IsValidArg<A> extends true
+  ? (a: A) => TNewReturn : () => TNewReturn : never
 
+type IsValidArg<T> = T extends object ? (keyof T extends never ? false : true) : true
+
+type ActionCreatorResponse<T extends (...args: any[]) => any> = ReturnType<ReturnType<T>>

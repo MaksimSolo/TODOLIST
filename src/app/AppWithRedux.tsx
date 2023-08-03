@@ -24,7 +24,7 @@ function AppWithRedux() {
   const isInitialized = useAppSelector<boolean>(appSelectors.isInitialized)
 
   useEffect(() => {
-    initializeApp()
+    initializeApp({})
   }, [initializeApp])
 
   if (!isInitialized) {
@@ -50,7 +50,7 @@ function AppWithRedux() {
           </Typography>
 
           {isLoggedIn &&
-              <Button onClick={() => logout()} color='inherit' variant={'outlined'}>
+              <Button onClick={() => logout({})} color='inherit' variant={'outlined'}>
                   Logout
               </Button>}
         </Toolbar>

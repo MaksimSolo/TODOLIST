@@ -1,6 +1,7 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
 import {authThunks} from "app/store/reducers/auth-reducer";
-import {useAppDispatch, useAppSelector} from "app/store/store";
+import {useAppSelector} from "app/store/store";
+import {useActions} from "common/hooks/useActions";
 import {BaseResponseType, LoginParamsType} from "common/types/types";
 import {FormikHelpers, useFormik,} from "formik";
 import React, {useEffect} from 'react';
@@ -9,7 +10,8 @@ import * as authSelectors from "./../../store/selectors/auth.selectors"
 
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
+
+  const {login} = useActions(authThunks)
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
 
@@ -35,7 +37,7 @@ export const Login = () => {
       return errors;
     },
     onSubmit: (values: LoginParamsType, formikHelpers: FormikHelpers<LoginParamsType>) => {
-      dispatch(authThunks.login(values))
+      login(values)
         .unwrap()
         .catch((reason: BaseResponseType) => {
           const {fieldsErrors} = reason

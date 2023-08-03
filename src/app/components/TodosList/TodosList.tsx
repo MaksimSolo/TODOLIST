@@ -12,7 +12,7 @@ import * as todolistSelectors from "./../../store/selectors/todolist.selectors"
 import {Todolist10} from "./Todolist10/Todolist#10";
 
 export const TodosList = () => {
-  const {createTodolist,fetchTodolists} = useActions(todosThunks)
+  const {createTodolist, fetchTodolists} = useActions(todosThunks)
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
   const todolists = useAppSelector<TodolistBLLType[]>(todolistSelectors.todolists)
@@ -40,7 +40,7 @@ export const TodosList = () => {
     if (!isLoggedIn) {
       navigate('/login')
     } else {
-      fetchTodolists()
+      fetchTodolists({})
     }
   }, [isLoggedIn, fetchTodolists, navigate])
 
