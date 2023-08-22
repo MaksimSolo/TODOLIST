@@ -1,9 +1,6 @@
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
-import {authThunks} from "app/store/reducers/auth-reducer";
 import {useAppSelector} from "app/store/store";
-import {useActions} from "common/hooks/useActions";
-import {BaseResponseType, LoginParamsType} from "common/types/types";
-import {FormikHelpers, useFormik,} from "formik";
+import {useLogin} from "common/lib/useLogin";
 import React, {useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import * as authSelectors from "./../../store/selectors/auth.selectors"
@@ -11,41 +8,9 @@ import * as authSelectors from "./../../store/selectors/auth.selectors"
 
 export const Login = () => {
 
-  const {login} = useActions(authThunks)
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-      rememberMe: false
-    },
-    validate: values => {
-      const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {}; //Partial говорит о том что мы применяем здесь элементы типа LoginParams, а не отдельный тип
-      if (!values.email) {
-        errors.email = '😎 E-mail required!';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = '😎 Invalid email address';
-      }
-
-      if (!values.password) {
-        errors.password = '😎 Enter your password!';
-      } else if (values.password.length > 10 || values.password.length < 4) {
-        errors.password = '😎 must be more than 4 characters but less than 10';
-      }
-      return errors;
-    },
-    onSubmit: (values: LoginParamsType, formikHelpers: FormikHelpers<LoginParamsType>) => {
-      login(values)
-        .unwrap()
-        .catch((reason: BaseResponseType) => {
-          const {fieldsErrors} = reason
-          !!fieldsErrors && fieldsErrors.map(
-            ({field, error}) => formikHelpers.setFieldError(field, error))
-        })
-    }
-  })
+  const {formik} = useLogin();
 
   useEffect(() => {
     isLoggedIn && navigate('/')
