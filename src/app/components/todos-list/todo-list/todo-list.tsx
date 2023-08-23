@@ -1,21 +1,21 @@
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup, IconButton, Typography} from "@mui/material";
 import {PayloadAction} from "@reduxjs/toolkit";
-import {TaskStatuses, TaskType} from "app/api/task-api";
+import {TaskStatuses, TaskType} from "app/api/tasks/tasks.api.types";
+import {Task} from "app/components/task/task";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {FilterType, TodolistBLLType, todosActions, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useActions} from "common/hooks/useActions";
 import React, {useCallback, useMemo} from "react";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
-import {Task} from "../../Task/Task";
 
 type PropsType = {
   todolist: TodolistBLLType
   tasks: TaskType[]
 }
 
-export const Todolist10 = React.memo(({todolist, tasks}: PropsType) => {
+export const Todolist = React.memo(({todolist, tasks}: PropsType) => {
 
   const {addTask} = useActions(tasksThunks)
   const {updateTodolistTitle, removeTodolist} = useActions(todosThunks)

@@ -1,14 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {tasksAPI} from "app/api/tasks/tasks.api";
 import {
   AddTask,
   RemoveTask,
-  TaskPriorities,
-  tasksAPI,
-  TaskStatuses,
   TaskType,
   UpdateTask,
-  UpdateTaskApiModel
-} from "app/api/task-api";
+  UpdateTaskApiModel,
+  UpdateTaskUIModel
+} from "app/api/tasks/tasks.api.types";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {todosThunks} from "app/store/reducers/todolists-reducer";
@@ -67,7 +66,7 @@ const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
       const currentTask = allTasksOfTodo.find(({id}) => id === arg.taskID)
 
       if (!currentTask) {
-        dispatch(appActions.setAppError({error: 'Task not found in state!'}))
+        dispatch(appActions.setAppError({error: 'task not found in state!'}))
         return rejectWithValue(null)
       }
 
@@ -196,11 +195,3 @@ export type ActionsType =
   | PayloadAction<{ todolistID: string, taskID: string, taskItemStatus: RequestStatusType }>
   | ReturnType<typeof authActions.clearStateData>
 
-export type UpdateTaskUIModel = {
-  deadline?: string,
-  description?: string,
-  priority?: TaskPriorities,
-  startDate?: string,
-  status?: TaskStatuses,
-  title?: string,
-}

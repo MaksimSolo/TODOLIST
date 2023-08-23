@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {TaskPriorities, TaskStatuses} from "app/api/task-api";
+import {TaskPriorities, TaskStatuses} from "app/api/tasks/tasks.api.types";
 import {appReducer} from "app/store/reducers/app-reducer";
 import {authReducer} from "app/store/reducers/auth-reducer";
 import {tasksReducer} from "app/store/reducers/tasks-reducer";

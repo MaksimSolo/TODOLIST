@@ -1,7 +1,7 @@
 import {instance} from "app/api/config/config";
 import {BaseResponseType, LoginParamsType} from "common/types/types";
 
-export const authAPI = {
+export const authApi = {
   login: (loginParams: LoginParamsType) => {
     return instance.post<BaseResponseType<{ userId: number }>>('/auth/login', loginParams);
   },

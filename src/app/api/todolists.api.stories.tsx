@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {todolistAPI} from "./todolist-api";
+import {todolistApi} from "app/api/todolist.api";
 
 export default {
   title: 'API/Todolists'
@@ -11,7 +11,7 @@ export const GetTodolists = () => {
   useEffect(() => {
     // здесь мы будем делать запрос и ответ закидывать в стейт.
     // который в виде строки будем отображать в div-ке
-    todolistAPI.getTodolists().then(resp => setState(resp.data))
+    todolistApi.getTodolists().then(resp => setState(resp.data))
   }, [])
 
   return <div> {JSON.stringify(state)}</div>
@@ -21,7 +21,7 @@ export const CreateTodolist = () => {
   const [title, setTitle] = useState<string>('')
 
   const createTodo = () => {
-    todolistAPI.createTodolist(title)
+    todolistApi.createTodolist(title)
       .then((resp) => {
         setState(resp.data)
       })
@@ -44,7 +44,7 @@ export const DeleteTodolist = () => {
   const [todolistId, setTodolistId] = useState<any>(null)
 
   const delTodo = () => {
-    todolistAPI.deleteTodolist(todolistId)
+    todolistApi.deleteTodolist(todolistId)
       .then((resp) => {
         setState(resp.data)
       })
@@ -69,7 +69,7 @@ export const UpdateTodolistTitle = () => {
   const [todolistId, setTodolistId] = useState<string>('')
 
   const updateTodo = () => {
-    todolistAPI.updateTodolistTitle({id: todolistId, title: newTitle})
+    todolistApi.updateTodolistTitle({id: todolistId, title: newTitle})
       .then(res => setState(res.data))
   }
 

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {authAPI} from "app/api/auth-api";
+import {authApi} from "app/api/auth.api";
 import {appActions} from "app/store/reducers/app-reducer";
 import {LoginParamsType, ResultCode} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
@@ -9,7 +9,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
 
   try {
     dispatch(appActions.setAppStatus({status: 'loading'}))
-    const resp = await authAPI.login(arg)
+    const resp = await authApi.login(arg)
     if (resp.data.resultCode === ResultCode.OK) {
       dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return {isLoggedIn: true}
@@ -30,7 +30,7 @@ const logout = createAsyncThunk<{ isLoggedIn: boolean }, void>('auth/logout', as
 
   try {
     dispatch(appActions.setAppStatus({status: 'loading'}))
-    const resp = await authAPI.logout()
+    const resp = await authApi.logout()
     if (resp.data.resultCode === ResultCode.OK) {
       dispatch(authActions.clearStateData())
       dispatch(appActions.setAppStatus({status: 'succeeded'}))
@@ -51,7 +51,7 @@ const initializeApp = createAsyncThunk<{ isLoggedIn: boolean }, void>('app/initi
 
   try {
     dispatch(appActions.setAppStatus({status: 'loading'}))
-    const resp = await authAPI.me()
+    const resp = await authApi.me()
     if (resp.data.resultCode === ResultCode.OK) {
       return {isLoggedIn: true}
     } else {

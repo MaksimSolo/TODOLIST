@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {todolistAPI, UpdateTodoTitle} from "app/api/todolist-api";
+import {todolistApi, UpdateTodoTitle} from "app/api/todolist.api";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
@@ -12,7 +12,7 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodoType[] }, void>('TOD
 
   try {
     dispatch(appActions.setAppStatus({status: 'loading'}))
-    const resp = await todolistAPI.getTodolists()
+    const resp = await todolistApi.getTodolists()
     resp.data.forEach(tl => {
       dispatch(tasksThunks.fetchTasks(tl.id))
     })
@@ -32,7 +32,7 @@ const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
     try {
       dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistAPI.deleteTodolist(arg)
+      const resp = await todolistApi.deleteTodolist(arg)
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {id: arg}
@@ -53,7 +53,7 @@ const createTodolist = createAppAsyncThunk<{ todolist: TodoType }, string>(
 
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistAPI.createTodolist(arg);
+      const resp = await todolistApi.createTodolist(arg);
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {todolist: resp.data.data.item}
@@ -74,7 +74,7 @@ const updateTodolistTitle = createAppAsyncThunk<UpdateTodoTitle, UpdateTodoTitle
 
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistAPI.updateTodolistTitle(arg)
+      const resp = await todolistApi.updateTodolistTitle(arg)
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return arg

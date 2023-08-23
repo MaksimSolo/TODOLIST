@@ -1,6 +1,6 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
-import {TaskStatuses} from "app/api/task-api";
+import {TaskStatuses} from "app/api/tasks/tasks.api.types";
 import {TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";

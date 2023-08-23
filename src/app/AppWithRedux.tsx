@@ -10,7 +10,7 @@ import '../styles/App.css';
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "./components/Login/Login";
 import {PageNotFound} from "./components/PageNotFound/PageNotFound";
-import {TodosList} from "./components/TodosList/TodosList";
+import {TodosList} from "app/components/todos-list/todos-list";
 import * as appSelectors from "./store/selectors/app.selectors"
 import * as authSelectors from "./store/selectors/auth.selectors"
 import {useAppSelector} from "./store/store";

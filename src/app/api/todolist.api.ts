@@ -1,7 +1,7 @@
 import {instance} from "app/api/config/config";
 import {BaseResponseType, TodoType} from "common/types/types";
 
-export const todolistAPI = {
+export const todolistApi = {
   getTodolists: () => {
     return instance.get<Array<TodoType>>('/todo-lists/');
   },

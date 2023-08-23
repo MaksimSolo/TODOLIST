@@ -9,7 +9,7 @@ import {AddItemForm} from "../AddItemForm/AddItemForm";
 import * as authSelectors from "./../../store/selectors/auth.selectors"
 import * as taskSelectors from "./../../store/selectors/task.selectors"
 import * as todolistSelectors from "./../../store/selectors/todolist.selectors"
-import {Todolist10} from "./Todolist10/Todolist#10";
+import {Todolist} from "app/components/todos-list/todo-list/todo-list";
 
 export const TodosList = () => {
   const {createTodolist, fetchTodolists} = useActions(todosThunks)
@@ -26,7 +26,7 @@ export const TodosList = () => {
             key={tl.id}>
         <Paper elevation={20}
                style={{padding: '15px', minWidth: '300px', maxWidth: '300px', minHeight: '100px'}}>
-          < Todolist10
+          < Todolist
             key={tl.id}
             todolist={tl}
             tasks={tasks[tl.id]}

@@ -1,16 +1,16 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import {Task, TaskPropsType} from "../app/components/Task/Task";
+import {Task, TaskPropsType} from "app/components/task/task";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
 export default  {
-    title: 'Todolist10/Task',
+    title: 'todo-list/task',
     component: Task,
     args: {
         changeStatus: action('Status of task changed'),
         changeTaskTitle: action('Title of task changed'),
-        removeTask: action('Task have been removed:remove-button clicked'),
+        removeTask: action('task have been removed:remove-button clicked'),
     },
     decorators: [ReduxStoreProviderDecorator],
 

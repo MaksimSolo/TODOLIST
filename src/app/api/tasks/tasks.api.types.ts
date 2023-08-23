@@ -1,23 +1,3 @@
-import {instance} from "app/api/config/config";
-import {UpdateTaskUIModel} from "app/store/reducers/tasks-reducer";
-
-//api
-export const tasksAPI = {
-  getTasks: (todolistId: string) => {
-    return instance.get<GetTaskResponseType>(`/todo-lists/${todolistId}/tasks`,);
-  },
-  createTask: (arg: AddTask) => {
-    return instance.post<BaseTasksRespType>(`/todo-lists/${arg.todolistId}/tasks`, {title: arg.title});
-  },
-  deleteTask: (arg: RemoveTask) => {
-    return instance.delete<BaseTasksRespType<{}>>(`/todo-lists/${arg.todolistID}/tasks/${arg.taskID}`);
-  },
-  updateTask: (todolistId: string, id: string, model: UpdateTaskApiModel) => {
-    return instance.put<BaseTasksRespType>(`/todo-lists/${todolistId}/tasks/${id}`, model);
-  },
-}
-
-//types
 export interface AddTask {
   todolistId: string,
   title: string
@@ -27,6 +7,15 @@ export interface UpdateTask {
   todolistID: string,
   taskID: string,
   changesForApiModel: UpdateTaskUIModel
+}
+
+export type UpdateTaskUIModel = {
+  deadline?: string,
+  description?: string,
+  priority?: TaskPriorities,
+  startDate?: string,
+  status?: TaskStatuses,
+  title?: string,
 }
 
 export interface RemoveTask {
@@ -61,7 +50,7 @@ export type TaskType = {
   title: string
   todoListId: string
 }
-type GetTaskResponseType = {
+export type GetTaskResponseType = {
   error: string | null
   items: TaskType[]
   totalCount: number
@@ -80,4 +69,3 @@ export type BaseTasksRespType<D = { item: TaskType }> = {
   data: D
   fieldsErrors?: string[]
 }
-
