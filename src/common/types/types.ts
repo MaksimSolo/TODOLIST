@@ -10,12 +10,6 @@ export enum ResultCode {
   ERROR = 10
 }
 
-export type TodoType = {
-  addedDate: string
-  id: string
-  order: number
-  title: string
-}
 export type BaseResponseType<T = {}> = {
   resultCode: number
   messages: string[],

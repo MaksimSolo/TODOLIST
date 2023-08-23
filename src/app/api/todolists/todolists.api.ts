@@ -1,7 +1,8 @@
 import {instance} from "app/api/config/config";
-import {BaseResponseType, TodoType} from "common/types/types";
+import {TodoType, UpdateTodoTitle} from "app/api/todolists/todolists.api.types";
+import {BaseResponseType,} from "common/types/types";
 
-export const todolistApi = {
+export const todolistsApi = {
   getTodolists: () => {
     return instance.get<Array<TodoType>>('/todo-lists/');
   },
@@ -14,9 +15,4 @@ export const todolistApi = {
   updateTodolistTitle: (arg: UpdateTodoTitle) => {
     return instance.put<BaseResponseType>(`/todo-lists/${arg.id}`, {title: arg.title});
   },
-}
-
-export interface UpdateTodoTitle {
-  id: string,
-  title: string
 }

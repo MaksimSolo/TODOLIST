@@ -1,9 +1,10 @@
 import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
-import {todolistApi, UpdateTodoTitle} from "app/api/todolist.api";
+import {todolistsApi,} from "app/api/todolists/todolists.api";
+import {TodoType, UpdateTodoTitle} from "app/api/todolists/todolists.api.types";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
-import {ResultCode, TodoType} from "common/types/types";
+import {ResultCode,} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
@@ -12,7 +13,7 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodoType[] }, void>('TOD
 
   try {
     dispatch(appActions.setAppStatus({status: 'loading'}))
-    const resp = await todolistApi.getTodolists()
+    const resp = await todolistsApi.getTodolists()
     resp.data.forEach(tl => {
       dispatch(tasksThunks.fetchTasks(tl.id))
     })
@@ -32,7 +33,7 @@ const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
     try {
       dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistApi.deleteTodolist(arg)
+      const resp = await todolistsApi.deleteTodolist(arg)
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {id: arg}
@@ -53,7 +54,7 @@ const createTodolist = createAppAsyncThunk<{ todolist: TodoType }, string>(
 
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistApi.createTodolist(arg);
+      const resp = await todolistsApi.createTodolist(arg);
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {todolist: resp.data.data.item}
@@ -74,7 +75,7 @@ const updateTodolistTitle = createAppAsyncThunk<UpdateTodoTitle, UpdateTodoTitle
 
     try {
       dispatch(appActions.setAppStatus({status: 'loading'}))
-      const resp = await todolistApi.updateTodolistTitle(arg)
+      const resp = await todolistsApi.updateTodolistTitle(arg)
       if (resp.data.resultCode === ResultCode.OK) {
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return arg

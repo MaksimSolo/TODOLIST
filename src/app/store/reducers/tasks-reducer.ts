@@ -8,10 +8,11 @@ import {
   UpdateTaskApiModel,
   UpdateTaskUIModel
 } from "app/api/tasks/tasks.api.types";
+import {TodoType} from "app/api/todolists/todolists.api.types";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {todosThunks} from "app/store/reducers/todolists-reducer";
-import {ResultCode, TodoType} from 'common/types/types'
+import {ResultCode} from 'common/types/types'
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
