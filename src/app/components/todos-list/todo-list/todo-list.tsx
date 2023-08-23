@@ -6,16 +6,16 @@ import {Task} from "app/components/task/task";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {FilterType, TodolistBLLType, todosActions, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useActions} from "common/hooks/useActions";
-import React, {useCallback, useMemo} from "react";
+import React, {FC, useCallback, useMemo} from "react";
 import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {EditableSpan} from "../../EditableSpan/EditableSpan";
 
-type PropsType = {
+type Props = {
   todolist: TodolistBLLType
   tasks: TaskType[]
 }
 
-export const Todolist = React.memo(({todolist, tasks}: PropsType) => {
+export const Todolist: FC<Props> = React.memo(({todolist, tasks}) => {
 
   const {addTask} = useActions(tasksThunks)
   const {updateTodolistTitle, removeTodolist} = useActions(todosThunks)
@@ -44,7 +44,7 @@ export const Todolist = React.memo(({todolist, tasks}: PropsType) => {
   const changeTodoTitle = useCallback((title: string) =>
     updateTodolistTitle({id: todolist.id, title}), [updateTodolistTitle, todolist.id,]);
 
-  const removeTodo = useCallback(() => removeTodolist(todolist.id), [removeTodolist, todolist.id])
+  const removeTodo = () => removeTodolist(todolist.id)
 
   const changeFilterHandler = (filter: FilterType) =>
     (): PayloadAction<{ id: string; filter: FilterType }> => changeTodolistFilter({id: todolist.id, filter})

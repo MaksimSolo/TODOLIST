@@ -1,35 +1,38 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/tasks/tasks.api.types";
+import s from 'app/components/task/styles/task.module.css'
 import {TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";
-import React, {ChangeEvent, memo, useCallback} from 'react';
+import React, {ChangeEvent, FC, memo,} from 'react';
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 
 
-export type TaskPropsType = {
+export type TaskProps = {
   todolistID: string
   taskID: string
 }
 
-export const Task = memo(({todolistID, taskID}: TaskPropsType) => {
+export const Task: FC<TaskProps> = memo(({todolistID, taskID}) => {
 
   const task = useAppSelector<TaskBLLType>(({tasks}) => tasks[todolistID].filter(({id}) => id === taskID)[0])
+
   const {removeTask: removeTaskThunk, updateTask} = useActions(tasksThunks)
 
-  const getClasses = () => task.status === TaskStatuses.Completed ? "is-done" : ''
+  const getClasses = () => task.status === TaskStatuses.Completed ? s.isDone : ''
+
   const itemFontStyles = {fontWeight: 'bold'}
-  const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+
+  const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
     updateTask({todolistID, taskID, changesForApiModel: {status}});
-  }, [updateTask, todolistID, taskID,]);
-  const changeTaskTitle = useCallback(title => {
-    updateTask({todolistID, taskID, changesForApiModel: {title}})
-  }, [updateTask, todolistID, taskID,]);
-  const removeTask = useCallback(() => {
-    removeTaskThunk({todolistID, taskID});
-  }, [removeTaskThunk, todolistID, taskID]);
+  }
+
+  const changeTaskTitle = (title: string) => updateTask({todolistID, taskID, changesForApiModel: {title}})
+
+  const removeTask = () => removeTaskThunk({todolistID, taskID})
+
   return (
     <ListItem
       key={taskID}

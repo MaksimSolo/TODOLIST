@@ -1,6 +1,6 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import {Task, TaskPropsType} from "app/components/task/task";
+import {Task, TaskProps} from "app/components/task/task";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
@@ -17,7 +17,7 @@ export default  {
 } as unknown as ComponentMeta<typeof Task>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Task> = (args:TaskPropsType) => <Task {...args} />;
+const Template: ComponentStory<typeof Task> = (args:TaskProps) => <Task {...args} />;
 
 export const TaskIsDone = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
