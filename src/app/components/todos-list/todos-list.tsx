@@ -1,5 +1,5 @@
 import {Grid, Paper} from "@mui/material";
-import {TasksStateType} from "app/store/reducers/tasks-reducer";
+import {Todolist} from "app/components/todos-list/todo-list/todo-list";
 import {TodolistBLLType, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";
@@ -7,16 +7,13 @@ import React, {useCallback, useEffect, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import * as authSelectors from "./../../store/selectors/auth.selectors"
-import * as taskSelectors from "./../../store/selectors/task.selectors"
 import * as todolistSelectors from "./../../store/selectors/todolist.selectors"
-import {Todolist} from "app/components/todos-list/todo-list/todo-list";
 
 export const TodosList = () => {
   const {createTodolist, fetchTodolists} = useActions(todosThunks)
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
   const todolists = useAppSelector<TodolistBLLType[]>(todolistSelectors.todolists)
-  const tasks = useAppSelector<TasksStateType>(taskSelectors.tasks)
 
   const addTodolist = useCallback((newTodoTitle: string) => createTodolist(newTodoTitle), [createTodolist]);
 
@@ -29,12 +26,11 @@ export const TodosList = () => {
           < Todolist
             key={tl.id}
             todolist={tl}
-            tasks={tasks[tl.id]}
           />
         </Paper>
       </Grid>
     )
-  }), [todolists, tasks]);
+  }), [todolists]);
 
   useEffect(() => {
     if (!isLoggedIn) {

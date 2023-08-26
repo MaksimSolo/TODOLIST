@@ -1,12 +1,12 @@
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/tasks/tasks.api.types";
-import s from 'app/components/task/styles/task.module.css'
+import {EditableSpan} from "app/components/EditableSpan/EditableSpan";
+import s from 'app/components/todos-list/todo-list/tasks/task/styles/task.module.css'
 import {TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";
 import React, {ChangeEvent, FC, memo,} from 'react';
-import {EditableSpan} from "../EditableSpan/EditableSpan";
 
 
 export type TaskProps = {

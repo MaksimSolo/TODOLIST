@@ -46,7 +46,7 @@ beforeEach(() => {
   };
 })
 
-test('correct task should be deleted from correct array', () => {
+test('correct tasks should be deleted from correct array', () => {
 
 
   const action = tasksThunks.removeTask.fulfilled(
@@ -83,7 +83,7 @@ test('correct task should be deleted from correct array', () => {
 });
 
 
-test('correct task should be added to correct array', () => {
+test('correct tasks should be added to correct array', () => {
   const action = tasksThunks.addTask.fulfilled({
     task: {
       addedDate: '',
@@ -112,7 +112,7 @@ test('correct task should be added to correct array', () => {
 
 })
 
-test('status of specified task should be changed', () => {
+test('status of specified tasks should be changed', () => {
 
   const status = TaskStatuses.Completed
 
@@ -128,7 +128,7 @@ test('status of specified task should be changed', () => {
   expect(endState["todolistId2"][1].status).toBe(TaskStatuses.Completed);
 });
 
-test('title of specified task should be changed', () => {
+test('title of specified tasks should be changed', () => {
 
   let title = 'Barabulya of Crimea'
   const action = tasksThunks.updateTask.fulfilled(
