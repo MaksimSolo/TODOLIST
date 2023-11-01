@@ -1,17 +1,17 @@
 import {TaskStatuses, TaskType} from "app/api/tasks/tasks.api.types";
-import {Task} from "app/components/todos-list/todo-list/tasks/task/task";
+import {Task} from "app/components/TodosList/TodoList/Tasks/Task/Task";
 import {TasksStateType} from "app/store/reducers/tasks-reducer";
 import {FilterType, TodolistBLLType} from "app/store/reducers/todolists-reducer";
 import * as taskSelectors from "app/store/selectors/task.selectors";
 import {useAppSelector} from "app/store/store";
-import React, {FC, memo, useMemo} from 'react';
+import React, {memo, ReactElement, useMemo} from 'react';
 
 
 type Props = {
   todolist: TodolistBLLType
 }
 
-export const Tasks: FC<Props> = memo(({todolist}) => {
+export const Tasks = memo(({todolist}: Props): ReactElement => {
 
   const tasks = useAppSelector<TasksStateType>(taskSelectors.tasks)[todolist.id]
 

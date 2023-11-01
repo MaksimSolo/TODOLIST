@@ -21,9 +21,7 @@ const fetchTasks = createAppAsyncThunk<{ todolistID: string, tasks: TaskType[] }
     const {dispatch, rejectWithValue} = thunkAPI
 
     try {
-      dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await tasksAPI.getTasks(todolistID)
-      dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return {todolistID, tasks: resp.data.items}
     }
     catch (error) {
@@ -38,14 +36,12 @@ const addTask = createAppAsyncThunk<{ task: TaskType }, AddTask>(
     const {dispatch, rejectWithValue} = thunkAPI
 
     try {
-      dispatch(appActions.setAppStatus({status: 'loading'}))
       const resp = await tasksAPI.createTask(arg)
       if (resp.data.resultCode === ResultCode.OK) {
-        dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return {task: resp.data.data.item}
       } else {
-        errorUtils.handleServerAppError(dispatch, resp.data)
-        return rejectWithValue(null)
+        errorUtils.handleServerAppError(dispatch, resp.data,)
+        return rejectWithValue(resp.data)
       }
     }
     catch (error) {
@@ -60,14 +56,13 @@ const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
   async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
     try {
-      dispatch(appActions.setAppStatus({status: 'loading'}))
 
       const state = getState()
       const allTasksOfTodo = state.tasks[arg.todolistID]
       const currentTask = allTasksOfTodo.find(({id}) => id === arg.taskID)
 
       if (!currentTask) {
-        dispatch(appActions.setAppError({error: 'tasks not found in state!'}))
+        dispatch(appActions.setAppError({error: 'Tasks not found in state!'}))
         return rejectWithValue(null)
       }
 
@@ -84,7 +79,6 @@ const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
       let resp = await tasksAPI.updateTask(arg.todolistID, arg.taskID, apiModel);
 
       if (resp.data.resultCode === ResultCode.OK) {
-        dispatch(appActions.setAppStatus({status: 'succeeded'}))
         return arg
       } else {
         errorUtils.handleServerAppError(dispatch, resp.data)
@@ -103,10 +97,8 @@ const removeTask = createAppAsyncThunk<RemoveTask, RemoveTask>('TASK/removeTask'
   try {
     dispatch(
       tasksActions.changeTaskItemStatus({todolistID: arg.todolistID, taskID: arg.taskID, taskItemStatus: 'loading'}))
-    dispatch(appActions.setAppStatus({status: 'loading'}))
     const resp = await tasksAPI.deleteTask(arg)
     if (resp.data.resultCode === ResultCode.OK) {
-      dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return arg
     } else {
       errorUtils.handleServerAppError(dispatch, resp.data)

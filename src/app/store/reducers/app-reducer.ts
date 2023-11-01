@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
+import {AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction, Reducer} from "@reduxjs/toolkit";
 
 
 const initialState = {
@@ -11,16 +11,39 @@ const slice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setAppStatus: (state: LinearProgressStateType, action: PayloadAction<{ status: RequestStatusType }>) => {
-      state.status = action.payload.status
-    },
     setAppError: (state: LinearProgressStateType, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error
     },
     setAppInitialized: (state: LinearProgressStateType, action: PayloadAction<{ isInitialized: boolean }>) => {
       state.isInitialized = action.payload.isInitialized
     }
-  }
+  },
+  extraReducers: builder =>
+    builder
+      .addMatcher(
+        isPending,
+        (state) => {
+          state.status = 'loading'
+        }
+      )
+      .addMatcher(
+        isFulfilled,
+        (state) => {
+          state.status = 'idle'
+        }
+      )
+      .addMatcher(
+        isRejected,
+        (state, action: AnyAction) => {
+          if (action.payload) {
+            state.error = action.payload.messages[0]
+          } else {
+            state.error = action.error.message ? action.error.message : 'SOME ERROR OCCURRED'
+          }
+
+          state.status = 'failed'
+        }
+      )
 })
 
 export const appReducer: Reducer<LinearProgressStateType, AppStatusActionType> = slice.reducer

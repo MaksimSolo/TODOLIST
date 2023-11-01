@@ -1,11 +1,11 @@
 import {Grid, Paper} from "@mui/material";
-import {Todolist} from "app/components/todos-list/todo-list/todo-list";
+import {TodoList} from "app/components/TodosList/TodoList/TodoList";
 import {TodolistBLLType, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";
 import React, {useCallback, useEffect, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
-import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {AddItemForm} from "app/components/AddItemForm/AddItemForm";
 import * as authSelectors from "./../../store/selectors/auth.selectors"
 import * as todolistSelectors from "./../../store/selectors/todolist.selectors"
 
@@ -15,7 +15,9 @@ export const TodosList = () => {
   const isLoggedIn = useAppSelector<boolean>(authSelectors.isLoggedIn)
   const todolists = useAppSelector<TodolistBLLType[]>(todolistSelectors.todolists)
 
-  const addTodolist = useCallback((newTodoTitle: string) => createTodolist(newTodoTitle), [createTodolist]);
+  const addTodolist = useCallback((newTodoTitle: string) => {
+    return createTodolist(newTodoTitle).unwrap()
+  }, [createTodolist]);
 
   const todolistForRender = useMemo(() => todolists.map(tl => {
     return (
@@ -23,7 +25,7 @@ export const TodosList = () => {
             key={tl.id}>
         <Paper elevation={20}
                style={{padding: '15px', minWidth: '300px', maxWidth: '300px', minHeight: '100px'}}>
-          < Todolist
+          < TodoList
             key={tl.id}
             todolist={tl}
           />

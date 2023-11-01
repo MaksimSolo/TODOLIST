@@ -5,7 +5,7 @@ import AppWithRedux from "../app/AppWithRedux";
 import {HashRouter} from "react-router-dom";
 
 export default {
-  title: 'todo-list/AppWithRedux',
+  title: 'TodoList/AppWithRedux',
   component: AppWithRedux,
   decorators: [ReduxStoreProviderDecorator],
 

@@ -12,17 +12,6 @@ beforeEach(() => {
   }
 })
 
-test('correct status should be installed', () => {
-  let status: RequestStatusType = 'loading'
-
-  const endState = appReducer(startState, appActions.setAppStatus({status}))
-
-  expect(endState.status).toBe('loading')
-  expect(startState.status).toBe('idle')
-  expect(endState.status).not.toEqual(startState.status)
-
-})
-
 test('error message should be shown', () => {
   let error = 'some megaerror!!!!!!'
 

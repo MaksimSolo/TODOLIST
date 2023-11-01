@@ -2,13 +2,13 @@ import {Button, ButtonGroup} from "@mui/material";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {FilterType, TodolistBLLType, todosActions} from "app/store/reducers/todolists-reducer";
 import {useActions} from "common/hooks/useActions";
-import React, {FC, memo} from 'react';
+import React, {memo, ReactElement} from 'react';
 
 
 type Props = {
   todolist: TodolistBLLType
 }
-export const FilterTasksButtons: FC<Props> = memo(({todolist}) => {
+export const FilterTasksButtons = memo(({todolist}: Props): ReactElement => {
 
   const {changeTodolistFilter} = useActions(todosActions)
 

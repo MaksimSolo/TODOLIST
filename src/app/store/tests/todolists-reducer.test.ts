@@ -36,7 +36,7 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
 
-  let newTodolistTitle = "New todo-list";
+  let newTodolistTitle = "New TodoList";
   const action = todosThunks.createTodolist.fulfilled({
     todolist: {
       addedDate: '',
@@ -55,7 +55,7 @@ test('correct todolist should be added', () => {
 
 
 test('correct todolist should change its name', () => {
-  let newTodolistTitle = "New todo-list";
+  let newTodolistTitle = "New TodoList";
 
   const action = todosThunks.updateTodolistTitle.fulfilled({
     id: "todolistId2",

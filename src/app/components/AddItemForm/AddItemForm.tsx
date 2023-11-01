@@ -1,10 +1,11 @@
 import {AddBox} from "@mui/icons-material";
 import {IconButton, TextField} from "@mui/material";
 import {green} from "@mui/material/colors";
+import {BaseResponseType} from "common/types/types";
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 
 export interface AddItemFormType {
-  addItem: (title: string) => void
+  addItem: (title: string) => Promise<unknown>
   disabled: boolean
 }
 
@@ -15,11 +16,14 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
 
   const addItem = () => {
     if (newTitle.trim()) {
-      props.addItem(newTitle.trim());
+      props.addItem(newTitle.trim()).then((value) => {
+        setNewTitle("")
+      }).catch((reason: BaseResponseType) => {
+        // console.log(reason.messages[0])
+      });
     } else {
       setError(true)
     }
-    setNewTitle("")
   }
   const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.currentTarget.value)

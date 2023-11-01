@@ -6,7 +6,7 @@ import {EditableSpan} from "app/components/EditableSpan/EditableSpan";
 
 
 export default {
-    title: 'todo-list/EditableSpan',
+    title: 'TodoList/EditableSpan',
     component: EditableSpan,
     argTypes: {
         changeTitle: {

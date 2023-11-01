@@ -2,14 +2,14 @@ import {Typography} from "@mui/material";
 import {EditableSpan} from "app/components/EditableSpan/EditableSpan";
 import {TodolistBLLType, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useActions} from "common/hooks/useActions";
-import React, {FC, memo, useCallback} from 'react';
+import React, {memo, ReactElement, useCallback} from 'react';
 
 
 type Props = {
   todolist: TodolistBLLType
 }
 
-export const TodoListTitle: FC<Props> = memo(({todolist}) => {
+export const TodoListTitle = memo(({todolist}: Props): ReactElement => {
 
   const {updateTodolistTitle} = useActions(todosThunks)
 

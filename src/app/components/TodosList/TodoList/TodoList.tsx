@@ -1,25 +1,27 @@
 import {Delete} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
-import {FilterTasksButtons} from "app/components/todos-list/todo-list/filter-tasks-buttons/filter-tasks-buttons";
-import {Tasks} from "app/components/todos-list/todo-list/tasks/tasks";
-import {TodoListTitle} from "app/components/todos-list/todo-list/todo-list-title/todo-list-title";
+import {AddItemForm} from "app/components/AddItemForm/AddItemForm";
+import {FilterTasksButtons} from "app/components/TodosList/TodoList/FilterTasksButtons/FilterTasksButtons";
+import {Tasks} from "app/components/TodosList/TodoList/Tasks/Tasks";
+import {TodoListTitle} from "app/components/TodosList/TodoList/TodoListTitle/TodoListTitle";
 import {tasksThunks} from "app/store/reducers/tasks-reducer";
 import {TodolistBLLType, todosThunks} from "app/store/reducers/todolists-reducer";
 import {useActions} from "common/hooks/useActions";
-import React, {FC, useCallback} from "react";
-import {AddItemForm} from "../../AddItemForm/AddItemForm";
+import React, {ReactElement, useCallback} from "react";
 
 type Props = {
   todolist: TodolistBLLType
 }
 
-export const Todolist: FC<Props> = React.memo(({todolist}) => {
+export const TodoList = React.memo(({todolist}: Props): ReactElement => {
 
   const {addTask} = useActions(tasksThunks)
   const {removeTodolist} = useActions(todosThunks)
 
   const addTaskTDL = useCallback(
-    (newTaskTitle: string) => addTask({todolistId: todolist.id, title: newTaskTitle}),
+    (newTaskTitle: string) => {
+      return addTask({todolistId: todolist.id, title: newTaskTitle}).unwrap()
+    },
     [addTask, todolist.id]
   );
 

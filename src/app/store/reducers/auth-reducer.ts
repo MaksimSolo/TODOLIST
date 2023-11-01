@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
+import {AnyAction, createAsyncThunk, createSlice, PayloadAction, Reducer} from "@reduxjs/toolkit";
 import {authApi} from "app/api/auth/auth.api";
 import {appActions} from "app/store/reducers/app-reducer";
 import {LoginParamsType, ResultCode} from "common/types/types";
@@ -8,10 +8,8 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
   const {dispatch, rejectWithValue} = thunkAPI
 
   try {
-    dispatch(appActions.setAppStatus({status: 'loading'}))
     const resp = await authApi.login(arg)
     if (resp.data.resultCode === ResultCode.OK) {
-      dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return {isLoggedIn: true}
     } else {
       const showError = !resp.data.fieldsErrors.length
@@ -29,11 +27,9 @@ const logout = createAsyncThunk<{ isLoggedIn: boolean }, void>('auth/logout', as
   const {dispatch, rejectWithValue} = thunkAPI
 
   try {
-    dispatch(appActions.setAppStatus({status: 'loading'}))
     const resp = await authApi.logout()
     if (resp.data.resultCode === ResultCode.OK) {
       dispatch(authActions.clearStateData())
-      dispatch(appActions.setAppStatus({status: 'succeeded'}))
       return {isLoggedIn: false}
     } else {
       errorUtils.handleServerAppError(dispatch, resp.data)
@@ -50,7 +46,6 @@ const initializeApp = createAsyncThunk<{ isLoggedIn: boolean }, void>('app/initi
   const {dispatch, rejectWithValue} = thunkAPI
 
   try {
-    dispatch(appActions.setAppStatus({status: 'loading'}))
     const resp = await authApi.me()
     if (resp.data.resultCode === ResultCode.OK) {
       return {isLoggedIn: true}
@@ -64,7 +59,6 @@ const initializeApp = createAsyncThunk<{ isLoggedIn: boolean }, void>('app/initi
   }
   finally {
     dispatch(appActions.setAppInitialized({isInitialized: true}))
-    dispatch(appActions.setAppStatus({status: 'succeeded'}))
   }
 })
 
@@ -78,17 +72,18 @@ const slice = createSlice({
   reducers: {
     clearStateData: () => initialState
   },
-  extraReducers: builder => {
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn
-    })
-    builder.addCase(logout.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn
-    })
-    builder.addCase(initializeApp.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn
-    })
-  }
+  extraReducers:
+    builder =>
+      builder.addMatcher(
+        (action: AnyAction) =>
+          action.type === 'auth/login/fulfilled' ||
+          action.type === 'app/logout/fulfilled' ||
+          action.type === 'app/setAppInitialized/fulfilled'
+        ,
+        (state, action) => {
+          state.isLoggedIn = action.payload.isLoggedIn
+        }
+      )
 })
 
 export const authReducer: Reducer<AuthStateType, LoggedInActionType> = slice.reducer

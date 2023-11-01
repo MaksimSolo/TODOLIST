@@ -2,11 +2,11 @@ import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {TaskStatuses} from "app/api/tasks/tasks.api.types";
 import {EditableSpan} from "app/components/EditableSpan/EditableSpan";
-import s from 'app/components/todos-list/todo-list/tasks/task/styles/task.module.css'
+import s from 'app/components/TodosList/TodoList/Tasks/Task/styles/task.module.css'
 import {TaskBLLType, tasksThunks} from "app/store/reducers/tasks-reducer";
 import {useAppSelector} from "app/store/store";
 import {useActions} from "common/hooks/useActions";
-import React, {ChangeEvent, FC, memo,} from 'react';
+import React, {ChangeEvent, memo, ReactElement,} from 'react';
 
 
 export type TaskProps = {
@@ -14,7 +14,7 @@ export type TaskProps = {
   taskID: string
 }
 
-export const Task: FC<TaskProps> = memo(({todolistID, taskID}) => {
+export const Task = memo(({todolistID, taskID}: TaskProps): ReactElement => {
 
   const task = useAppSelector<TaskBLLType>(({tasks}) => tasks[todolistID].filter(({id}) => id === taskID)[0])
 
@@ -24,14 +24,14 @@ export const Task: FC<TaskProps> = memo(({todolistID, taskID}) => {
 
   const itemFontStyles = {fontWeight: 'bold'}
 
-  const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
     updateTask({todolistID, taskID, changesForApiModel: {status}});
   }
 
-  const changeTaskTitle = (title: string) => updateTask({todolistID, taskID, changesForApiModel: {title}})
+  const changeTaskTitleHandler = (title: string) => updateTask({todolistID, taskID, changesForApiModel: {title}})
 
-  const removeTask = () => removeTaskThunk({todolistID, taskID})
+  const removeTaskHandler = () => removeTaskThunk({todolistID, taskID})
 
   return (
     <ListItem
@@ -51,7 +51,7 @@ export const Task: FC<TaskProps> = memo(({todolistID, taskID}) => {
           disabled={task.taskItemStatus === 'loading'}
           size={'small'}
           color={'primary'}
-          onChange={changeStatus}
+          onChange={changeStatusHandler}
           checked={task.status === TaskStatuses.Completed}
           style={{marginRight: '15px'}}
         />
@@ -59,9 +59,9 @@ export const Task: FC<TaskProps> = memo(({todolistID, taskID}) => {
           ? <span>{task.title}</span>
           : <EditableSpan disabled={task.taskItemStatus === 'loading'}
                           title={task.title}
-                          changeTitle={changeTaskTitle}/>}
+                          changeTitle={changeTaskTitleHandler}/>}
       </div>
-      <IconButton onClick={removeTask} disabled={task.taskItemStatus === 'loading'}>
+      <IconButton onClick={removeTaskHandler} disabled={task.taskItemStatus === 'loading'}>
         <Delete/>
       </IconButton>
     </ListItem>

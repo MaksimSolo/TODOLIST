@@ -17,14 +17,13 @@ export const handleServerNetworkError = (dispatch: Dispatch<AppStatusActionType>
   } else {
     dispatch(appActions.setAppError({error: `Native error: ${error.message}`}))
   }
-  dispatch(appActions.setAppStatus({status: 'failed'}))
 }
 
 
 /**
  Handles server application errors.
  @template T - The type of the response data.
- @template D - The type of the tasks response data.
+ @template D - The type of the Tasks response data.
  @param {Dispatch<AppStatusActionType>} dispatch - The dispatch function from Redux.
  @param {BaseResponseType<T> | BaseTasksRespType<D>} data - The response data object.
  @param {boolean} [showError=true] - Flag indicating whether to show the error or not.
@@ -34,5 +33,4 @@ export const handleServerAppError = <T, D>(
   showError: boolean = true
 ) => {
   showError && dispatch(appActions.setAppError({error: !!data.messages ? data.messages[0] : 'SOME ERROR OCCURRED'}));
-  dispatch(appActions.setAppStatus({status: 'failed'}))
 }
