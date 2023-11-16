@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {BaseTasksRespType} from "app/api/tasks/tasks.api.types";
-import {AppStateType, AppThunkDispatch} from "app/store/store";
+import {AppStateType, AppDispatch} from "app/store/store";
 import {BaseResponseType} from "common/types/types";
 
 
@@ -17,11 +17,11 @@ import {BaseResponseType} from "common/types/types";
  * @param {string} typePrefix - A string prefix for the generated action types.
  * @param {(payload: Payload, thunkAPI: ThunkApiConfig) => Promise<any>} payloadCreator - The function that creates the promise.
  *
- * @returns {AsyncThunk<Payload, ThunkApiConfig, { state: AppStateType, dispatch: AppThunkDispatch, rejectValue: BaseResponseType | null }>} The async thunk action creator.
+ * @returns {AsyncThunk<Payload, ThunkApiConfig, { state: AppStateType, dispatch: AppDispatch, rejectValue: BaseResponseType | null }>} The async thunk action creator.
  */
-export const createAppAsyncThunk = createAsyncThunk.withTypes<{
-  state: AppStateType,
-  dispatch: AppThunkDispatch,
-  // rejectValue: BaseResponseType | BaseTasksRespType | null
-  rejectValue: any
-}>()
+// export const createAppAsyncThunk = createAsyncThunk.withTypes<{
+//   state: AppStateType,
+//   dispatch: AppDispatch,
+//   // rejectValue: BaseResponseType | BaseTasksRespType | null
+//   rejectValue: any
+// }>()

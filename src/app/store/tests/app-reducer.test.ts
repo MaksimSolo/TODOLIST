@@ -1,7 +1,7 @@
-import {appActions, appReducer, LinearProgressStateType, RequestStatusType} from "app/store/reducers/app-reducer";
+import {appActions, appReducer, InitialStateType, RequestStatusType} from "app/store/reducers/app-reducer";
 
 
-let startState: LinearProgressStateType;
+let startState: InitialStateType;
 
 
 beforeEach(() => {

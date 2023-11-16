@@ -1,37 +1,29 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {appReducer, AppStatusActionType} from "app/store/reducers/app-reducer";
-import {authReducer, LoggedInActionType} from "app/store/reducers/auth-reducer";
-import {ActionsType, tasksReducer} from "app/store/reducers/tasks-reducer";
-import {ActionType, todolistsReducer} from "app/store/reducers/todolists-reducer";
+import {appReducer} from "app/store/reducers/app-reducer";
+import {authReducer} from "app/store/reducers/auth-reducer";
+import {tasksReducer} from "app/store/reducers/tasks-reducer";
+import {todolistsReducer} from "app/store/reducers/todolists-reducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {combineReducers} from "redux";
-import thunk, {ThunkDispatch} from "redux-thunk";
 
-
-const rootReducers = combineReducers({
-  todolists: todolistsReducer,
-  tasks: tasksReducer,
-  app: appReducer,
-  login: authReducer,
-})
 
 export const store = configureStore({
-    reducer: rootReducers,
-    middleware: getDefaultMiddleware =>
-      getDefaultMiddleware().prepend([thunk])
+    reducer: {
+      todolists: todolistsReducer,
+      tasks: tasksReducer,
+      app: appReducer,
+      login: authReducer,
+    }
   }
 );
 
 export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector  //таким образом можно типизировать входящий тип данных в useSelector
 //и далее по приложению пользоваться useAppSelector
 
-export const useAppDispatch: () => AppThunkDispatch = useDispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
 
 //types
-export type AppThunkDispatch = ThunkDispatch<AppStateType, unknown, AppActionsType>
-type ReducersType = typeof rootReducers;
-export type AppStateType = ReturnType<ReducersType>;
-type AppActionsType = ActionType | ActionsType | AppStatusActionType | LoggedInActionType;
+export type AppDispatch = typeof store.dispatch;
+export type AppStateType = ReturnType<typeof store.getState>;
 
 // @ts-ignore
 window.store = store;
