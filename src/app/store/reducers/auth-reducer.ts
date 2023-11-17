@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authApi} from "app/api/auth/auth.api";
 import {appActions} from "app/store/reducers/app-reducer";
 import {LoginParamsType, ResultCode} from "common/types/types";
@@ -36,7 +36,7 @@ export const authActions = slice.actions
 
 
 // thunks
-const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
+const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
   `${slice.name}/login`, async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 
@@ -56,7 +56,7 @@ const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
     }
   })
 
-const logout = createAsyncThunk<{ isLoggedIn: boolean }, void>(`${slice.name}/logout`, async (_, thunkAPI) => {
+const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(`${slice.name}/logout`, async (_, thunkAPI) => {
   const {dispatch, rejectWithValue} = thunkAPI
 
   try {
@@ -75,7 +75,7 @@ const logout = createAsyncThunk<{ isLoggedIn: boolean }, void>(`${slice.name}/lo
   }
 })
 
-const initializeApp = createAsyncThunk<{ isLoggedIn: boolean }, void>(
+const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
   `${slice.name}/initialize`, async (_, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 

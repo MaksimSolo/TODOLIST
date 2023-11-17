@@ -1,18 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {tasksAPI} from "app/api/tasks/tasks.api";
-import {
-  AddTask,
-  RemoveTask,
-  TaskType,
-  UpdateTask,
-  UpdateTaskApiModel,
-  UpdateTaskUIModel
-} from "app/api/tasks/tasks.api.types";
-import {TodoType} from "app/api/todolists/todolists.api.types";
+import {AddTask, RemoveTask, TaskType, UpdateTask, UpdateTaskApiModel} from "app/api/tasks/tasks.api.types";
 import {appActions, RequestStatusType} from "app/store/reducers/app-reducer";
 import {authActions} from "app/store/reducers/auth-reducer";
 import {todosThunks} from "app/store/reducers/todolists-reducer";
-import {AppStateType} from "app/store/store";
 import {ResultCode} from 'common/types/types'
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
@@ -73,7 +64,7 @@ const slice = createSlice({
 
 // thunks
 
-const fetchTasks = createAsyncThunk<{ todolistID: string, tasks: TaskType[] }, string>(
+const fetchTasks = createAppAsyncThunk<{ todolistID: string, tasks: TaskType[] }, string>(
   `${slice.name}/fetchTasks`, async (todolistID: string, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 
@@ -88,7 +79,7 @@ const fetchTasks = createAsyncThunk<{ todolistID: string, tasks: TaskType[] }, s
   }
 )
 
-const addTask = createAsyncThunk<{ task: TaskType }, AddTask>(
+const addTask = createAppAsyncThunk<{ task: TaskType }, AddTask>(
   `${slice.name}/addTask`, async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 
@@ -108,7 +99,7 @@ const addTask = createAsyncThunk<{ task: TaskType }, AddTask>(
   }
 )
 
-const updateTask = createAsyncThunk<UpdateTask, UpdateTask, {state: AppStateType, }>(
+const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
   `${slice.name}/updateTask`,
   async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
@@ -149,7 +140,7 @@ const updateTask = createAsyncThunk<UpdateTask, UpdateTask, {state: AppStateType
   }
 )
 
-const removeTask = createAsyncThunk<RemoveTask, RemoveTask>('TASK/removeTask', async (arg, thunkAPI) => {
+const removeTask = createAppAsyncThunk<RemoveTask, RemoveTask>('TASK/removeTask', async (arg, thunkAPI) => {
   const {dispatch, rejectWithValue} = thunkAPI
   try {
     dispatch(
