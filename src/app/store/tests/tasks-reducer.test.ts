@@ -1,6 +1,6 @@
-import {TaskPriorities, TaskStatuses} from "app/api/tasks/tasks.api";
+import {TaskPriorities, TaskStatuses} from "app/api/tasks/tasks.api.types";
 import {tasksReducer, TasksStateType, tasksThunks} from 'app/store/reducers/tasks-reducer';
-import {TodoType} from "common/types/types";
+import {TodoType} from "app/api/todolists/todolists.api.types";
 import {todosThunks} from "app/store/reducers/todolists-reducer";
 
 
