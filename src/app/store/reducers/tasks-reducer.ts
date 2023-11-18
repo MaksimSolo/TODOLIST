@@ -90,6 +90,7 @@ const addTask = createAppAsyncThunk<{ task: TaskType }, AddTask>(
       } else {
         errorUtils.handleServerAppError(dispatch, resp.data,)
         return rejectWithValue(resp.data)
+        // return rejectWithValue(null)
       }
     }
     catch (error) {
@@ -168,14 +169,3 @@ export type TasksStateType = Record<string, TaskBLLType[]>
 export type TaskBLLType = TaskType & {
   taskItemStatus: RequestStatusType
 }
-// export type ActionsType =
-//   PayloadAction<{ todolistID: string, id: string }>
-//   | PayloadAction<{ task: TaskType }>
-//   | PayloadAction<{ todolistID: string, taskID: string, changesForApiModel: UpdateTaskUIModel }>
-//   | PayloadAction<{ id: string }>
-//   | PayloadAction<{ todolist: TodoType }>
-//   | PayloadAction<{ todolists: TodoType[] }>
-//   | PayloadAction<{ todolistID: string, tasks: TaskType[] }>
-//   | PayloadAction<{ todolistID: string, taskID: string, taskItemStatus: RequestStatusType }>
-//   | ReturnType<typeof authActions.clearStateData>
-
