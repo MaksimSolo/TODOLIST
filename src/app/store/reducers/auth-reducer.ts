@@ -31,9 +31,6 @@ const slice = createSlice({
       )
 })
 
-export const authReducer = slice.reducer
-export const authActions = slice.actions
-
 
 // thunks
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
@@ -97,7 +94,6 @@ const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>(
   })
 
 
+export const authReducer = slice.reducer
+export const authActions = slice.actions
 export const authThunks = {login, logout, initializeApp}
-
-//types
-// export type LoggedInActionType = PayloadAction<{ isLoggedIn: boolean }> | ReturnType<typeof authActions.clearStateData>

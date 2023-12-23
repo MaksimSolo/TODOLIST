@@ -4,7 +4,7 @@ import {BaseResponseType,} from "common/types/types";
 
 export const todolistsApi = {
   getTodolists: () => {
-    return instance.get<Array<TodoType>>('/todo-lists/');
+    return instance.get<TodoType[]>('/todo-lists/');
   },
   createTodolist: (title: string) => {
     return instance.post<BaseResponseType<{ item: TodoType }>>('/todo-lists/', {title});

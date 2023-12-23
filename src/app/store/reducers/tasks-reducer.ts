@@ -141,7 +141,7 @@ const updateTask = createAppAsyncThunk<UpdateTask, UpdateTask>(
   }
 )
 
-const removeTask = createAppAsyncThunk<RemoveTask, RemoveTask>('TASK/removeTask', async (arg, thunkAPI) => {
+const removeTask = createAppAsyncThunk<RemoveTask, RemoveTask>(`${slice.name}/removeTask`, async (arg, thunkAPI) => {
   const {dispatch, rejectWithValue} = thunkAPI
   try {
     dispatch(
