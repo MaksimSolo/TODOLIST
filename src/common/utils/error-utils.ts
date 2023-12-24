@@ -1,42 +1,64 @@
-import {BaseTasksRespType} from "app/api/tasks/tasks.api.types";
-import {appActions} from "app/store/reducers/app-reducer";
+import {appActions} from "app/reducers/app-reducer";
 import {AppDispatch} from "app/store/store";
 import axios from "axios";
 import {BaseResponseType} from "common/types/types";
-
+import {BaseTasksRespType} from "features/TodosList/api/tasks/tasks.api.types";
 
 /**
- Handles server network errors.
- @param {AppDispatch} dispatch - The dispatch function from Redux.
- @param {unknown} error - The error object.
+ * Handles network-related errors and dispatches an action to set the application error.
+ *
+ * @param {AppDispatch} dispatch - The Redux dispatch function.
+ * @param {unknown} error - The error object representing the network error.
+ *
+ * @returns {void}
  */
 export const handleServerNetworkError = (dispatch: AppDispatch, error: unknown): void => {
-  let errorMessage = 'SOME ERROR OCCURRED'
+  /**
+   * Default error message to be displayed if no specific error message is determined.
+   * @type {string}
+   */
+  let errorMessage = 'SOME ERROR OCCURRED';
 
   if (axios.isAxiosError(error)) {
-    errorMessage = error.message || errorMessage
+    // If the error is an Axios error, use the response data message, error message, or default message
+    // @ts-ignore
+    errorMessage = error.response?.data?.message || error.message || errorMessage;
   } else if (error instanceof Error) {
-    errorMessage = `Native error: ${error.message}`
+    // If the error is a native JavaScript Error, include the error message in the response
+    errorMessage = `Native error: ${error.message}`;
   } else {
-    errorMessage = JSON.stringify(error)
+    // If the error is of an unknown type, stringify the error object
+    errorMessage = JSON.stringify(error);
   }
 
-  dispatch(appActions.setAppError({error: errorMessage}))
-}
+  // Dispatch the application error with the determined error message
+  dispatch(appActions.setAppError({error: errorMessage}));
+};
 
 
 /**
- Handles server application errors.
- @template T - The type of the response data.
- @template D - The type of the Tasks response data.
- @param {AppDispatch} dispatch - The dispatch function from Redux.
- @param {BaseResponseType<T> | BaseTasksRespType<D>} data - The response data object.
- @param {boolean} [showError=true] - Flag indicating whether to show the error or not.
+ * Handles server-related errors and dispatches an action to set the application error.
+ *
+ * @template T - The type of the response data.
+ * @template D - The type of tasks response data.
+ *
+ * @param {AppDispatch} dispatch - The Redux dispatch function.
+ * @param {BaseResponseType<T> | BaseTasksRespType<D>} data - The response data from the server.
+ * @param {boolean} [showError=true] - A flag indicating whether to display the error message.
+ *
+ * @returns {void}
  */
 export const handleServerAppError = <T, D>(
-  dispatch: AppDispatch, data: BaseResponseType<T> | BaseTasksRespType<D>,
+  dispatch: AppDispatch,
+  data: BaseResponseType<T> | BaseTasksRespType<D>,
   showError: boolean = true
-) => {
-  let errorMessage = 'SOME ERROR OCCURRED'
+): void => {
+  /**
+   * Default error message to be displayed if no specific error message is received from the server.
+   * @type {string}
+   */
+  let errorMessage = 'SOME ERROR OCCURRED';
+
+  // Display the error message only if showError is true
   showError && dispatch(appActions.setAppError({error: !!data.messages ? data.messages[0] : errorMessage}));
-}
+};
