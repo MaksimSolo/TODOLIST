@@ -1,4 +1,4 @@
-import {authThunks} from "app/store/reducers/auth-reducer";
+import {authThunks} from "features/auth/reducers/auth-reducer";
 import {useActions} from "common/hooks/useActions";
 import {BaseResponseType, LoginParamsType} from "common/types/types";
 import {FormikHelpers, useFormik} from "formik";
