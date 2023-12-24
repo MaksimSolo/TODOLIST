@@ -3,7 +3,7 @@ import {useActions} from "common/hooks/useActions";
 import {BaseResponseType, LoginParamsType} from "common/types/types";
 import {FormikHelpers, useFormik} from "formik";
 
-export const useLogin = ()  => {
+export const useLogin = () => {
   const {login} = useActions(authThunks)
 
   const formik = useFormik({
@@ -32,7 +32,7 @@ export const useLogin = ()  => {
         .unwrap()
         .catch((reason: BaseResponseType) => {
           const {fieldsErrors} = reason
-          !!fieldsErrors && fieldsErrors.map(
+          !!fieldsErrors && fieldsErrors.forEach(
             ({field, error}) => formikHelpers.setFieldError(field, error))
         })
     }
