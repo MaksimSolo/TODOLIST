@@ -1,8 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {appReducer} from "app/reducers/app-reducer";
-import {authReducer} from "features/auth/reducers/auth-reducer";
-import {tasksReducer} from "features/TodosList/reducers/tasks-reducer";
-import {todolistsReducer} from "features/TodosList/reducers/todolists-reducer";
+import {appReducer} from "app/model/slice/appSlice";
+import {authSlice} from "features/auth/model/slice/authSlice";
+import {tasksReducer} from "features/TodosList/model/tasks/slice/tasksSlice";
+import {todolistsReducer} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 
@@ -11,7 +11,7 @@ export const store = configureStore({
       todolists: todolistsReducer,
       tasks: tasksReducer,
       app: appReducer,
-      login: authReducer,
+      login: authSlice,
     }
   }
 );

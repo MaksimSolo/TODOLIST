@@ -1,7 +1,7 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
-import App from "app/App";
+import App from "app/ui/App";
 import {HashRouter} from "react-router-dom";
 
 export default {

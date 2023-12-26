@@ -1,6 +1,6 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import {Task, TaskProps} from "features/TodosList/components/TodoList/Tasks/Task/Task";
+import {Task, TaskProps} from "features/TodosList/ui/TodoList/Tasks/Task/Task";
 import {action} from "@storybook/addon-actions";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 

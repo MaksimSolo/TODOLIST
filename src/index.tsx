@@ -1,4 +1,4 @@
-import App from "app/App";
+import App from "app/ui/App";
 import {store} from "app/store/store";
 import React from 'react';
 import ReactDOM from 'react-dom';

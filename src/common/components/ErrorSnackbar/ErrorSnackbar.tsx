@@ -1,11 +1,11 @@
 import {Slide} from "@mui/material";
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import {appActions} from "app/reducers/app-reducer";
+import {appActions} from "app/model/slice/appSlice";
 import {useAppSelector} from "app/store/store";
 import {useDispatch} from "react-redux";
 import * as React from 'react';
-import * as appSelectors from "app/selectors/app.selectors"
+import * as appSelectors from "app/model/selectors/app.selectors"
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(

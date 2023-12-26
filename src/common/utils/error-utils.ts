@@ -1,4 +1,4 @@
-import {appActions} from "app/reducers/app-reducer";
+import {appActions} from "app/model/slice/appSlice";
 import {AppDispatch} from "app/store/store";
 import axios from "axios";
 import {BaseResponseType} from "common/types/types";

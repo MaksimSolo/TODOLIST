@@ -1,9 +1,9 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {TaskPriorities, TaskStatuses} from "features/TodosList/api/tasks/tasks.api.types";
-import {appReducer} from "app/reducers/app-reducer";
-import {authReducer} from "features/auth/reducers/auth-reducer";
-import {tasksReducer} from "features/TodosList/reducers/tasks-reducer";
-import {todolistsReducer} from "features/TodosList/reducers/todolists-reducer";
+import {appReducer} from "app/model/slice/appSlice";
+import {authSlice} from "features/auth/model/slice/authSlice";
+import {tasksReducer} from "features/TodosList/model/tasks/slice/tasksSlice";
+import {todolistsReducer} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import React from "react";
 import {Provider} from "react-redux";
 import {combineReducers} from "redux";
@@ -17,7 +17,7 @@ const rootReducers = combineReducers({
   todolists: todolistsReducer,
   tasks: tasksReducer,
   app: appReducer,
-  login: authReducer,
+  login: authSlice,
 })
 
 const initialGlobalState: AppStateType = {
