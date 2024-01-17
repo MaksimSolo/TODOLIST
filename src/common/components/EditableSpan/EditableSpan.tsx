@@ -1,5 +1,5 @@
 import {TextField} from "@mui/material";
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 
 type EditableSpanType = {
   title: string
@@ -7,7 +7,7 @@ type EditableSpanType = {
   disabled?: boolean
 }
 
-export const EditableSpan = React.memo(({title, changeTitle, disabled}: EditableSpanType) => {
+export const EditableSpan = memo(({title, changeTitle, disabled}: EditableSpanType) => {
 
   const [newTitle, setNewTitle] = useState(title)
   const [editMode, setEditMode] = useState<boolean>(false)

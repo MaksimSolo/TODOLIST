@@ -1,19 +1,19 @@
 import {Delete} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
+import {AddItemForm} from "common/components";
+import {useActions} from "common/hooks/useActions";
+import {tasksThunks} from "features/TodosList/model/tasks/slice/tasksSlice";
+import {TodolistBLLType, todosThunks} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import {FilterTasksButtons} from "features/TodosList/ui/TodoList/FilterTasksButtons/FilterTasksButtons";
 import {Tasks} from "features/TodosList/ui/TodoList/Tasks/Tasks";
 import {TodoListTitle} from "features/TodosList/ui/TodoList/TodoListTitle/TodoListTitle";
-import {tasksThunks} from "features/TodosList/model/tasks/slice/tasksSlice";
-import {TodolistBLLType, todosThunks} from "features/TodosList/model/todolists/slice/todolistsSlice";
-import {AddItemForm} from "common/components";
-import {useActions} from "common/hooks/useActions";
-import React, {ReactElement, useCallback} from "react";
+import React, {memo, ReactElement, useCallback} from "react";
 
 type Props = {
   todolist: TodolistBLLType
 }
 
-export const TodoList = React.memo(({todolist}: Props): ReactElement => {
+export const TodoList = memo(({todolist}: Props): ReactElement => {
 
   const {addTask} = useActions(tasksThunks)
   const {removeTodolist} = useActions(todosThunks)

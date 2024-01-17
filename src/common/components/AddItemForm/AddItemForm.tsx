@@ -2,21 +2,21 @@ import {AddBox} from "@mui/icons-material";
 import {IconButton, TextField} from "@mui/material";
 import {green} from "@mui/material/colors";
 import {BaseResponseType} from "common/types/types";
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 
-export interface AddItemFormType {
+export interface AddItemFormProps {
   addItem: (title: string) => Promise<unknown>
   disabled: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormType) => {
+export const AddItemForm = memo(({addItem, disabled}: AddItemFormProps) => {
 
   const [newTitle, setNewTitle] = useState("")
   const [error, setError] = useState<boolean>(false)
 
-  const addItem = () => {
+  const onAddItemClick = () => {
     if (newTitle.trim()) {
-      props.addItem(newTitle.trim()).then(() => {
+      addItem(newTitle.trim()).then(() => {
         setNewTitle("")
       }).catch((reason: BaseResponseType) => {
         console.log(reason.messages[0])
@@ -31,13 +31,13 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
   }
   const onKeyPressAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      addItem()
+      onAddItemClick()
     }
   }
   return (
     <div style={{textAlign: 'center'}}>
       <TextField
-        disabled={props.disabled}
+        disabled={disabled}
         variant={'outlined'}
         size={'small'}
         label={'enter item title'}
@@ -48,8 +48,8 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
         error={error}
       />
       <IconButton
-        disabled={props.disabled}
-        onClick={addItem} sx={{color: green[500]}}><AddBox/></IconButton>
+        disabled={disabled}
+        onClick={onAddItemClick} sx={{color: green[500]}}><AddBox/></IconButton>
       {/*<div className='error-message'>{errorMessage}</div>*/}
     </div>
   );

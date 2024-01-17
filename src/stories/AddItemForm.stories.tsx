@@ -1,7 +1,7 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 
-import {AddItemForm, AddItemFormType} from 'common/components/AddItemForm/AddItemForm';
+import {AddItemForm, AddItemFormProps} from 'common/components/AddItemForm/AddItemForm';
 import {action} from "@storybook/addon-actions";
 
 
@@ -16,7 +16,7 @@ export default {
 
 } as ComponentMeta<typeof AddItemForm>;
 
-const Template: ComponentStory<typeof AddItemForm> = (args: AddItemFormType) => <AddItemForm {...args} />;
+const Template: ComponentStory<typeof AddItemForm> = (args: AddItemFormProps) => <AddItemForm {...args} />;
 
 export const AddItemFormStory = Template.bind({});
 

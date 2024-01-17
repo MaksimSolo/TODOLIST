@@ -42,14 +42,16 @@ export const TodosList = () => {
     }
   }, [isLoggedIn, fetchTodolists, navigate])
 
-  return <>
-    <Grid container justifyContent={'center'} style={{padding: '15px'}}>
-      <Grid item>
-        <AddItemForm addItem={addTodolist} disabled={false}/>
+  return (
+    <>
+      <Grid container justifyContent={'center'} style={{padding: '15px'}}>
+        <Grid item>
+          <AddItemForm addItem={addTodolist} disabled={false}/>
+        </Grid>
       </Grid>
-    </Grid>
-    <Grid container spacing={5} justifyContent={'center'}>
-      {todolistForRender}
-    </Grid>
-  </>
+      <Grid container spacing={5} justifyContent={'center'}>
+        {todolistForRender}
+      </Grid>
+    </>
+  )
 }
