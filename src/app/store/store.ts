@@ -12,7 +12,7 @@ export const store = configureStore({
       tasks: tasksReducer,
       app: appReducer,
       login: authSlice,
-    }
+    },
   }
 );
 

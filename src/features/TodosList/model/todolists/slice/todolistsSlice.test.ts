@@ -1,5 +1,4 @@
 import {
-  ActionType,
   FilterType,
   TodolistBLLType,
   todolistsReducer,
@@ -73,7 +72,7 @@ test('correct todolist should change its name', () => {
 test('correct filter of todolist should be changed', () => {
   let newFilter: FilterType = "completed";
 
-  const action: ActionType = todosActions.changeTodolistFilter({id: "todolistId2", filter: newFilter});
+  const action = todosActions.changeTodolistFilter({id: "todolistId2", filter: newFilter});
 
   const endState = todolistsReducer(startState, action);
 

@@ -7,7 +7,6 @@ import {todolistsReducer} from "features/TodosList/model/todolists/slice/todolis
 import React from "react";
 import {Provider} from "react-redux";
 import {combineReducers} from "redux";
-import thunk from "redux-thunk";
 
 
 type ReducersType = typeof rootReducers;
@@ -179,10 +178,13 @@ const initialGlobalState: AppStateType = {
 }
 
 export const storyBookStore = configureStore({
-  reducer: rootReducers,
-  preloadedState: initialGlobalState,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().prepend([thunk])
+  reducer: {
+    todolists: todolistsReducer,
+    tasks: tasksReducer,
+    app: appReducer,
+    login: authSlice,
+  },
+  preloadedState: initialGlobalState
 });
 
 
