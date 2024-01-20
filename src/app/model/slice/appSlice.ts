@@ -16,7 +16,7 @@ const slice = createSlice({
       state.isInitialized = action.payload.isInitialized
     }
   },
-  extraReducers: builder =>
+  extraReducers: builder => {
     builder
       .addMatcher(
         isPending,
@@ -42,6 +42,7 @@ const slice = createSlice({
           state.status = 'failed'
         }
       )
+  }
 })
 
 export const appReducer = slice.reducer

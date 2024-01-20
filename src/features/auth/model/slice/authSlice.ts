@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, isAnyOf, isFulfilled, PayloadAction} from "@reduxjs/toolkit";
 import {appActions} from "app/model/slice/appSlice";
 import {LoginParamsType, ResultCode} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'
@@ -17,18 +17,16 @@ const slice = createSlice({
   reducers: {
     clearStateData: () => initialState
   },
-  extraReducers:
-    builder =>
-      builder.addMatcher(
-        (action) =>
-          action.type === 'auth/login/fulfilled' ||
-          action.type === 'auth/logout/fulfilled' ||
-          action.type === 'auth/initialize/fulfilled'
+  extraReducers: builder => {
+    builder
+      .addMatcher(
+        isAnyOf(login.fulfilled, logout.fulfilled, initializeApp.fulfilled)
         ,
         (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
           state.isLoggedIn = action.payload.isLoggedIn
         }
       )
+  }
 })
 
 
