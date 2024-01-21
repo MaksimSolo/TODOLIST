@@ -52,19 +52,12 @@ const slice = createSlice({
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodoType[] }, void>(
   `${slice.name}/fetchTodos`,
   async (_, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
-
-    try {
-      const resp = await todolistsApi.getTodolists()
-      resp.data.forEach(tl => {
-        dispatch(tasksThunks.fetchTasks(tl.id))
-      })
-      return {todolists: resp.data}
-    }
-    catch (error) {
-      errorUtils.handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
-    }
+    const {dispatch} = thunkAPI
+    const resp = await todolistsApi.getTodolists()
+    resp.data.forEach(tl => {
+      dispatch(tasksThunks.fetchTasks(tl.id))
+    })
+    return {todolists: resp.data}
   }
 )
 
@@ -72,19 +65,12 @@ const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
   `${slice.name}/removeTodolist`, async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
 
-    try {
-      dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
-      const resp = await todolistsApi.deleteTodolist(arg)
-      if (resp.data.resultCode === ResultCode.OK) {
-        return {id: arg}
-      } else {
-        // errorUtils.handleServerAppError(dispatch, resp.data)
-        return rejectWithValue(null)
-      }
-    }
-    catch (error) {
-      // errorUtils.handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
+    dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
+    const resp = await todolistsApi.deleteTodolist(arg)
+    if (resp.data.resultCode === ResultCode.OK) {
+      return {id: arg}
+    } else {
+      return rejectWithValue(resp.data)
     }
   })
 
@@ -92,18 +78,11 @@ const createTodolist = createAppAsyncThunk<{ todolist: TodoType }, string>(
   `${slice.name}/createTodolist`, async (arg, thunkAPI) => {
     const {rejectWithValue} = thunkAPI
 
-    try {
-      const resp = await todolistsApi.createTodolist(arg);
-      if (resp.data.resultCode === ResultCode.OK) {
-        return {todolist: resp.data.data.item}
-      } else {
-        // errorUtils.handleServerAppError(dispatch, resp.data,)
-        return rejectWithValue(resp.data)
-      }
-    }
-    catch (error) {
-      // errorUtils.handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
+    const resp = await todolistsApi.createTodolist(arg);
+    if (resp.data.resultCode === ResultCode.OK) {
+      return {todolist: resp.data.data.item}
+    } else {
+      return rejectWithValue(resp.data)
     }
   })
 

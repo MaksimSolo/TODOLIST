@@ -12,22 +12,22 @@ export interface AddItemFormProps {
 export const AddItemForm = memo(({addItem, disabled}: AddItemFormProps) => {
 
   const [newTitle, setNewTitle] = useState("")
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
 
   const onAddItemClick = () => {
     if (newTitle.trim()) {
       addItem(newTitle.trim()).then(() => {
         setNewTitle("")
       }).catch((reason: BaseResponseType) => {
-        console.log(reason.messages[0])
+        reason.messages && setError(reason.messages[0])
       });
     } else {
-      setError(true)
+      setError('Error! Typing is expected')
     }
   }
   const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.currentTarget.value)
-    setError(false);
+    setError('');
   }
   const onKeyPressAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -41,11 +41,11 @@ export const AddItemForm = memo(({addItem, disabled}: AddItemFormProps) => {
         variant={'outlined'}
         size={'small'}
         label={'enter item title'}
-        helperText={error && 'Error! Typing is expected'}
+        helperText={error}
         value={newTitle}
         onChange={changeTitle}
         onKeyUp={onKeyPressAddItem}
-        error={error}
+        error={!!error.length}
       />
       <IconButton
         disabled={disabled}

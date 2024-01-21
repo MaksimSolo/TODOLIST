@@ -1,5 +1,7 @@
 import {AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction} from "@reduxjs/toolkit";
 
+const isCreateTodoRejected = (action: AnyAction) => action.type.includes('createTodolist/rejected')
+
 
 const slice = createSlice({
   name: 'app',
@@ -33,13 +35,14 @@ const slice = createSlice({
       .addMatcher(
         isRejected,
         (state, action: AnyAction) => {
+          state.status = 'failed'
+
           if (action.payload) {
+            if (isCreateTodoRejected(action)) return;
             state.error = action.payload.messages[0]
           } else {
             state.error = action.error.message ? action.error.message : 'SOME ERROR OCCURRED'
           }
-
-          state.status = 'failed'
         }
       )
   }
