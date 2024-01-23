@@ -36,7 +36,6 @@ const slice = createSlice({
         isRejected,
         (state, action: AnyAction) => {
           state.status = 'failed'
-
           if (action.payload) {
             if (isCreateTodoRejected(action)) return;
             state.error = action.payload.messages[0]

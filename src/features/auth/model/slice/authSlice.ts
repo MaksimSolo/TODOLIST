@@ -20,8 +20,7 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addMatcher(
-        isAnyOf(login.fulfilled, logout.fulfilled, initializeApp.fulfilled)
-        ,
+        isAnyOf(login.fulfilled, logout.fulfilled, initializeApp.fulfilled),
         (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
           state.isLoggedIn = action.payload.isLoggedIn
         }

@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {RequestStatusType} from "app/model/slice/appSlice";
+import {ResultCode,} from "common/types/types";
+import {createAppAsyncThunk} from 'common/utils'
+import {authActions} from "features/auth/model/slice/authSlice";
 import {todolistsApi,} from "features/TodosList/api/todolists/todolists.api";
 import {TodoType, UpdateTodoTitle} from "features/TodosList/api/todolists/todolists.api.types";
-import {RequestStatusType} from "app/model/slice/appSlice";
-import {authActions} from "features/auth/model/slice/authSlice";
 import {tasksThunks} from "features/TodosList/model/tasks/slice/tasksSlice";
-import {ResultCode,} from "common/types/types";
-import {createAppAsyncThunk, errorUtils} from 'common/utils'
 
 
 const slice = createSlice({
@@ -44,6 +44,12 @@ const slice = createSlice({
         state[index].title = action.payload.title
       })
       .addCase(authActions.clearStateData, () => [])
+      // this case works when removetodolist thunk rejected, so we need to UNDISABLE delete button on todolist
+      // (change it entityStatus)
+      .addCase(removeTodolist.rejected, (state, action) => {
+        const index = state.findIndex(({id}) => id === action.meta.arg)
+        state[index].entityStatus = 'idle'
+      })
   }
 })
 
@@ -90,19 +96,13 @@ const updateTodolistTitle = createAppAsyncThunk<UpdateTodoTitle, UpdateTodoTitle
   `${slice.name}/updateTodolistTitle`, async (arg, thunkAPI) => {
     const {rejectWithValue} = thunkAPI
 
-    try {
-      const resp = await todolistsApi.updateTodolistTitle(arg)
-      if (resp.data.resultCode === ResultCode.OK) {
-        return arg
-      } else {
-        // errorUtils.handleServerAppError(dispatch, resp.data)
-        return rejectWithValue(null)
-      }
+    const resp = await todolistsApi.updateTodolistTitle(arg)
+    if (resp.data.resultCode === ResultCode.OK) {
+      return arg
+    } else {
+      return rejectWithValue(resp.data)
     }
-    catch (error) {
-      // errorUtils.handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
-    }
+
   })
 
 export const todolistsReducer = slice.reducer
