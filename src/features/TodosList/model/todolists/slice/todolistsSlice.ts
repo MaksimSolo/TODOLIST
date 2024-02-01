@@ -45,7 +45,7 @@ const slice = createSlice({
       })
       .addCase(authActions.clearStateData, () => [])
       // this case works when removetodolist thunk rejected, so we need to UNDISABLE delete button on todolist
-      // (change it entityStatus)
+      // (to change it's entityStatus)
       .addCase(removeTodolist.rejected, (state, action) => {
         const index = state.findIndex(({id}) => id === action.meta.arg)
         state[index].entityStatus = 'idle'

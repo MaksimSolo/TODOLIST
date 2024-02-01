@@ -1,4 +1,4 @@
-import {createSlice, isAnyOf, isFulfilled, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, isAnyOf, PayloadAction} from "@reduxjs/toolkit";
 import {appActions} from "app/model/slice/appSlice";
 import {LoginParamsType, ResultCode} from "common/types/types";
 import {createAppAsyncThunk, errorUtils} from 'common/utils'

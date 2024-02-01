@@ -1,6 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {tasksAPI} from "features/TodosList/api/tasks/tasks.api";
-import {AddTask, RemoveTask, TaskType, UpdateTask, UpdateTaskApiModel} from "features/TodosList/api/tasks/tasks.api.types";
+import {
+  AddTask,
+  RemoveTask,
+  TaskType,
+  UpdateTask,
+  UpdateTaskApiModel
+} from "features/TodosList/api/tasks/tasks.api.types";
 import {appActions, RequestStatusType} from "app/model/slice/appSlice";
 import {authActions} from "features/auth/model/slice/authSlice";
 import {todosThunks} from "features/TodosList/model/todolists/slice/todolistsSlice";
@@ -81,21 +87,13 @@ const fetchTasks = createAppAsyncThunk<{ todolistID: string, tasks: TaskType[] }
 
 const addTask = createAppAsyncThunk<{ task: TaskType }, AddTask>(
   `${slice.name}/addTask`, async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
+    const {rejectWithValue} = thunkAPI
 
-    try {
-      const resp = await tasksAPI.createTask(arg)
-      if (resp.data.resultCode === ResultCode.OK) {
-        return {task: resp.data.data.item}
-      } else {
-        errorUtils.handleServerAppError(dispatch, resp.data,)
-        return rejectWithValue(resp.data)
-        // return rejectWithValue(null)
-      }
-    }
-    catch (error) {
-      errorUtils.handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
+    const resp = await tasksAPI.createTask(arg)
+    if (resp.data.resultCode === ResultCode.OK) {
+      return {task: resp.data.data.item}
+    } else {
+      return rejectWithValue(resp.data)
     }
   }
 )

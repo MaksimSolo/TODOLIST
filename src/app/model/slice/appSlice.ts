@@ -1,6 +1,8 @@
 import {AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction} from "@reduxjs/toolkit";
 
-const isCreateTodoRejected = (action: AnyAction) => action.type.includes('createTodolist/rejected')
+const isIgnoredActionRejected = (action: AnyAction) =>
+  action.type.includes('createTodolist/rejected') ||
+  action.type.includes('addTask/rejected')
 
 
 const slice = createSlice({
@@ -37,7 +39,7 @@ const slice = createSlice({
         (state, action: AnyAction) => {
           state.status = 'failed'
           if (action.payload) {
-            if (isCreateTodoRejected(action)) return;
+            if (isIgnoredActionRejected(action)) return;
             state.error = action.payload.messages[0]
           } else {
             state.error = action.error.message ? action.error.message : 'SOME ERROR OCCURRED'
