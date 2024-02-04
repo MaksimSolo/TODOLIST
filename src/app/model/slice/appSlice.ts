@@ -1,8 +1,10 @@
 import {AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction} from "@reduxjs/toolkit";
+import {tasksThunks} from "features/TodosList/model/tasks/slice/tasksSlice";
+import {todosThunks} from "features/TodosList/model/todolists/slice/todolistsSlice";
 
-const isIgnoredActionRejected = (action: AnyAction) =>
-  action.type.includes('createTodolist/rejected') ||
-  action.type.includes('addTask/rejected')
+const isNotNeededToDisplayActionRejected = (actionType: string) =>
+  actionType === todosThunks.createTodolist.rejected.type ||
+  actionType === tasksThunks.addTask.rejected.type
 
 
 const slice = createSlice({
@@ -39,7 +41,7 @@ const slice = createSlice({
         (state, action: AnyAction) => {
           state.status = 'failed'
           if (action.payload) {
-            if (isIgnoredActionRejected(action)) return;
+            if (isNotNeededToDisplayActionRejected(action.type)) return;
             state.error = action.payload.messages[0]
           } else {
             state.error = action.error.message ? action.error.message : 'SOME ERROR OCCURRED'

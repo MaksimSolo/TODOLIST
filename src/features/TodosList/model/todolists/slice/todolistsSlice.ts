@@ -69,15 +69,11 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodoType[] }, void>(
 
 const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
   `${slice.name}/removeTodolist`, async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
+    const {dispatch} = thunkAPI
 
     dispatch(todosActions.changeTodolistEntityStatus({id: arg, entityStatus: 'loading'}))
-    const resp = await todolistsApi.deleteTodolist(arg)
-    if (resp.data.resultCode === ResultCode.OK) {
-      return {id: arg}
-    } else {
-      return rejectWithValue(resp.data)
-    }
+    await todolistsApi.deleteTodolist(arg);
+    return {id: arg}
   })
 
 const createTodolist = createAppAsyncThunk<{ todolist: TodoType }, string>(
@@ -97,12 +93,12 @@ const updateTodolistTitle = createAppAsyncThunk<UpdateTodoTitle, UpdateTodoTitle
     const {rejectWithValue} = thunkAPI
 
     const resp = await todolistsApi.updateTodolistTitle(arg)
+
     if (resp.data.resultCode === ResultCode.OK) {
       return arg
     } else {
       return rejectWithValue(resp.data)
     }
-
   })
 
 export const todolistsReducer = slice.reducer
