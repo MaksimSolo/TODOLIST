@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react';
 import {todolistsApi} from "features/TodosList/api/todolists/todolists.api";
 
 export default {

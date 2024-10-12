@@ -2,7 +2,7 @@ import {Button, ButtonGroup} from "@mui/material";
 import {PayloadAction} from "@reduxjs/toolkit";
 import {FilterType, TodolistBLLType, todosActions} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import {useActions} from "common/hooks/useActions";
-import React, {memo, ReactElement} from 'react';
+import { memo, ReactElement } from 'react';
 
 
 type Props = {

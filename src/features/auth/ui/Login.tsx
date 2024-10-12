@@ -2,7 +2,7 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, G
 import {useAppSelector} from "app/store/store";
 import {useLogin} from "features/auth/lib/useLogin";
 import * as authSelectors from "features/auth/model/selectors/auth.selectors"
-import React, {useEffect} from 'react';
+import { useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 
 

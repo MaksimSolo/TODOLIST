@@ -6,7 +6,7 @@ import {TaskBLLType, tasksThunks} from "features/TodosList/model/tasks/slice/tas
 import {useAppSelector} from "app/store/store";
 import {EditableSpan} from "common/components";
 import {useActions} from "common/hooks/useActions";
-import React, {ChangeEvent, memo, ReactElement,} from 'react';
+import { ChangeEvent, memo, ReactElement } from 'react';
 
 
 export type TaskProps = {

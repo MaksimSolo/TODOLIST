@@ -4,7 +4,7 @@ import {TodolistBLLType, todosThunks} from "features/TodosList/model/todolists/s
 import {useAppSelector} from "app/store/store";
 import {AddItemForm} from "common/components";
 import {useActions} from "common/hooks/useActions";
-import React, {useCallback, useEffect, useMemo} from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {useNavigate} from "react-router-dom";
 import * as authSelectors from "features/auth/model/selectors/auth.selectors"
 import * as todolistSelectors from "features/TodosList/model/todolists/selectors/todolist.selectors"

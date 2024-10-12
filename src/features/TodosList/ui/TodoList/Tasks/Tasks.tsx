@@ -4,7 +4,7 @@ import {TasksStateType} from "features/TodosList/model/tasks/slice/tasksSlice";
 import {FilterType, TodolistBLLType} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import * as taskSelectors from "features/TodosList/model/tasks/selectors/task.selectors";
 import {useAppSelector} from "app/store/store";
-import React, {memo, ReactElement, useMemo} from 'react';
+import { memo, ReactElement, useMemo } from 'react';
 
 
 type Props = {

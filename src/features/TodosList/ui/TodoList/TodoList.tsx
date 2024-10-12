@@ -7,7 +7,7 @@ import {TodolistBLLType, todosThunks} from "features/TodosList/model/todolists/s
 import {FilterTasksButtons} from "features/TodosList/ui/TodoList/FilterTasksButtons/FilterTasksButtons";
 import {Tasks} from "features/TodosList/ui/TodoList/Tasks/Tasks";
 import {TodoListTitle} from "features/TodosList/ui/TodoList/TodoListTitle/TodoListTitle";
-import React, {memo, ReactElement, useCallback} from "react";
+import { memo, ReactElement, useCallback } from "react";
 
 type Props = {
   todolist: TodolistBLLType

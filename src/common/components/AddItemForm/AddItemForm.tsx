@@ -2,7 +2,7 @@ import {AddBox} from "@mui/icons-material";
 import {IconButton, TextField} from "@mui/material";
 import {green} from "@mui/material/colors";
 import {BaseResponseType} from "common/types/types";
-import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
+import { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
 
 export interface AddItemFormProps {
   addItem: (title: string) => Promise<unknown>

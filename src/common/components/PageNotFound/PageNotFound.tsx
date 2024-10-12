@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const PageNotFound = (): JSX.Element => {
   return (
     <article>

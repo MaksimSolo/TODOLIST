@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import { useState } from 'react';
 import {tasksAPI} from "features/TodosList/api/tasks/tasks.api";
 
 export default {

@@ -9,7 +9,7 @@ import {Login} from "features/auth/ui/Login";
 import {authThunks} from "features/auth/model/slice/authSlice";
 import * as authSelectors from "features/auth/model/selectors/auth.selectors"
 import {TodosList} from "features/TodosList/ui/TodosList";
-import React, {useEffect} from 'react';
+import { useEffect } from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom'
 import * as appSelectors from "app/model/selectors/app.selectors"
 import {useAppSelector} from "app/store/store";

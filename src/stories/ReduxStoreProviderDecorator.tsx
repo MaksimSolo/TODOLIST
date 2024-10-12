@@ -4,7 +4,7 @@ import {appReducer} from "app/model/slice/appSlice";
 import {authSlice} from "features/auth/model/slice/authSlice";
 import {tasksReducer} from "features/TodosList/model/tasks/slice/tasksSlice";
 import {todolistsReducer} from "features/TodosList/model/todolists/slice/todolistsSlice";
-import React from "react";
+import * as React from "react";
 import {Provider} from "react-redux";
 import {combineReducers} from "redux";
 

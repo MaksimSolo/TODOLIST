@@ -2,7 +2,7 @@ import {Typography} from "@mui/material";
 import {TodolistBLLType, todosThunks} from "features/TodosList/model/todolists/slice/todolistsSlice";
 import {EditableSpan} from "common/components";
 import {useActions} from "common/hooks/useActions";
-import React, {memo, ReactElement, useCallback} from 'react';
+import { memo, ReactElement, useCallback } from 'react';
 
 
 type Props = {
